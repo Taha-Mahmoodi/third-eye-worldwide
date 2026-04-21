@@ -129,10 +129,11 @@ function renderBlogDetail() {
   aspect-ratio: 21 / 9;
   border-radius: var(--radius-xl);
   position: relative; overflow: hidden;
-  background:
-    radial-gradient(circle at 30% 40%, rgba(31,97,255,.32), transparent 45%),
-    radial-gradient(circle at 72% 60%, rgba(231,96,33,.28), transparent 48%),
-    linear-gradient(135deg, #0d0410 0%, #1a1a2e 100%);
+  background-image:
+    linear-gradient(180deg, rgba(13,4,16,.25) 0%, rgba(13,4,16,.55) 100%),
+    url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=2000&q=80');
+  background-size: cover;
+  background-position: center;
   display: flex; align-items: center; justify-content: center;
   border: 1px solid var(--border);
 }

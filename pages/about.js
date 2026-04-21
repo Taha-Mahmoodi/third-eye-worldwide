@@ -448,14 +448,14 @@ function renderAbout() {
         </div>
 
         <div class="team-grid">
-          ${teamCard('AR','bg-1','Arjun Rao','Co-founder & CEO','Blind from birth. Built the first TEWW Screen Reader prototype in 2025. Leads global strategy from Mumbai.')}
-          ${teamCard('PS','bg-2','Priya Sharma','Co-founder & CTO','Engineer and disability-rights advocate. Oversees all product and engineering across the org.')}
-          ${teamCard('MO','bg-3','Maya Osei','Chief Program Officer','Runs field operations across 47 countries. Former director of West Africa Inclusion Network.')}
-          ${teamCard('DN','bg-4','Dr. Rhea Nair','Head of Research','Publishes field research on assistive tech adoption. Leads our accessibility audits and WCAG contributions.')}
-          ${teamCard('JK','bg-5','Juma Kimani','Director, East Africa','Oversees 11 country teams across East Africa. Based in Nairobi, speaks six languages.')}
-          ${teamCard('TL','bg-6','Tomás Luján','VP of Engineering','Low-vision from age nine. Leads our 40-person engineering org and open-source stewardship.')}
-          ${teamCard('SF','bg-7','Sofia Ferreira','Head of Community','Runs our volunteer network of 800+ contributors and the TEWW Translator Guild.')}
-          ${teamCard('KA','bg-8','Kenji Arata','Head of Partnerships','Former mobile carrier exec. Leads device partnerships and subsidised data programs.')}
+          ${teamCard('AR','bg-1','Arjun Rao','Co-founder & CEO','Blind from birth. Built the first TEWW Screen Reader prototype in 2025. Leads global strategy from Mumbai.','https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=520&q=80')}
+          ${teamCard('PS','bg-2','Priya Sharma','Co-founder & CTO','Engineer and disability-rights advocate. Oversees all product and engineering across the org.','https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=520&q=80')}
+          ${teamCard('MO','bg-3','Maya Osei','Chief Program Officer','Runs field operations across 47 countries. Former director of West Africa Inclusion Network.','https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=520&q=80')}
+          ${teamCard('DN','bg-4','Dr. Rhea Nair','Head of Research','Publishes field research on assistive tech adoption. Leads our accessibility audits and WCAG contributions.','https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=520&q=80')}
+          ${teamCard('JK','bg-5','Juma Kimani','Director, East Africa','Oversees 11 country teams across East Africa. Based in Nairobi, speaks six languages.','https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=520&q=80')}
+          ${teamCard('TL','bg-6','Tomás Luján','VP of Engineering','Low-vision from age nine. Leads our 40-person engineering org and open-source stewardship.','https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=520&q=80')}
+          ${teamCard('SF','bg-7','Sofia Ferreira','Head of Community','Runs our volunteer network of 800+ contributors and the TEWW Translator Guild.','https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=520&q=80')}
+          ${teamCard('KA','bg-8','Kenji Arata','Head of Partnerships','Former mobile carrier exec. Leads device partnerships and subsidised data programs.','https://images.unsplash.com/photo-1463453091185-61582044d556?auto=format&fit=crop&w=520&q=80')}
         </div>
       </div>
     </section>
@@ -495,9 +495,12 @@ function renderAbout() {
   </div>`;
 }
 
-function teamCard(initials, bg, name, role, bio) {
+function teamCard(initials, bg, name, role, bio, img) {
+  const photo = img
+    ? `<img class="team-photo-img" src="${img}" alt="Portrait of ${name.replace(/"/g,'&quot;')}" loading="lazy">`
+    : '';
   return `<div class="team-card">
-    <div class="team-photo ${bg}"><span class="initials">${initials}</span></div>
+    <div class="team-photo ${bg}${img?' has-img':''}">${photo}<span class="initials" aria-hidden="${img?'true':'false'}">${initials}</span></div>
     <h4>${name}</h4>
     <div class="role">${role}</div>
     <p class="bio">${bio}</p>

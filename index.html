@@ -133,11 +133,11 @@ nav.topnav { position: sticky; top: 0; z-index: 100; background: var(--bg-elevat
 .hero-photo {
   position: absolute; inset: 0; z-index: 0;
   background-image:
-    linear-gradient(180deg, rgba(13,4,7,.18) 0%, rgba(13,4,7,.35) 40%, rgba(13,4,7,.85) 100%),
-    linear-gradient(90deg, rgba(13,4,7,.55) 0%, rgba(13,4,7,0) 50%),
-    url('https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&w=2400&q=80');
-  background-size: cover; background-position: center 40%;
-  filter: saturate(.9) contrast(1.05);
+    linear-gradient(180deg, rgba(13,4,7,.18) 0%, rgba(13,4,7,.35) 40%, rgba(13,4,7,.88) 100%),
+    linear-gradient(90deg, rgba(13,4,7,.6) 0%, rgba(13,4,7,0) 55%),
+    url('https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=2400&q=80');
+  background-size: cover; background-position: center 35%;
+  filter: saturate(.95) contrast(1.05);
 }
 .hero-photo::after {
   /* warm tone wash to blend with brand orange */
@@ -483,6 +483,9 @@ nav.topnav { position: sticky; top: 0; z-index: 100; background: var(--bg-elevat
 .team-photo { width: 100%; aspect-ratio: 1; border-radius: var(--radius-lg); margin-bottom: 16px; background: var(--bg-subtle); border: 1px solid var(--border); position: relative; overflow: hidden; display: flex; align-items: flex-end; padding: 20px; }
 .team-photo::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(13,4,7,.5) 100%); }
 .team-photo .initials { position: relative; font-family: var(--font-display); font-weight: 700; font-size: 3.25rem; color: rgba(255,255,255,.9); letter-spacing: -.03em; line-height: 1; z-index: 1; }
+.team-photo .team-photo-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+.team-photo.has-img .initials { display: none; }
+.team-photo.has-img::before { z-index: 1; }
 .team-photo.bg-1 { background: linear-gradient(135deg, #1f61ff, #4d7eff); }
 .team-photo.bg-2 { background: linear-gradient(135deg, #e76021, #f07a3d); }
 .team-photo.bg-3 { background: linear-gradient(135deg, #0d0407, #4a4a6a); }
@@ -1341,7 +1344,7 @@ html, body { overflow-x: hidden; }
       </div>
       <div class="doc-grid">
         <div class="doc-card featured" onclick="goto('documents','stories')">
-          <div class="doc-hero type-story">
+          <div class="doc-hero type-story" style="background-image: linear-gradient(180deg, rgba(0,0,0,.05) 30%, rgba(13,4,7,.75) 100%), url('https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center;">
             <div>
               <span class="cat-tag story">Story</span>
               <h3>How Kofi built a software company from his kitchen in Accra.</h3>
@@ -1356,7 +1359,7 @@ html, body { overflow-x: hidden; }
           </div>
         </div>
         <div class="doc-card" onclick="goto('documents','blogs')">
-          <div class="doc-hero type-blog">
+          <div class="doc-hero type-blog" style="background-image: linear-gradient(180deg, rgba(31,97,255,.45) 30%, rgba(19,73,212,.85) 100%), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80'); background-size: cover; background-position: center;">
             <div>
               <span class="cat-tag blog">Blog</span>
               <h3>What WCAG misses — and how we test for it.</h3>
@@ -1371,7 +1374,7 @@ html, body { overflow-x: hidden; }
           </div>
         </div>
         <div class="doc-card" onclick="goto('documents','stories')">
-          <div class="doc-hero type-story2">
+          <div class="doc-hero type-story2" style="background-image: linear-gradient(180deg, rgba(231,96,33,.35) 30%, rgba(192,76,24,.85) 100%), url('https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=900&q=80'); background-size: cover; background-position: center;">
             <div>
               <span class="cat-tag story">Story</span>
               <h3>Miriam navigates the Nairobi matatu system — solo.</h3>
@@ -1404,7 +1407,7 @@ html, body { overflow-x: hidden; }
       <!-- Featured: newest -->
       <article class="story-featured" onclick="goto('documents','stories')">
         <div class="sf-media" aria-hidden="true">
-          <div class="sf-photo sf-photo-1">
+          <div class="sf-photo sf-photo-1" style="background-image: linear-gradient(135deg, rgba(31,97,255,.55) 0%, rgba(231,96,33,.45) 100%), url('https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center;">
             <svg class="sf-rings" viewBox="0 0 400 400" fill="none" stroke="currentColor" stroke-width="1">
               <circle cx="200" cy="200" r="60"/>
               <circle cx="200" cy="200" r="110" stroke-dasharray="2 6"/>

@@ -30,16 +30,16 @@ function renderMedia() {
         </div>
 
         <div class="photo-grid">
-          ${photo('p-6-4', 'field', 'Nairobi, Kenya', 'A matatu driver and a TEWW user test the new Navigation Aid', ['#1f61ff','#1349d4'])}
-          ${photo('p-3-2', 'training', 'Mumbai, India', 'Week-one cohort introductions', ['#e76021','#f07a3d'])}
-          ${photo('p-3-2', 'events', 'São Paulo, Brazil', 'Annual community assembly', ['#0d0407','#4a4a6a'])}
-          ${photo('p-4-2', 'team', 'Accra, Ghana', 'Our West Africa office opens', ['#1349d4','#4d7eff'])}
-          ${photo('p-4-2', 'field', 'Dhaka, Bangladesh', 'Device distribution, flood recovery', ['#c04c18','#e76021'])}
-          ${photo('p-4-4', 'training', 'Cairo, Egypt', 'Code academy graduation day', ['#eef3ff','#d6e4ff'])}
-          ${photo('p-4-2', 'events', 'Jakarta, Indonesia', 'Advocacy summit 2025', ['#1f61ff','#4d7eff'])}
-          ${photo('p-4-2', 'field', 'La Paz, Bolivia', 'Mountain village screenings', ['#333350','#0d0407'])}
-          ${photo('p-6-2', 'team', 'Virtual', 'All-hands meeting, 120 staff in 47 countries', ['#e76021','#c04c18'])}
-          ${photo('p-6-2', 'training', 'Manila, Philippines', 'Instructor-led sessions in a public library', ['#7a9fff','#1f61ff'])}
+          ${photo('p-6-4', 'field', 'Nairobi, Kenya', 'A matatu driver and a TEWW user test the new Navigation Aid', ['#1f61ff','#1349d4'], 'https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=1200&q=80')}
+          ${photo('p-3-2', 'training', 'Mumbai, India', 'Week-one cohort introductions', ['#e76021','#f07a3d'], 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=900&q=80')}
+          ${photo('p-3-2', 'events', 'São Paulo, Brazil', 'Annual community assembly', ['#0d0407','#4a4a6a'], 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=900&q=80')}
+          ${photo('p-4-2', 'team', 'Accra, Ghana', 'Our West Africa office opens', ['#1349d4','#4d7eff'], 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80')}
+          ${photo('p-4-2', 'field', 'Dhaka, Bangladesh', 'Device distribution, flood recovery', ['#c04c18','#e76021'], 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=900&q=80')}
+          ${photo('p-4-4', 'training', 'Cairo, Egypt', 'Code academy graduation day', ['#eef3ff','#d6e4ff'], 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=80')}
+          ${photo('p-4-2', 'events', 'Jakarta, Indonesia', 'Advocacy summit 2025', ['#1f61ff','#4d7eff'], 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80')}
+          ${photo('p-4-2', 'field', 'La Paz, Bolivia', 'Mountain village screenings', ['#333350','#0d0407'], 'https://images.unsplash.com/photo-1497449493050-aad1e7cad165?auto=format&fit=crop&w=900&q=80')}
+          ${photo('p-6-2', 'team', 'Virtual', 'All-hands meeting, 120 staff in 47 countries', ['#e76021','#c04c18'], 'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=1200&q=80')}
+          ${photo('p-6-2', 'training', 'Manila, Philippines', 'Instructor-led sessions in a public library', ['#7a9fff','#1f61ff'], 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80')}
         </div>
       </div>
     </section>
@@ -459,13 +459,16 @@ function renderMedia() {
 }
 ── ORPHAN_REMOVED_END ── */
 
-function photo(cls, cat, loc, caption, grad) {
+function photo(cls, cat, loc, caption, grad, img) {
   const bg = `linear-gradient(135deg, ${grad[0]} 0%, ${grad[1]} 100%)`;
   const safeBg = bg.replace(/"/g, '&quot;');
   const safeCap = caption.replace(/"/g, '&quot;');
   const safeLoc = loc.replace(/"/g, '&quot;');
-  return `<div class="photo-tile ${cls}" data-filter-target="photos" data-cat="${cat}" style="background:${bg};" onclick="openPhotoLightbox(this)" tabindex="0" role="button" aria-label="${safeCap} — ${safeLoc}" data-bg="${safeBg}" data-caption="${safeCap}" data-loc="${safeLoc}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPhotoLightbox(this);}">
-    <div class="ph-placeholder"><i class="ph ph-image-square"></i></div>
+  const imgLayer = img
+    ? `<div class="ph-img-bg" style="background-image: url('${img}');"></div>`
+    : `<div class="ph-placeholder"><i class="ph ph-image-square"></i></div>`;
+  return `<div class="photo-tile ${cls}" data-filter-target="photos" data-cat="${cat}" style="background:${bg};" onclick="openPhotoLightbox(this)" tabindex="0" role="button" aria-label="${safeCap} — ${safeLoc}" data-bg="${safeBg}" data-caption="${safeCap}" data-loc="${safeLoc}" data-img="${img||''}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPhotoLightbox(this);}">
+    ${imgLayer}
     <div class="overlay">
       <div class="ph-title">${caption}</div>
       <div class="ph-meta">${loc}</div>
