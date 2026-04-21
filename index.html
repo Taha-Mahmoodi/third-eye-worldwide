@@ -67,10 +67,8 @@ img { max-width: 100%; display: block; }
 /* ── NAV ───────────────────────────────── */
 nav.topnav { position: sticky; top: 0; z-index: 100; background: var(--bg-elevated); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm); transition: background .25s, border-color .25s; }
 .nav-inner { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--space-8); height: 68px; display: flex; align-items: center; justify-content: space-between; gap: var(--space-6); }
-.nav-logo { display: flex; align-items: center; gap: 12px; cursor: pointer; flex-shrink: 0; background: none; border: none; padding: 0; color: inherit; }
-.nav-logo svg { height: 32px; width: auto; }
-.nav-logo .wm { font-family: var(--font-display); font-size: .85rem; font-weight: 700; color: var(--fg); letter-spacing: .01em; line-height: 1.1; text-align: left; }
-.nav-logo .wm .sub { font-weight: 400; opacity: .6; font-size: .72rem; display: block; letter-spacing: .08em; }
+.nav-logo { display: flex; align-items: center; cursor: pointer; flex-shrink: 0; background: none; border: none; padding: 0; color: inherit; }
+.nav-logo img { height: 28px; width: auto; display: block; }
 .nav-links { display: flex; align-items: center; gap: var(--space-6); list-style: none; }
 .nav-links > li { position: relative; }
 .nav-links a, .nav-links button.nav-link-btn { font-family: var(--font-display); font-size: .9rem; font-weight: 500; color: var(--fg-muted); padding: 6px 0; border-bottom: 2px solid transparent; transition: color .15s, border-color .15s; background: none; border-left: none; border-right: none; border-top: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
@@ -578,9 +576,8 @@ footer { background: var(--bg-inverse); color: var(--fg-inverse); padding: 72px 
 [data-theme="dark"] .footer-bottom, [data-theme="high-contrast"] .footer-bottom { border-top-color: var(--border); }
 .footer-bottom p { font-size: .82rem; opacity: .55; }
 [data-theme="dark"] .footer-bottom p, [data-theme="high-contrast"] .footer-bottom p { color: var(--fg-muted); opacity: 1; }
-.footer-logo { display: flex; align-items: center; gap: 12px; }
-.footer-logo svg { height: 34px; }
-.footer-logo span { font-family: var(--font-display); font-weight: 700; font-size: .95rem; letter-spacing: .02em; }
+.footer-logo { display: flex; align-items: center; }
+.footer-logo img { height: 32px; width: auto; display: block; }
 
 /* ── FILTERS (for media/docs) ────── */
 .filter-bar { display: flex; gap: 8px; margin-bottom: 36px; flex-wrap: wrap; align-items: center; }
@@ -1047,8 +1044,7 @@ footer { background: var(--bg-inverse); color: var(--fg-inverse); padding: 72px 
   .text-size-btns { display: none; }
   .nav-controls { gap: var(--space-2); }
   .nav-inner { padding: 0 var(--space-4); gap: var(--space-2); }
-  .nav-logo .wm { font-size: .78rem; }
-  .nav-logo .wm .sub { font-size: .65rem; }
+  .nav-logo img { height: 24px; }
 }
 
 /* 5. Hero impact strip — wrap to 2×2 on narrow screens instead of overflowing */
@@ -1125,14 +1121,7 @@ html, body { overflow-x: hidden; }
 <nav class="topnav" aria-label="Main navigation">
   <div class="nav-inner">
     <button class="nav-logo" onclick="goto('home')" aria-label="Third Eye Worldwide — home">
-      <svg viewBox="0 0 220 257.57" aria-hidden="true">
-        <path id="ni1" d="M212.24,8.45c-5.74-5.63-13.38-8.45-22.94-8.45H0v57.17c13.39-5.17,28.43-8.08,44.32-8.08,32.4,0,61.24,12.06,79.89,30.85,3.56,3.59,3.56,9.32,0,12.9-18.65,18.79-47.49,30.86-79.89,30.86-5.32,0-10.54-.33-15.64-.96-10.14-1.24-19.77-3.69-28.68-7.13v108.45c0,9.77,2.86,17.47,8.6,23.11,5.74,5.63,13.38,8.45,22.94,8.45h189.29v-57.17c-13.4,5.17-28.43,8.08-44.32,8.08-32.4,0-61.25-12.06-79.89-30.85-3.56-3.59-3.56-9.32,0-12.9,18.64-18.79,47.49-30.86,79.89-30.86,5.32,0,10.54.33,15.64.96,10.13,1.24,19.76,3.69,28.68,7.13V31.55c0-9.77-2.86-17.48-8.6-23.11Z"/>
-        <path id="ni2" d="M170.66,143.73c-13.97,0-25.29,11.33-25.29,25.29s11.32,25.29,25.29,25.29,25.29-11.33,25.29-25.29-11.32-25.29-25.29-25.29ZM170.66,185.8c-9.26,0-16.77-7.51-16.77-16.78s7.51-16.78,16.77-16.78,16.78,7.52,16.78,16.78-7.51,16.78-16.78,16.78Z"/>
-        <path id="ni3" d="M170.66,158.6c-5.75,0-10.42,4.67-10.42,10.42s4.67,10.42,10.42,10.42,10.43-4.66,10.43-10.42-4.67-10.42-10.43-10.42Z"/>
-        <path id="ni4" d="M50.18,111.89c13.97,0,25.29-11.33,25.29-25.29s-11.32-25.29-25.29-25.29-25.29,11.33-25.29,25.29,11.32,25.29,25.29,25.29ZM50.18,69.81c9.26,0,16.77,7.51,16.77,16.78s-7.51,16.78-16.77,16.78-16.78-7.52-16.78-16.78,7.51-16.78,16.78-16.78Z"/>
-        <path id="ni5" d="M50.18,97.01c5.75,0,10.42-4.67,10.42-10.42s-4.67-10.42-10.42-10.42-10.43,4.66-10.43,10.42,4.67,10.42,10.43,10.42Z"/>
-      </svg>
-      <span class="wm">THIRD EYE<span class="sub">WORLDWIDE</span></span>
+      <img id="brand-logo" src="assets/logo.svg" alt="Third Eye Worldwide">
     </button>
 
     <ul class="nav-links" id="primary-nav" role="menubar">
@@ -1584,14 +1573,7 @@ html, body { overflow-x: hidden; }
     <div class="footer-top">
       <div class="footer-brand">
         <div class="footer-logo">
-          <svg viewBox="0 0 220 257.57" aria-hidden="true">
-            <path fill="#f6f6fe" d="M212.24,8.45c-5.74-5.63-13.38-8.45-22.94-8.45H0v57.17c13.39-5.17,28.43-8.08,44.32-8.08,32.4,0,61.24,12.06,79.89,30.85,3.56,3.59,3.56,9.32,0,12.9-18.65,18.79-47.49,30.86-79.89,30.86-5.32,0-10.54-.33-15.64-.96-10.14-1.24-19.77-3.69-28.68-7.13v108.45c0,9.77,2.86,17.47,8.6,23.11,5.74,5.63,13.38,8.45,22.94,8.45h189.29v-57.17c-13.4,5.17-28.43,8.08-44.32,8.08-32.4,0-61.25-12.06-79.89-30.85-3.56-3.59-3.56-9.32,0-12.9,18.64-18.79,47.49-30.86,79.89-30.86,5.32,0,10.54.33,15.64.96,10.13,1.24,19.76,3.69,28.68,7.13V31.55c0-9.77-2.86-17.48-8.6-23.11Z"/>
-            <path fill="#4d7eff" d="M170.66,143.73c-13.97,0-25.29,11.33-25.29,25.29s11.32,25.29,25.29,25.29,25.29-11.33,25.29-25.29-11.32-25.29-25.29-25.29ZM170.66,185.8c-9.26,0-16.77-7.51-16.77-16.78s7.51-16.78,16.77-16.78,16.78,7.52,16.78,16.78-7.51,16.78-16.78,16.78Z"/>
-            <path fill="#4d7eff" d="M170.66,158.6c-5.75,0-10.42,4.67-10.42,10.42s4.67,10.42,10.42,10.42,10.43-4.66,10.43-10.42-4.67-10.42-10.43-10.42Z"/>
-            <path fill="#e76021" d="M50.18,111.89c13.97,0,25.29-11.33,25.29-25.29s-11.32-25.29-25.29-25.29-25.29,11.33-25.29,25.29,11.32,25.29,25.29,25.29ZM50.18,69.81c9.26,0,16.77,7.51,16.77,16.78s-7.51,16.78-16.77,16.78-16.78-7.52-16.78-16.78,7.51-16.78,16.78-16.78Z"/>
-            <path fill="#e76021" d="M50.18,97.01c5.75,0,10.42-4.67,10.42-10.42s-4.67-10.42-10.42-10.42-10.43,4.66-10.43,10.42,4.67,10.42,10.43,10.42Z"/>
-          </svg>
-          <span>Third Eye Worldwide</span>
+          <img src="assets/logo-light.svg" alt="Third Eye Worldwide">
         </div>
         <p>Technology that opens new worlds for people with visual impairment. Free, open-source, and built for everyone.</p>
         <div class="footer-social">
@@ -1655,14 +1637,18 @@ html, body { overflow-x: hidden; }
 <script src="pages/story-detail.js"></script>
 
 <script>
-// ── LOGO COLORS ────
+// ── LOGO THEME SWAP ────
+// Nav logo uses the brand-color lockup on light backgrounds and the
+// white-outline variant on dark / high-contrast backgrounds.
 function applyLogoColors() {
   const theme = document.documentElement.getAttribute('data-theme') || 'light';
-  const main = theme === 'light' ? '#0d0407' : theme === 'dark' ? '#f6f6fe' : '#ffffff';
-  const eye  = theme === 'light' ? (getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#e76021') : theme === 'dark' ? '#4d7eff' : '#ffaa5c';
-  const el1 = document.getElementById('ni1'); if(el1) el1.setAttribute('fill', main);
-  ['ni2','ni3'].forEach(id=>{const e=document.getElementById(id); if(e) e.setAttribute('fill', theme === 'light' ? '#1f61ff' : eye);});
-  ['ni4','ni5'].forEach(id=>{const e=document.getElementById(id); if(e) e.setAttribute('fill', eye);});
+  const brandLogo = document.getElementById('brand-logo');
+  if (!brandLogo) return;
+  if (theme === 'dark' || theme === 'high-contrast') {
+    brandLogo.src = 'assets/logo-light.svg';
+  } else {
+    brandLogo.src = 'assets/logo.svg';
+  }
 }
 
 // ── THEME ──────
