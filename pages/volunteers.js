@@ -10,7 +10,7 @@ function renderVolunteers() {
 
   <section class="section">
     <div class="section-inner">
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:72px;">
+      <div class="vol-stat-grid">
         <div class="about-stat"><div class="n">820+</div><div class="l">Active volunteers</div></div>
         <div class="about-stat"><div class="n">62</div><div class="l">Countries</div></div>
         <div class="about-stat"><div class="n">40+</div><div class="l">Languages supported</div></div>
@@ -43,11 +43,11 @@ function renderVolunteers() {
           <div class="section-eyebrow">How It Works</div>
           <h2 style="font-family:var(--font-display);font-size:clamp(1.75rem,2.8vw,2.5rem);font-weight:700;color:var(--fg);margin-bottom:24px;letter-spacing:-.03em;line-height:1.1;">From application to first contribution in under two weeks.</h2>
           <div class="vol-steps">
-            <div class="vol-step"><div></div><div><h4>Apply</h4><p>Fill out a short form. It takes 6 minutes. We read every application within 48 hours.</p></div></div>
-            <div class="vol-step"><div></div><div><h4>Orientation call</h4><p>A 30-minute video or phone call with a program coordinator to match you to the right role.</p></div></div>
-            <div class="vol-step"><div></div><div><h4>Onboarding</h4><p>Self-paced training, plus a live kickoff session with other new volunteers in your region.</p></div></div>
-            <div class="vol-step"><div></div><div><h4>Meet your mentor</h4><p>Every volunteer is paired with an experienced mentor for their first three months.</p></div></div>
-            <div class="vol-step"><div></div><div><h4>Start contributing</h4><p>First task, first translation, first code review — whatever your role, you're shipping in week two.</p></div></div>
+            <div class="vol-step"><div><h4>Apply</h4><p>Fill out a short form. It takes 6 minutes. We read every application within 48 hours.</p></div></div>
+            <div class="vol-step"><div><h4>Orientation call</h4><p>A 30-minute video or phone call with a program coordinator to match you to the right role.</p></div></div>
+            <div class="vol-step"><div><h4>Onboarding</h4><p>Self-paced training, plus a live kickoff session with other new volunteers in your region.</p></div></div>
+            <div class="vol-step"><div><h4>Meet your mentor</h4><p>Every volunteer is paired with an experienced mentor for their first three months.</p></div></div>
+            <div class="vol-step"><div><h4>Start contributing</h4><p>First task, first translation, first code review — whatever your role, you're shipping in week two.</p></div></div>
           </div>
         </div>
         <div class="vol-form">
