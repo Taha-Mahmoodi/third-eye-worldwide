@@ -57,7 +57,7 @@ function renderMedia() {
   <div class="subpage" data-sub="podcasts">
     <section class="section">
       <div class="section-inner">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-bottom:56px;padding:32px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-xl);box-shadow:var(--shadow-md);">
+        <div class="pod-featured">
           <div>
             <div style="font-family:var(--font-display);font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">Featured Podcast</div>
             <h3 style="font-family:var(--font-display);font-size:1.75rem;font-weight:700;color:var(--fg);margin-bottom:12px;letter-spacing:-.025em;line-height:1.15;">The Third Eye</h3>
