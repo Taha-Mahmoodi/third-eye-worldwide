@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEWW CMS — Content Dashboard</title>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<link rel="stylesheet" href="/admin/dashboard.css">
+</head>
+<body>
+
+<!-- ── TOPBAR ────────────────────────────── -->
+<header class="cms-topbar">
+  <div class="cms-brand">
+    <img src="../assets/logo.svg" alt="TEWW" class="cms-logo" id="cms-brand-logo">
+    <div>
+      <div class="cms-brand-title">CMS Dashboard</div>
+      <div class="cms-brand-sub">Third Eye Worldwide — content management</div>
+    </div>
+  </div>
+  <div class="cms-top-actions">
+    <span class="cms-save-status" id="cms-save-status" role="status">
+      <i class="ph ph-cloud-check"></i> All changes saved
+    </span>
+    <button class="cms-btn cms-btn-ghost" id="cms-theme-btn" title="Toggle theme" aria-label="Toggle theme"><i class="ph ph-moon"></i></button>
+    <button class="cms-btn cms-btn-ghost" onclick="CMS.undo()" title="Undo (Ctrl+Z)" aria-label="Undo"><i class="ph ph-arrow-counter-clockwise"></i></button>
+    <button class="cms-btn cms-btn-ghost" onclick="CMS.redo()" title="Redo (Ctrl+Y)" aria-label="Redo"><i class="ph ph-arrow-clockwise"></i></button>
+    <button class="cms-btn cms-btn-ghost" onclick="CMS.importJSON()"><i class="ph ph-upload-simple"></i> Import</button>
+    <button class="cms-btn cms-btn-ghost" onclick="CMS.exportJSON()"><i class="ph ph-download-simple"></i> Export</button>
+    <button class="cms-btn cms-btn-primary" onclick="CMS.publish()"><i class="ph-fill ph-cloud-arrow-up"></i> Publish</button>
+    <a class="cms-btn cms-btn-ghost" href="../index.html" target="_blank" rel="noopener"><i class="ph ph-arrow-square-out"></i> View site</a>
+  </div>
+</header>
+
+<div class="cms-shell">
+
+  <!-- ── SIDEBAR ─────────────────────── -->
+  <aside class="cms-sidebar" aria-label="CMS sections">
+    <div class="cms-section-label">Content</div>
+    <nav class="cms-nav">
+      <button class="cms-nav-btn active" data-section="dashboard"><i class="ph ph-squares-four"></i> Dashboard</button>
+      <button class="cms-nav-btn" data-section="site"><i class="ph ph-gear"></i> Site settings</button>
+      <button class="cms-nav-btn" data-section="home"><i class="ph ph-house"></i> Home page</button>
+      <button class="cms-nav-btn" data-section="programs"><i class="ph ph-stack"></i> Programs <span class="cms-nav-count" id="count-programs">—</span></button>
+      <button class="cms-nav-btn" data-section="blogs"><i class="ph ph-article"></i> Blog posts <span class="cms-nav-count" id="count-blogs">—</span></button>
+      <button class="cms-nav-btn" data-section="stories"><i class="ph ph-book-open"></i> Stories <span class="cms-nav-count" id="count-stories">—</span></button>
+      <button class="cms-nav-btn" data-section="volunteers"><i class="ph ph-hand-heart"></i> Volunteer roles <span class="cms-nav-count" id="count-volunteers">—</span></button>
+      <button class="cms-nav-btn" data-section="faqs"><i class="ph ph-chat-circle-dots"></i> FAQs <span class="cms-nav-count" id="count-faqs">—</span></button>
+      <button class="cms-nav-btn" data-section="team"><i class="ph ph-users-three"></i> Team &amp; board <span class="cms-nav-count" id="count-team">—</span></button>
+      <button class="cms-nav-btn" data-section="photos"><i class="ph ph-image"></i> Photos <span class="cms-nav-count" id="count-photos">—</span></button>
+      <button class="cms-nav-btn" data-section="podcasts"><i class="ph ph-microphone"></i> Podcasts <span class="cms-nav-count" id="count-podcasts">—</span></button>
+      <button class="cms-nav-btn" data-section="videos"><i class="ph ph-play-circle"></i> Videos <span class="cms-nav-count" id="count-videos">—</span></button>
+      <button class="cms-nav-btn" data-section="donate"><i class="ph ph-heart"></i> Donation tiers</button>
+      <button class="cms-nav-btn" data-section="pages"><i class="ph ph-files"></i> Custom pages <span class="cms-nav-count" id="count-pages">—</span></button>
+    </nav>
+
+    <div class="cms-section-label">Tools</div>
+    <nav class="cms-nav">
+      <button class="cms-nav-btn" onclick="CMS.exportJSON()"><i class="ph ph-download-simple"></i> Download JSON</button>
+      <button class="cms-nav-btn" onclick="CMS.importJSON()"><i class="ph ph-upload-simple"></i> Upload JSON</button>
+      <button class="cms-nav-btn" onclick="CMS.reset()"><i class="ph ph-arrow-counter-clockwise"></i> Reset to defaults</button>
+    </nav>
+
+    <div class="cms-sidebar-foot">
+      <div class="cms-build-meta">
+        <div>Version <span id="cms-version">1</span></div>
+        <div>Last edit: <span id="cms-updated">—</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ────────────────────────── -->
+  <main class="cms-main" id="cms-main">
+    <!-- Rendered by dashboard.js -->
+  </main>
+</div>
+
+<!-- ── TOAST ─────────────────────── -->
+<div class="cms-toast" id="cms-toast" role="status" aria-live="polite"></div>
+
+<!-- ── ICON PICKER MODAL ──────────── -->
+<div class="cms-modal" id="cms-icon-picker" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Icon picker">
+  <div class="cms-modal-inner">
+    <div class="cms-modal-head">
+      <h3>Pick an icon</h3>
+      <button class="cms-btn cms-btn-ghost" onclick="CMS.closeIconPicker()" aria-label="Close"><i class="ph ph-x"></i></button>
+    </div>
+    <input type="text" class="cms-input" id="cms-icon-search" placeholder="Search icons… (e.g. speaker, heart, map)">
+    <div class="cms-icon-grid" id="cms-icon-grid"></div>
+  </div>
+</div>
+
+<!-- ── IMPORT FILE INPUT (hidden) ─── -->
+<input type="file" id="cms-import-file" accept="application/json" style="display:none">
+
+<script src="/admin/dashboard.js"></script>
+</body>
+</html>
