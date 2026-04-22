@@ -26,6 +26,16 @@ export async function PUT(req) {
   try { body = await req.json(); } catch { return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 }); }
   if (!body || typeof body !== 'object') return NextResponse.json({ error: 'Expected object' }, { status: 400 });
 
+  // Sanity floor: a valid content document must at minimum describe the site
+  // and include the home page — refuse to silently wipe the DB with an empty
+  // or malformed payload.
+  if (!body.site || !body.home) {
+    return NextResponse.json(
+      { error: 'Refusing to save: payload is missing required top-level sections (site, home).' },
+      { status: 422 }
+    );
+  }
+
   const author = admin.user?.email || admin.user?.name || req.headers.get('x-cms-author') || null;
   const note = req.headers.get('x-cms-note') || null;
   await saveContent(body, { author, note });
