@@ -1,0 +1,270 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-21T00:00:00Z",
+  "site": {
+    "name": "Third Eye Worldwide",
+    "tagline": "Technology that opens new worlds",
+    "title": "Third Eye Worldwide — Technology that opens new worlds"
+  },
+  "home": {
+    "heroEyebrow": "Tech NGO · Est. 2025",
+    "heroTitle": "See the world<br><em>your way.</em>",
+    "liveLabel": "Live · 1,284 users online now",
+    "impactEyebrow": "Our impact, to date",
+    "impactStats": [
+      { "number": "<em>1.2M</em>+", "label": "Users worldwide" },
+      { "number": "47", "label": "Countries reached" },
+      { "number": "18K", "label": "Devices distributed" },
+      { "number": "$0", "label": "Cost of core tools" }
+    ],
+    "statsBand": [
+      { "number": "2.2B", "label": "People with visual impairment globally" },
+      { "number": "90%", "label": "Live in low- and middle-income countries" },
+      { "number": "1 in 3", "label": "Cases are preventable or treatable" },
+      { "number": "$0", "label": "Price we charge for any of our tools" }
+    ],
+    "coreValuesEyebrow": "Core Values",
+    "coreValuesTitle": "Five promises we make <em>every day.</em>",
+    "coreValuesSub": "Every tool we ship, every partnership we sign, and every hire we make is measured against these. They are non-negotiable.",
+    "coreValues": [
+      { "num": "01", "icon": "ph-hand-heart", "variant": "v-brand", "title": "Dignity first", "desc": "Accessibility is not a feature we add at the end — it is the foundation we start from. Every user deserves full, independent access with no compromise.", "meta": "Non-negotiable" },
+      { "num": "02", "icon": "ph-users-three", "variant": "v-accent", "title": "Nothing about us, without us", "desc": "Half of our staff and leadership are visually impaired. No product, policy, or program is designed without the people it serves in the room.", "meta": "50% representation" },
+      { "num": "03", "icon": "ph-code", "variant": "v-ink", "title": "Open by default", "desc": "All our core software is MIT-licensed. Translations are crowd-sourced. Knowledge and access should never be gatekept by cost, language, or geography.", "meta": "MIT licensed · Forever" },
+      { "num": "04", "icon": "ph-globe-hemisphere-east", "variant": "v-brand", "title": "Built for where people live", "desc": "We design for 2G networks, five-year-old smartphones, and the last mile. If it only works in a lab in San Francisco, it doesn't work.", "meta": "Low-bandwidth tested" },
+      { "num": "05", "icon": "ph-scales", "variant": "v-accent", "title": "Radical transparency", "desc": "Every dollar donated is tracked to a program. Every impact number is auditable. Every mistake we make is published — because trust is earned, not claimed.", "meta": "94¢ / $ to programs" }
+    ],
+    "features": [
+      { "icon": "ph-speaker-high", "title": "Screen Reader", "desc": "Real-time audio descriptions and voice navigation for any web or mobile interface — in 40+ languages." },
+      { "icon": "ph-magnifying-glass", "title": "Visual Magnifier", "desc": "Dynamic screen magnification with edge detection and color enhancement for low-vision users." },
+      { "icon": "ph-map-pin", "title": "Navigation Aid", "desc": "Audio-described wayfinding that guides users through cities, transit systems, and indoor spaces." },
+      { "icon": "ph-chalkboard-teacher", "title": "Digital Literacy", "desc": "Training workshops that teach visually impaired individuals to use technology confidently and safely." },
+      { "icon": "ph-hand-heart", "title": "Community Access", "desc": "Local partnerships that distribute devices and data plans to underserved communities in 47 countries." },
+      { "icon": "ph-code", "title": "Open Source", "desc": "All core tools are MIT licensed. Developers worldwide contribute fixes, translations, and features." }
+    ]
+  },
+  "programs": {
+    "heroEyebrow": "Programs",
+    "heroTitle": "Twelve programs. <em>One goal.</em>",
+    "heroSub": "From assistive software to grassroots training, every program is designed for real-world independence. Every tool is free at point of use.",
+    "items": [
+      { "id": "screen-reader", "icon": "ph-speaker-high", "title": "TEWW Screen Reader", "desc": "Our flagship open-source screen reader supports all major platforms and 40+ languages. Designed from the ground up by and for visually impaired users.", "tag": "Software · Free" },
+      { "id": "magnifier", "icon": "ph-magnifying-glass", "title": "Visual Magnifier Pro", "desc": "Adaptive screen magnification with AI-enhanced edge detection, custom contrast modes, and cursor tracking for low-vision users.", "tag": "Software · Free" },
+      { "id": "navigation", "icon": "ph-map-pin", "title": "Navigation Aid", "desc": "GPS and indoor positioning with real-time audio guidance. Partners with public transit systems in 12 cities to provide blind-friendly route data.", "tag": "App · Free" },
+      { "id": "training", "icon": "ph-chalkboard-teacher", "title": "Digital Access Training", "desc": "Hands-on 4-week bootcamp teaching screen reader use, smartphone navigation, and online safety to newly visually impaired adults.", "tag": "Training · Community" },
+      { "id": "devices", "icon": "ph-device-mobile", "title": "Device Lending Library", "desc": "Provides smartphones pre-configured with our tools to users in low-income settings. 18,000+ devices distributed since 2019.", "tag": "Hardware · Subsidised" },
+      { "id": "grants", "icon": "ph-code", "title": "Open Source Grants", "desc": "Annual grants for developers building accessible tools. Funded 63 projects across 28 countries, reaching 400K+ beneficiaries.", "tag": "Grants · Open" },
+      { "id": "audiolib", "icon": "ph-book-open", "title": "Audiolibrary Project", "desc": "A free, human-narrated library of 14,000 educational and cultural texts in 22 languages — free to stream, free to download.", "tag": "Content · Free" },
+      { "id": "scholars", "icon": "ph-graduation-cap", "title": "Access Scholars", "desc": "Full scholarships for visually impaired students pursuing STEM and design degrees. 180 scholars funded since 2018.", "tag": "Education · Funded" },
+      { "id": "workforce", "icon": "ph-briefcase", "title": "Workforce Pathway", "desc": "Employer partnerships that match trained TEWW users to accessibility-mature companies. 1,200+ placements to date.", "tag": "Employment · Program" },
+      { "id": "prevention", "icon": "ph-eye", "title": "Prevention & Screening", "desc": "Mobile clinics deliver vision screenings in rural and underserved areas — 220,000 people screened since 2020.", "tag": "Health · Partnered" },
+      { "id": "civic", "icon": "ph-buildings", "title": "Accessible Civic Tech", "desc": "We partner with city and national governments to make public services — ballots, tax filings, benefits — usable for everyone.", "tag": "Civic · Partnered" },
+      { "id": "translator", "icon": "ph-translate", "title": "TEWW Translator Guild", "desc": "Our volunteer network of 240+ native speakers localises every interface, guide, and audio file we publish.", "tag": "Localisation · Open" }
+    ]
+  },
+  "documents": {
+    "heroEyebrow": "Documents",
+    "heroTitle": "Read <em>deeper.</em>",
+    "heroSub": "Long-form writing from our team and community — research, opinion, and the stories of people our work reaches.",
+    "blogs": [
+      { "id": "b1", "extra": "featured", "heroType": "type-blog", "tagClass": "blog", "tagLabel": "Research", "cat": "research", "title": "What WCAG misses — and how we test for it", "desc": "Our field research methodology, and why audits alone will never be enough to guarantee accessibility in the real world.", "author": "Dr. Rhea Nair", "initials": "DR", "meta": "12 min read · Apr 14" },
+      { "id": "b2", "extra": "", "heroType": "type-tutorial", "tagClass": "tutorial", "tagLabel": "Tutorial", "cat": "tutorials", "title": "A developer's guide to proper ARIA labels", "desc": "The five mistakes we see most often, and the simple fixes that make your app usable.", "author": "Tomás Luján", "initials": "TL", "meta": "6 min · Apr 10" },
+      { "id": "b3", "extra": "", "heroType": "type-policy", "tagClass": "policy", "tagLabel": "Policy", "cat": "policy", "title": "Inside the EU Accessibility Act", "desc": "What the 2025 deadline means for every digital service in Europe.", "author": "Fatima Al-Harbi", "initials": "FA", "meta": "9 min · Apr 3" },
+      { "id": "b4", "extra": "", "heroType": "type-report", "tagClass": "report", "tagLabel": "Research", "cat": "research", "title": "Measuring digital independence", "desc": "A new framework for evaluating assistive-tech impact — developed across four field sites.", "author": "Dr. Rhea Nair", "initials": "DR", "meta": "15 min · Mar 28" },
+      { "id": "b5", "extra": "", "heroType": "type-blog", "tagClass": "blog", "tagLabel": "Engineering", "cat": "engineering", "title": "Shipping an offline-first screen reader", "desc": "Why our latest release works with zero data, and how we got there.", "author": "Priya Sharma", "initials": "PS", "meta": "8 min · Mar 22" },
+      { "id": "b6", "extra": "", "heroType": "type-tutorial", "tagClass": "tutorial", "tagLabel": "Tutorial", "cat": "tutorials", "title": "Configuring Navigation Aid for your city", "desc": "Step-by-step: import transit data, tag stops, deploy to users.", "author": "Juma Kimani", "initials": "JK", "meta": "11 min · Mar 15" },
+      { "id": "b7", "extra": "", "heroType": "type-policy", "tagClass": "policy", "tagLabel": "Policy", "cat": "policy", "title": "Accessible voting — three country study", "desc": "How Brazil, Kenya, and India are each solving the accessible-ballot problem.", "author": "Beatriz Coelho", "initials": "BC", "meta": "14 min · Mar 8" },
+      { "id": "b8", "extra": "", "heroType": "type-blog", "tagClass": "blog", "tagLabel": "Engineering", "cat": "engineering", "title": "Building with variable fonts for low-vision users", "desc": "A technical deep-dive on optical sizing, weight, and contrast.", "author": "Tomás Luján", "initials": "TL", "meta": "7 min · Feb 28" },
+      { "id": "b9", "extra": "", "heroType": "type-report", "tagClass": "report", "tagLabel": "Research", "cat": "research", "title": "The cost of inaccessibility", "desc": "Economic analysis of global productivity loss due to inaccessible digital infrastructure.", "author": "Prof. Ian Wells", "initials": "IW", "meta": "22 min · Feb 14" }
+    ],
+    "stories": [
+      { "id": "s1", "extra": "", "heroType": "type-story", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Kofi builds a software company from his kitchen", "desc": "Born blind. Taught himself to code. Now ships accessibility tools to 200,000 developers.", "author": "Maya Osei", "initials": "MO", "meta": "8 min · Apr 12" },
+      { "id": "s2", "extra": "", "heroType": "type-story2", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Miriam rides solo — the Nairobi matatu system, unassisted", "desc": "How the Navigation Aid integrates with one of the world's most informal transit networks.", "author": "Juma Kimani", "initials": "JK", "meta": "4 min · Apr 5" },
+      { "id": "s3", "extra": "", "heroType": "type-story", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Ten students, one year of code", "desc": "The inaugural class of Access Scholars graduates from Cairo.", "author": "Fatima Al-Harbi", "initials": "FA", "meta": "9 min · Mar 30" },
+      { "id": "s4", "extra": "", "heroType": "type-story2", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Dhaka after the flood", "desc": "How a Device Lending Library helped families rebuild.", "author": "Priya Sharma", "initials": "PS", "meta": "6 min · Mar 22" },
+      { "id": "s5", "extra": "", "heroType": "type-story", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Sebastián's first job interview", "desc": "Low-vision, 22, freshly employed as a junior developer.", "author": "Beatriz Coelho", "initials": "BC", "meta": "5 min · Mar 15" },
+      { "id": "s6", "extra": "", "heroType": "type-story2", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "The translator guild", "desc": "Meet five of the 240 volunteers localising our tools.", "author": "Sofia Ferreira", "initials": "SF", "meta": "10 min · Mar 8" }
+    ],
+    "featuredStory": {
+      "eyebrow": "Featured Story · 12 min read",
+      "pullQuote": "For the first time, the internet feels like mine too.",
+      "title": "Amara Mwangi started her own delivery business this year. She also happens to be blind.",
+      "desc": "A year ago, Amara had never used a smartphone. Today, she runs a food delivery business in Lagos with 40 regular customers. We spent a week with her learning how TEWW's Screen Reader and Navigation Aid fit into her day — and what the tools still need to become.",
+      "author": "Maya Osei",
+      "initials": "MO",
+      "role": "Chief Program Officer · Published Apr 17, 2026"
+    }
+  },
+  "volunteers": {
+    "heroEyebrow": "Volunteer",
+    "heroTitle": "Lend your <em>skills.</em>",
+    "heroSub": "Our work happens because 800+ volunteers around the world give what they can — an hour, an afternoon, a pull request. Here's where to start.",
+    "stats": [
+      { "number": "820+", "label": "Active volunteers" },
+      { "number": "62", "label": "Countries" },
+      { "number": "40+", "label": "Languages supported" },
+      { "number": "1–4", "label": "Hours / week commitment" }
+    ],
+    "roles": [
+      { "id": "translator", "icon": "ph-translate", "title": "Translator", "desc": "Localise our interfaces, docs, and audio scripts into your language.", "tag1": "Language fluency", "tag2": "2–4 hrs/wk" },
+      { "id": "oss", "icon": "ph-code", "title": "Open-source contributor", "desc": "Write and review code for our Screen Reader, Magnifier, and Navigation apps.", "tag1": "JavaScript / Swift / Kotlin", "tag2": "Flexible" },
+      { "id": "narrator", "icon": "ph-microphone", "title": "Audio narrator", "desc": "Record human voice-overs for our Audiolibrary. Every voice counts.", "tag1": "Clear speaking voice", "tag2": "1–3 hrs/wk" },
+      { "id": "facilitator", "icon": "ph-chalkboard-teacher", "title": "Training facilitator", "desc": "Lead our 4-week digital literacy bootcamps, in-person or virtual.", "tag1": "Teaching experience", "tag2": "6–8 hrs/wk" },
+      { "id": "tester", "icon": "ph-magnifying-glass", "title": "Accessibility tester", "desc": "Help test new releases. Guided sessions — no prior testing experience needed.", "tag1": "Screen reader user preferred", "tag2": "1 hr / release" },
+      { "id": "organiser", "icon": "ph-users-three", "title": "Community organiser", "desc": "Build a local TEWW chapter. Host events, workshops, and recruitment.", "tag1": "Leadership / hosting", "tag2": "4–6 hrs/wk" },
+      { "id": "writer", "icon": "ph-pencil-line", "title": "Writer & editor", "desc": "Contribute to our blog, stories, and grant applications.", "tag1": "Strong writing", "tag2": "Flexible" },
+      { "id": "photo", "icon": "ph-camera", "title": "Photographer / videographer", "desc": "Document field work — stories, events, training days. With consent.", "tag1": "Portfolio / camera", "tag2": "Event-based" }
+    ],
+    "steps": [
+      { "title": "Apply", "desc": "Fill out a short form. It takes 6 minutes. We read every application within 48 hours." },
+      { "title": "Orientation call", "desc": "A 30-minute video or phone call with a program coordinator to match you to the right role." },
+      { "title": "Onboarding", "desc": "Self-paced training, plus a live kickoff session with other new volunteers in your region." },
+      { "title": "Meet your mentor", "desc": "Every volunteer is paired with an experienced mentor for their first three months." },
+      { "title": "Start contributing", "desc": "First task, first translation, first code review — whatever your role, you're shipping in week two." }
+    ]
+  },
+  "about": {
+    "heroEyebrow": "About Us",
+    "heroTitle": "The answers, <em>up front.</em>",
+    "heroSub": "Five honest questions about Third Eye Worldwide — who we are, what we do, what we stand for, and why we think you should come build with us.",
+    "faqs": [
+      {
+        "id": "faq1",
+        "num": "01",
+        "question": "Who <em>are</em> we?",
+        "body": "<p><strong>Third Eye Worldwide (TEWW)</strong> is a registered non-profit technology NGO, founded in Mumbai in 2025 by two engineers — one sighted, one blind — who believed the tools available to visually impaired users were decades behind what was possible.</p><p>Today we're a team of 120 full-time staff and 800+ active volunteers, operating across 47 countries from regional offices in Mumbai, Nairobi, São Paulo, Mexico City, Manila, Cairo, Dakar, and Jakarta. Half of our staff and leadership live with visual impairment — nothing is built about us, without us.</p>",
+        "chips": [
+          { "icon": "ph-buildings", "text": "8 regional offices" },
+          { "icon": "ph-users-three", "text": "50% representation", "accent": true },
+          { "icon": "ph-globe-hemisphere-east", "text": "47 countries" }
+        ]
+      },
+      {
+        "id": "faq2",
+        "num": "02",
+        "question": "What do we <em>do?</em>",
+        "body": "<p>We build, distribute, and teach <strong>assistive technology</strong> — all of it free, all of it open source. Our core work falls into four buckets:</p><ul><li><strong>Software.</strong> Screen reader, visual magnifier, navigation aid, and an audio workbench — localised in 41 languages, tuned for 2G networks and five-year-old devices.</li><li><strong>Hardware.</strong> The Device Lending Library has placed 18,000+ pre-configured smartphones with users who can't afford one.</li><li><strong>Training.</strong> Digital literacy workshops for visually impaired individuals and the teachers, parents, and employers around them.</li><li><strong>Research &amp; advocacy.</strong> Field studies, WCAG contributions, and policy work that makes the whole ecosystem better.</li></ul>",
+        "chips": []
+      },
+      {
+        "id": "faq3",
+        "num": "03",
+        "question": "Our <em>mission.</em>",
+        "body": "<p>To give every visually impaired person on earth <strong>full, independent, dignified access</strong> to the digital world — at no cost, in their own language, on whatever device they already own.</p><p>We measure this mission in three ways: the number of people who gain a capability they didn't have yesterday, the share of our tools that remain free and open forever, and the percentage of users who say our software feels like it was built <em>for them</em>, not adapted to them.</p>",
+        "chips": [
+          { "icon": "ph-heart", "text": "1.2M active users" },
+          { "icon": "ph-code", "text": "MIT licensed forever", "accent": true },
+          { "icon": "ph-currency-circle-dollar", "text": "$0 for end users" }
+        ]
+      },
+      {
+        "id": "faq4",
+        "num": "04",
+        "question": "Our <em>values?</em>",
+        "body": "<p>Five non-negotiables. Every hire, product decision, and partnership gets measured against them:</p><ul><li><strong>Dignity first.</strong> Accessibility isn't a feature we bolt on — it's the foundation we start from.</li><li><strong>Nothing about us, without us.</strong> No product, policy, or program is designed without the people it serves in the room.</li><li><strong>Open by default.</strong> MIT-licensed code, crowd-sourced translations, public research.</li><li><strong>Built for where people live.</strong> If it only works in a San Francisco lab, it doesn't work.</li><li><strong>Radical transparency.</strong> Every dollar is traceable, every impact number auditable, every mistake we make is published.</li></ul>",
+        "chips": []
+      },
+      {
+        "id": "faq5",
+        "num": "05",
+        "question": "Why should you <em>join us?</em>",
+        "body": "<p>Because the work is <strong>unambiguous, measurable, and personal</strong>. Every feature you ship, every language you translate, every device you configure ends up in the hands of a real person who gains independence they didn't have before.</p><ul><li><strong>You'll have ownership.</strong> Small teams, big mandates. Engineers ship to production in week one; program leads run regional strategy.</li><li><strong>You'll work with experts by experience.</strong> Half your colleagues navigate the tools we build every day as users.</li><li><strong>Your work stays free.</strong> Everything you build is MIT-licensed forever. No acquisitions, no paywalls, no \"pro tier\" someday.</li><li><strong>You'll get paid fairly.</strong> Transparent salary bands, pegged to local cost of living — benchmarked to the 75th percentile of non-profit tech.</li></ul>",
+        "chips": [
+          { "icon": "ph-briefcase", "text": "120 full-time roles" },
+          { "icon": "ph-hand-heart", "text": "800+ volunteers", "accent": true },
+          { "icon": "ph-house-line", "text": "Remote-first" }
+        ]
+      }
+    ],
+    "missionStats": [
+      { "number": "2025", "label": "Year founded" },
+      { "number": "47", "label": "Countries" },
+      { "number": "120", "label": "Full-time staff" },
+      { "number": "800+", "label": "Active volunteers" },
+      { "number": "1.2M", "label": "Active users" },
+      { "number": "$0", "label": "Cost of core tools" }
+    ],
+    "team": [
+      { "initials": "AR", "bg": "bg-1", "name": "Arjun Rao", "role": "Co-founder & CEO", "bio": "Blind from birth. Built the first TEWW Screen Reader prototype in 2025. Leads global strategy from Mumbai.", "img": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=520&q=80" },
+      { "initials": "PS", "bg": "bg-2", "name": "Priya Sharma", "role": "Co-founder & CTO", "bio": "Engineer and disability-rights advocate. Oversees all product and engineering across the org.", "img": "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=520&q=80" },
+      { "initials": "MO", "bg": "bg-3", "name": "Maya Osei", "role": "Chief Program Officer", "bio": "Runs field operations across 47 countries. Former director of West Africa Inclusion Network.", "img": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=520&q=80" },
+      { "initials": "DN", "bg": "bg-4", "name": "Dr. Rhea Nair", "role": "Head of Research", "bio": "Publishes field research on assistive tech adoption. Leads our accessibility audits and WCAG contributions.", "img": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=520&q=80" },
+      { "initials": "JK", "bg": "bg-5", "name": "Juma Kimani", "role": "Director, East Africa", "bio": "Oversees 11 country teams across East Africa. Based in Nairobi, speaks six languages.", "img": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=520&q=80" },
+      { "initials": "TL", "bg": "bg-6", "name": "Tomás Luján", "role": "VP of Engineering", "bio": "Low-vision from age nine. Leads our 40-person engineering org and open-source stewardship.", "img": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=520&q=80" },
+      { "initials": "SF", "bg": "bg-7", "name": "Sofia Ferreira", "role": "Head of Community", "bio": "Runs our volunteer network of 800+ contributors and the TEWW Translator Guild.", "img": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=520&q=80" },
+      { "initials": "KA", "bg": "bg-8", "name": "Kenji Arata", "role": "Head of Partnerships", "bio": "Former mobile carrier exec. Leads device partnerships and subsidised data programs.", "img": "https://images.unsplash.com/photo-1463453091185-61582044d556?auto=format&fit=crop&w=520&q=80" }
+    ],
+    "board": [
+      { "name": "Lillian Osundu", "title": "Board Chair · Disability Rights Fund" },
+      { "name": "Sanjay Mehta", "title": "Treasurer · Accessibility Works Ltd." },
+      { "name": "Fatima Al-Harbi", "title": "Secretary · UN ESCWA, Inclusive Tech" },
+      { "name": "Prof. Ian Wells", "title": "Director · MIT Media Lab" },
+      { "name": "Beatriz Coelho", "title": "Director · Federação Brasileira de Inclusão" },
+      { "name": "Hamid Reza", "title": "Director · Open Source Initiative" }
+    ]
+  },
+  "media": {
+    "heroEyebrow": "Media",
+    "heroTitle": "From the <em>field.</em>",
+    "heroSub": "Photos, podcasts, and videos from our community — every video captioned, every podcast transcribed, every photo described.",
+    "photos": [
+      { "id": "p1", "cls": "p-6-4", "cat": "field", "loc": "Nairobi, Kenya", "caption": "A matatu driver and a TEWW user test the new Navigation Aid", "grad1": "#1f61ff", "grad2": "#1349d4", "img": "https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=1200&q=80" },
+      { "id": "p2", "cls": "p-3-2", "cat": "training", "loc": "Mumbai, India", "caption": "Week-one cohort introductions", "grad1": "#e76021", "grad2": "#f07a3d", "img": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=900&q=80" },
+      { "id": "p3", "cls": "p-3-2", "cat": "events", "loc": "São Paulo, Brazil", "caption": "Annual community assembly", "grad1": "#0d0407", "grad2": "#4a4a6a", "img": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=900&q=80" },
+      { "id": "p4", "cls": "p-4-2", "cat": "team", "loc": "Accra, Ghana", "caption": "Our West Africa office opens", "grad1": "#1349d4", "grad2": "#4d7eff", "img": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80" },
+      { "id": "p5", "cls": "p-4-2", "cat": "field", "loc": "Dhaka, Bangladesh", "caption": "Device distribution, flood recovery", "grad1": "#c04c18", "grad2": "#e76021", "img": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=900&q=80" },
+      { "id": "p6", "cls": "p-4-4", "cat": "training", "loc": "Cairo, Egypt", "caption": "Code academy graduation day", "grad1": "#eef3ff", "grad2": "#d6e4ff", "img": "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=80" },
+      { "id": "p7", "cls": "p-4-2", "cat": "events", "loc": "Jakarta, Indonesia", "caption": "Advocacy summit 2025", "grad1": "#1f61ff", "grad2": "#4d7eff", "img": "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80" },
+      { "id": "p8", "cls": "p-4-2", "cat": "field", "loc": "La Paz, Bolivia", "caption": "Mountain village screenings", "grad1": "#333350", "grad2": "#0d0407", "img": "https://images.unsplash.com/photo-1497449493050-aad1e7cad165?auto=format&fit=crop&w=900&q=80" },
+      { "id": "p9", "cls": "p-6-2", "cat": "team", "loc": "Virtual", "caption": "All-hands meeting, 120 staff in 47 countries", "grad1": "#e76021", "grad2": "#c04c18", "img": "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=1200&q=80" },
+      { "id": "p10", "cls": "p-6-2", "cat": "training", "loc": "Manila, Philippines", "caption": "Instructor-led sessions in a public library", "grad1": "#7a9fff", "grad2": "#1f61ff", "img": "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80" }
+    ],
+    "podcastShow": {
+      "name": "The Third Eye",
+      "desc": "Weekly conversations with visually impaired builders, designers, educators, and policymakers around the world. Hosted by Maya Osei. 142 episodes. Transcripts for every episode."
+    },
+    "podcasts": [
+      { "id": "ep142", "num": "142", "artV": "", "ep": "Ep 142", "title": "Kofi on building an accessibility company from Accra", "desc": "From Screen Reader user to CTO — a 5-year journey.", "len": "52 min", "date": "Released Apr 18" },
+      { "id": "ep141", "num": "141", "artV": "v2", "ep": "Ep 141", "title": "Why WCAG alone is not enough, with Dr. Rhea Nair", "desc": "Our head of research on field-testing methodology.", "len": "38 min", "date": "Released Apr 11" },
+      { "id": "ep140", "num": "140", "artV": "v3", "ep": "Ep 140", "title": "Navigating Nairobi — Miriam Waithera", "desc": "A matatu ride with the TEWW Navigation Aid.", "len": "44 min", "date": "Released Apr 4" },
+      { "id": "ep139", "num": "139", "artV": "v4", "ep": "Ep 139", "title": "The global braille renaissance", "desc": "With Tomás Luján, VP of Engineering.", "len": "61 min", "date": "Released Mar 28" },
+      { "id": "ep138", "num": "138", "artV": "v5", "ep": "Ep 138", "title": "Inside a Device Lending Library in Dhaka", "desc": "A day of deliveries with field officer Rahim.", "len": "35 min", "date": "Released Mar 21" },
+      { "id": "ep137", "num": "137", "artV": "", "ep": "Ep 137", "title": "Civic tech that works for everyone", "desc": "On accessible ballots in three countries.", "len": "49 min", "date": "Released Mar 14" }
+    ],
+    "videos": [
+      { "id": "v1", "bg": "vid-bg-1", "label": "FEATURE", "dur": "4:12", "title": "A day in the life — Amara, Lagos", "cat": "stories", "desc": "Follow Amara from morning commute to job interview using only TEWW tools.", "date": "Apr 12, 2026", "views": "8.2K views" },
+      { "id": "v2", "bg": "vid-bg-2", "label": "TUTORIAL", "dur": "6:45", "title": "Getting started with Screen Reader", "cat": "tutorials", "desc": "Installation, first-run setup, and the 10 keyboard shortcuts you need first.", "date": "Apr 5, 2026", "views": "14K views" },
+      { "id": "v3", "bg": "vid-bg-3", "label": "STORY", "dur": "3:58", "title": "Kofi: From student to CTO", "cat": "stories", "desc": "Five years. One screen reader. A software company in Accra.", "date": "Mar 28, 2026", "views": "22K views" },
+      { "id": "v4", "bg": "vid-bg-4", "label": "BEHIND", "dur": "5:20", "title": "Inside our Nairobi office", "cat": "behind", "desc": "Meet Juma Kimani and the East Africa team.", "date": "Mar 19, 2026", "views": "5.1K views" },
+      { "id": "v5", "bg": "vid-bg-5", "label": "TUTORIAL", "dur": "8:14", "title": "Visual Magnifier deep-dive", "cat": "tutorials", "desc": "Every setting, every gesture, every use case.", "date": "Mar 12, 2026", "views": "11K views" },
+      { "id": "v6", "bg": "vid-bg-6", "label": "EVENT", "dur": "12:03", "title": "Access Summit 2026 keynote", "cat": "events", "desc": "Arjun Rao on the next decade of assistive technology.", "date": "Feb 28, 2026", "views": "31K views" }
+    ]
+  },
+  "donate": {
+    "heroEyebrow": "Give",
+    "heroTitle": "Your gift <em>opens worlds.</em>",
+    "heroSub": "Every dollar funds free tools, free training, and free devices for visually impaired people worldwide. 94¢ of every dollar goes directly to programs.",
+    "monthlyAmounts": [
+      { "amt": "$10", "imp": "1 user / year" },
+      { "amt": "$25", "imp": "3 users / year", "selected": true },
+      { "amt": "$50", "imp": "1 device funded" },
+      { "amt": "$100", "imp": "1 scholarship / mo" },
+      { "amt": "$250", "imp": "Training cohort" },
+      { "amt": "$500", "imp": "Translator funded" }
+    ],
+    "onceAmounts": [
+      { "amt": "$50", "imp": "1 full training" },
+      { "amt": "$100", "imp": "2 devices funded", "selected": true },
+      { "amt": "$250", "imp": "Full cohort sponsored" },
+      { "amt": "$500", "imp": "Local field trip" },
+      { "amt": "$1,000", "imp": "Grant co-funded" },
+      { "amt": "$5,000", "imp": "Major donor" }
+    ],
+    "impactBreakdown": [
+      { "icon": "ph-speaker-high", "title": "Free tools & software", "desc": "40% · Maintains our screen reader, magnifier, and navigation apps" },
+      { "icon": "ph-chalkboard-teacher", "title": "Training programs", "desc": "28% · Four-week bootcamps and one-on-one sessions" },
+      { "icon": "ph-device-mobile", "title": "Device distribution", "desc": "18% · Pre-configured smartphones for underserved users" },
+      { "icon": "ph-graduation-cap", "title": "Scholarships & grants", "desc": "8% · STEM and design scholarships for blind students" },
+      { "icon": "ph-gear", "title": "Operations", "desc": "6% · Audited annually · 94¢/dollar to programs" }
+    ]
+  }
+}
