@@ -1,19 +1,38 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/cms/db';
 import { isAdmin } from '@/lib/cms/auth-guard';
+import { check, requestIp } from '@/lib/rate-limit';
 
 export const dynamic = 'force-dynamic';
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
 export async function POST(req) {
+  const ip = requestIp(req);
+  const rl = check(`submit:volunteer:${ip}`, { capacity: 20, refillIntervalMs: 15 * 60 * 1000 });
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Too many submissions — please try again later.' },
+      { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } }
+    );
+  }
+
   let body;
   try { body = await req.json(); } catch { return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 }); }
-  if (!body?.name || !body?.email) {
+
+  const name = typeof body?.name === 'string' ? body.name.trim() : '';
+  const email = typeof body?.email === 'string' ? body.email.trim() : '';
+  if (!name || !email) {
     return NextResponse.json({ error: 'name and email required' }, { status: 400 });
   }
+  if (!EMAIL_RE.test(email)) {
+    return NextResponse.json({ error: 'email format looks invalid' }, { status: 400 });
+  }
+
   const row = await prisma.volunteerSubmission.create({
     data: {
-      name: String(body.name).slice(0, 200),
-      email: String(body.email).slice(0, 200),
+      name: name.slice(0, 200),
+      email: email.toLowerCase().slice(0, 200),
       role: body.role ? String(body.role).slice(0, 200) : null,
       skills: body.skills ? String(body.skills).slice(0, 500) : null,
       message: body.message ? String(body.message).slice(0, 2000) : null,
