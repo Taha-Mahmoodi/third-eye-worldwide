@@ -54,12 +54,17 @@ export async function PUT(req) {
   await saveContent(body, { author, note });
 
   // Revalidate fixed routes + any user-defined /[slug] pages +
-  // the sitemap (so SEO crawlers see CMS updates immediately).
+  // each project detail at /projects/<slug> + the sitemap
+  // (so SEO crawlers see CMS updates immediately).
   const slugRoutes = Array.isArray(body.pages)
     ? body.pages.filter((p) => p?.slug && p?.visible !== false).map((p) => '/' + p.slug)
     : [];
+  const projectItems = body?.projects?.items || body?.programs?.items || [];
+  const projectRoutes = Array.isArray(projectItems)
+    ? projectItems.filter((p) => p?.slug && p?.visible !== false).map((p) => '/projects/' + p.slug)
+    : [];
   const seoRoutes = ['/sitemap.xml', '/robots.txt'];
-  for (const path of [...ALL_ROUTES, ...slugRoutes, ...seoRoutes]) {
+  for (const path of [...ALL_ROUTES, ...slugRoutes, ...projectRoutes, ...seoRoutes]) {
     try { revalidatePath(path); } catch {}
   }
 
