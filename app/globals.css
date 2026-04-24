@@ -1200,6 +1200,128 @@ html, body { overflow-x: hidden; }
   .audio-tour-toast { animation: none; }
 }
 
+/* Error pages (404 / 500 / runtime error boundary) */
+.error-page {
+  min-height: calc(100vh - 200px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(40px, 8vw, 120px) clamp(16px, 6vw, 40px);
+}
+.error-page .error-inner {
+  max-width: 640px;
+  text-align: center;
+}
+.error-page .error-code {
+  font-family: var(--font-display);
+  font-size: clamp(5.5rem, 18vw, 10rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.04em;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--accent, var(--brand)) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 12px;
+}
+.error-page .error-code-500 {
+  background: linear-gradient(135deg, #c13a6a 0%, #7b1e50 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.error-page .section-eyebrow { margin-bottom: 10px; }
+.error-page .error-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -.025em;
+  line-height: 1.1;
+  color: var(--fg);
+  margin: 0 0 20px;
+}
+.error-page .error-title em {
+  font-style: italic;
+  color: var(--brand);
+  font-weight: 700;
+}
+.error-page .error-sub {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--fg-muted);
+  max-width: 520px;
+  margin: 0 auto 32px;
+}
+.error-page .error-digest {
+  font-size: .85rem;
+  color: var(--fg-muted);
+  margin: -16px 0 28px;
+}
+.error-page .error-digest code {
+  background: var(--bg-subtle);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: .82rem;
+}
+.error-page .error-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 48px;
+}
+.error-page .error-links {
+  text-align: left;
+  max-width: 440px;
+  margin: 0 auto;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+.error-page .error-links-title {
+  font-family: var(--font-display);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 14px;
+}
+.error-page .error-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+.error-page .error-links a {
+  color: var(--fg);
+  font-size: .95rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+  transition: color .15s, border-color .15s;
+}
+.error-page .error-links a:hover {
+  color: var(--brand);
+  border-bottom-color: var(--brand);
+}
+
+[data-theme="high-contrast"] .error-page .error-code,
+[data-theme="high-contrast"] .error-page .error-code-500 {
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  color: var(--brand);
+}
+
+@media (max-width: 520px) {
+  .error-page .error-actions { flex-direction: column; align-items: stretch; }
+  .error-page .error-actions > * { justify-content: center; }
+}
+
 /* Audio tour mini-player (shown while tour is playing/paused) */
 .audio-tour-player {
   position: fixed;
