@@ -42,7 +42,7 @@ Any Node-compatible host that supports Next.js 14 will work.
 │   ├── globals.css           All design tokens, component styles, responsive rules
 │   ├── page.js               Home route
 │   ├── about/page.js
-│   ├── programs/page.js
+│   ├── projects/page.js
 │   ├── donate/page.js
 │   ├── media/page.js
 │   ├── documents/page.js
@@ -83,12 +83,12 @@ Any Node-compatible host that supports Next.js 14 will work.
 - **Admin dashboard**: `/admin` (served from `public/admin/`). Loads from `GET /api/cms/data`; **Publish** button does `PUT /api/cms/data`. Show/hide an item via its `visible` flag; reorder via `order`.
 
 ### Phases 1, 2 & 3 (done)
-- **All 9 content routes fully CMS-driven**: `/`, `/about`, `/programs`, `/donate`, `/media`, `/documents`, `/volunteers`, `/blog-detail`, `/story-detail`. Every item honours `visible` + `order`.
+- **All 9 content routes fully CMS-driven**: `/`, `/about`, `/projects`, `/donate`, `/media`, `/documents`, `/volunteers`, `/blog-detail`, `/story-detail`. Every item honours `visible` + `order`.
 - CMS dashboard at `/admin` edits every collection; Publish → DB → `revalidatePath()` on all 9 fixed routes + any user-defined `/slug` pages.
 - Form submissions wired: Donate and Volunteer forms POST to `/api/cms/submissions/{donation,volunteer}` and land in the DB for admin review.
 - **Auth (Phase 3)**: NextAuth v4 credentials provider backed by the Prisma `User` table. `/admin/login` signs in, middleware (`middleware.js`) gates every `/admin` route, and `/api/cms/*` writes require a session (legacy `x-cms-token` still accepted for scripted clients via `lib/cms/auth-guard.js`).
 - **Visibility + reorder UI (Phase 3)**: every item in the dashboard has a one-click show/hide button (with a striped "hidden" treatment + badge) and Move-up/Move-down buttons that auto-renumber the `order` field.
-- **Catch-all dynamic pages (Phase 3)**: `app/[slug]/page.js` renders any page in `content.pages[]`. The Custom pages section in the CMS sidebar lets editors add/remove/hide pages with a free-form HTML body — the slug becomes the live URL. Reserved slugs (`about`, `programs`, `api`, `admin`, etc.) are blocked to prevent shadowing fixed routes.
+- **Catch-all dynamic pages (Phase 3)**: `app/[slug]/page.js` renders any page in `content.pages[]`. The Custom pages section in the CMS sidebar lets editors add/remove/hide pages with a free-form HTML body — the slug becomes the live URL. Reserved slugs (`about`, `projects`, `api`, `admin`, etc.) are blocked to prevent shadowing fixed routes.
 
 ### Deferred (future)
 - Full article body editing for `/blog-detail` / `/story-detail` (header metadata is CMS-driven; body copy is still a hardcoded example article — needs rich-text schema + editor).
@@ -98,7 +98,7 @@ Any Node-compatible host that supports Next.js 14 will work.
 ## Features
 - 3 themes (light, dark, high-contrast) with localStorage persistence.
 - 3 text-size settings.
-- 9 routes with sub-nav tabs: Home, About (Mission/Team), Programs, Donate, Media (Photos/Podcasts/Videos), Documents (Blogs/Stories), Volunteers, Blog detail, Story detail.
+- 9 routes with sub-nav tabs: Home, About (Mission/Team), Projects, Donate, Media (Photos/Podcasts/Videos), Documents (Blogs/Stories), Volunteers, Blog detail, Story detail.
 - Phosphor Icons via CDN; hero photography via Unsplash.
 - Skip link, focus rings, ARIA landmarks.
 

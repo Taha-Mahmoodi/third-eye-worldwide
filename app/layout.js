@@ -7,7 +7,7 @@ import AudioTour from '@/components/AudioTour';
 export const metadata = {
   title: 'Third Eye Worldwide — Technology that opens new worlds',
   description:
-    'Third Eye Worldwide builds free, open-source assistive technology for people with visual impairment — screen readers, magnifiers, navigation aids, and community programs in 47 countries.',
+    'Third Eye Worldwide builds free, open-source assistive technology for people with visual impairment — screen readers, magnifiers, navigation aids, and community projects in 47 countries.',
 };
 
 export const viewport = {

@@ -42,10 +42,10 @@
       { "icon": "ph-code", "title": "Open Source", "desc": "All core tools are MIT licensed. Developers worldwide contribute fixes, translations, and features." }
     ]
   },
-  "programs": {
-    "heroEyebrow": "Programs",
-    "heroTitle": "Twelve programs. <em>One goal.</em>",
-    "heroSub": "From assistive software to grassroots training, every program is designed for real-world independence. Every tool is free at point of use.",
+  "projects": {
+    "heroEyebrow": "Projects",
+    "heroTitle": "Twelve projects. <em>One goal.</em>",
+    "heroSub": "From assistive software to grassroots training, every project is designed for real-world independence. Every tool is free at point of use.",
     "items": [
       { "id": "screen-reader", "icon": "ph-speaker-high", "title": "TEWW Screen Reader", "desc": "Our flagship open-source screen reader supports all major platforms and 40+ languages. Designed from the ground up by and for visually impaired users.", "tag": "Software · Free" },
       { "id": "magnifier", "icon": "ph-magnifying-glass", "title": "Visual Magnifier Pro", "desc": "Adaptive screen magnification with AI-enhanced edge detection, custom contrast modes, and cursor tracking for low-vision users.", "tag": "Software · Free" },

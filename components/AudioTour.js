@@ -12,7 +12,7 @@ const AUTO_DELAY_SECONDS = 8;
 const TOUR_TRACKS = {
   '/':             '/audio/tour-home.wav',
   '/about':        '/audio/tour-about.wav',
-  '/programs':     '/audio/tour-programs.wav',
+  '/projects':     '/audio/tour-projects.wav',
   '/donate':       '/audio/tour-donate.wav',
   '/media':        '/audio/tour-media.wav',
   '/documents':    '/audio/tour-documents.wav',
