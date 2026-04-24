@@ -184,14 +184,10 @@
       { "number": "$0", "label": "Cost of core tools" }
     ],
     "team": [
-      { "initials": "AR", "bg": "bg-1", "name": "Arjun Rao", "role": "Co-founder & CEO", "bio": "Blind from birth. Built the first TEWW Screen Reader prototype in 2025. Leads global strategy from Mumbai.", "img": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=520&q=80" },
-      { "initials": "PS", "bg": "bg-2", "name": "Priya Sharma", "role": "Co-founder & CTO", "bio": "Engineer and disability-rights advocate. Oversees all product and engineering across the org.", "img": "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=520&q=80" },
-      { "initials": "MO", "bg": "bg-3", "name": "Maya Osei", "role": "Chief Program Officer", "bio": "Runs field operations across 47 countries. Former director of West Africa Inclusion Network.", "img": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=520&q=80" },
-      { "initials": "DN", "bg": "bg-4", "name": "Dr. Rhea Nair", "role": "Head of Research", "bio": "Publishes field research on assistive tech adoption. Leads our accessibility audits and WCAG contributions.", "img": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=520&q=80" },
-      { "initials": "JK", "bg": "bg-5", "name": "Juma Kimani", "role": "Director, East Africa", "bio": "Oversees 11 country teams across East Africa. Based in Nairobi, speaks six languages.", "img": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=520&q=80" },
-      { "initials": "TL", "bg": "bg-6", "name": "Tomás Luján", "role": "VP of Engineering", "bio": "Low-vision from age nine. Leads our 40-person engineering org and open-source stewardship.", "img": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=520&q=80" },
-      { "initials": "SF", "bg": "bg-7", "name": "Sofia Ferreira", "role": "Head of Community", "bio": "Runs our volunteer network of 800+ contributors and the TEWW Translator Guild.", "img": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=520&q=80" },
-      { "initials": "KA", "bg": "bg-8", "name": "Kenji Arata", "role": "Head of Partnerships", "bio": "Former mobile carrier exec. Leads device partnerships and subsidised data programs.", "img": "https://images.unsplash.com/photo-1463453091185-61582044d556?auto=format&fit=crop&w=520&q=80" }
+      { "initials": "SM", "bg": "bg-1", "name": "Said Mohaddes Sadeqi", "role": "Founder & President", "bio": "Engineer, educator, and humanitarian innovator dedicated to creating an inclusive world through technology and compassion.", "img": "/assets/team/said-mohaddes-sadeqi.jpg" },
+      { "initials": "KL", "bg": "bg-2", "name": "Kenneth Lafond", "role": "Treasurer", "bio": "Computer engineer with 14 years at Intel. Founder of ADEvantage Technology; serves on the Advisory Board.", "img": "/assets/team/kenneth-lafond.jpg" },
+      { "initials": "TD", "bg": "bg-3", "name": "Tom DeMeo", "role": "Secretary", "bio": "Ecologist with a 38-year US Forest Service career. Refugee mentor and volunteer with multiple humanitarian organizations.", "img": "/assets/team/tom-demeo.jpg" },
+      { "initials": "ST", "bg": "bg-4", "name": "Sayed Towfiq Mowafaq", "role": "Technology Advisor", "bio": "Humanitarian and former U.S. military interpreter from Afghanistan. Co-founder focused on expanding opportunities for the blind community.", "img": "/assets/team/sayed-towfiq-mowafaq.jpg" }
     ],
     "board": [
       { "name": "Lillian Osundu", "title": "Board Chair · Disability Rights Fund" },
