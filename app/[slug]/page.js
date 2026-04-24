@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 // Reserved slugs that already resolve to concrete routes; must not be shadowed
 // by a user-defined page slug.
 const RESERVED = new Set([
-  'about', 'programs', 'donate', 'media', 'documents',
+  'about', 'programs', 'projects', 'donate', 'media', 'documents',
   'volunteers', 'blog-detail', 'story-detail', 'admin', 'api',
 ]);
 

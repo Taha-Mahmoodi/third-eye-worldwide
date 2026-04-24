@@ -6,7 +6,7 @@ import { useRouter, usePathname } from 'next/navigation';
 const PAGE_TO_PATH = {
   home: '/',
   about: '/about',
-  programs: '/programs',
+  projects: '/projects',
   donate: '/donate',
   media: '/media',
   documents: '/documents',

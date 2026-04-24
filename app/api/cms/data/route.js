@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 // Revalidation target list — kept in sync with the concrete routes plus
 // a catch-all for any `[slug]` dynamic pages managed from the CMS.
 const ALL_ROUTES = [
-  '/', '/about', '/programs', '/donate', '/media',
+  '/', '/about', '/projects', '/donate', '/media',
   '/documents', '/volunteers', '/blog-detail', '/story-detail',
 ];
 

@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 const NAV_MATCH = {
   home: (p) => p === '/',
   about: (p) => p.startsWith('/about'),
-  programs: (p) => p.startsWith('/programs'),
+  projects: (p) => p.startsWith('/projects'),
   media: (p) => p.startsWith('/media'),
   documents: (p) => p.startsWith('/documents') || p.startsWith('/blog-detail') || p.startsWith('/story-detail'),
   volunteers: (p) => p.startsWith('/volunteers'),
@@ -47,8 +47,8 @@ export default function Nav() {
             </div>
           </li>
           <li>
-            <Link href="/programs" data-nav="programs" className={isActive('programs', pathname) ? 'active' : ''}>
-              Programs
+            <Link href="/projects" data-nav="projects" className={isActive('projects', pathname) ? 'active' : ''}>
+              Projects
             </Link>
           </li>
           <li>

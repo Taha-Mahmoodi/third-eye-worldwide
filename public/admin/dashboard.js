@@ -71,7 +71,7 @@ const CMS = (function () {
       version: 1, updatedAt: new Date().toISOString(),
       site: { name: 'TEWW', tagline: '', title: '' },
       home: { impactStats: [], statsBand: [], coreValues: [], features: [] },
-      programs: { items: [] },
+      projects: { items: [] },
       documents: { blogs: [], stories: [] },
       volunteers: { roles: [], stats: [], steps: [] },
       about: { faqs: [], team: [], board: [], missionStats: [] },
@@ -130,7 +130,7 @@ const CMS = (function () {
   }
   function updateCounts() {
     const map = {
-      programs: state.data.programs?.items?.length,
+      projects: state.data.projects?.items?.length,
       blogs: state.data.documents?.blogs?.length,
       stories: state.data.documents?.stories?.length,
       volunteers: state.data.volunteers?.roles?.length,
@@ -163,12 +163,12 @@ const CMS = (function () {
       dashboard: renderDashboard,
       site: renderSite,
       home: renderHome,
-      programs: () => renderCollection({
-        key: 'programs.items',
-        title: 'Programs',
+      projects: () => renderCollection({
+        key: 'projects.items',
+        title: 'Projects',
         eyebrow: 'Content',
-        sub: 'Each program appears as a card on the Programs page.',
-        newItem: () => ({ id: uid(), icon: 'ph-stack', title: 'New program', desc: '', tag: '' }),
+        sub: 'Each project appears as a card on the Projects page.',
+        newItem: () => ({ id: uid(), icon: 'ph-stack', title: 'New project', desc: '', tag: '' }),
         fields: [
           { k: 'title', label: 'Title', type: 'text', required: true },
           { k: 'icon', label: 'Icon', type: 'icon' },
@@ -318,7 +318,7 @@ const CMS = (function () {
   function renderDashboard() {
     const main = document.getElementById('cms-main');
     const counts = {
-      programs: state.data.programs?.items?.length || 0,
+      projects: state.data.projects?.items?.length || 0,
       blogs: state.data.documents?.blogs?.length || 0,
       stories: state.data.documents?.stories?.length || 0,
       roles: state.data.volunteers?.roles?.length || 0,
@@ -340,7 +340,7 @@ const CMS = (function () {
       </div>
 
       <div class="cms-stat-grid">
-        ${statCard('ph-stack', counts.programs, 'Programs', 'programs')}
+        ${statCard('ph-stack', counts.projects, 'Projects', 'projects')}
         ${statCard('ph-article', counts.blogs, 'Blog posts', 'blogs')}
         ${statCard('ph-book-open', counts.stories, 'Stories', 'stories')}
         ${statCard('ph-hand-heart', counts.roles, 'Volunteer roles', 'volunteers')}
@@ -806,7 +806,7 @@ const CMS = (function () {
     reader.onload = () => {
       try {
         const next = JSON.parse(reader.result);
-        if (!next.site || !next.programs) throw new Error('Missing required sections');
+        if (!next.site || !(next.projects || next.programs)) throw new Error('Missing required sections');
         state.data = next;
         save();
         render();
