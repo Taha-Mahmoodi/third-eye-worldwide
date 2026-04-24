@@ -66,13 +66,14 @@ function MissionTab({ missionStats }) {
               <div className="section-eyebrow" style={{ marginBottom: 14 }}>Our Mission</div>
               <h2 className="about-mission-title">Technology as the third eye.</h2>
               <p className="about-mission-body">
-                We were founded in 2025 on a single belief: that technology should give visually
-                impaired individuals the same digital access as everyone else — no compromise,
-                no watered-down experience.
+                Founded in 2025 on a single belief: that technology should give visually impaired
+                individuals the same digital access as everyone else — no compromise, no
+                watered-down experience.
               </p>
               <p className="about-mission-body">
-                Today, we operate in 47 countries. Our team of 120 staff and 800+ volunteers
-                builds, distributes, and teaches assistive technology to those who need it most.
+                Today we operate in one country, with three full-time staff and six active
+                volunteers, building open-source voice-first tools for blind and low-vision
+                users — led by a founder who lives the problem we build for.
               </p>
               <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', marginTop: 24 }}>
                 <Link href="/volunteers" className="btn-primary">
@@ -129,8 +130,8 @@ function TeamTab({ team, board }) {
             <div className="section-eyebrow">Leadership</div>
             <h2 className="section-title">The people behind TEWW</h2>
             <p className="section-subtitle">
-              Our leadership reflects the community we serve — half of our executive team is
-              visually impaired, and every office is led by someone local to the region.
+              A small, deliberate team. Our founder is visually impaired — every product
+              decision passes through lived experience before it ships.
             </p>
           </div>
 

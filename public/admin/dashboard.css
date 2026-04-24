@@ -452,6 +452,58 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   color: var(--fg-muted);
   margin-top: 2px;
 }
+/* Boolean toggle (used by liveLabelEnabled / impactEnabled, etc.) */
+.cms-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  padding: 4px 0;
+}
+.cms-toggle input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.cms-toggle-track {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--border-strong, #ccc);
+  transition: background .2s;
+}
+.cms-toggle-dot {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,.25);
+  transition: transform .2s;
+}
+.cms-toggle input:checked ~ .cms-toggle-track {
+  background: var(--brand, #d63384);
+}
+.cms-toggle input:checked ~ .cms-toggle-track .cms-toggle-dot {
+  transform: translateX(18px);
+}
+.cms-toggle input:focus-visible ~ .cms-toggle-track {
+  outline: 2px solid color-mix(in oklab, var(--brand) 60%, transparent);
+  outline-offset: 2px;
+}
+.cms-toggle-text {
+  font-family: var(--font-display);
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--fg);
+}
 .cms-input, .cms-textarea, .cms-select {
   width: 100%;
   padding: 10px 14px;

@@ -5,11 +5,11 @@ import JsonLd from '@/components/JsonLd';
 import ImpactCell from '@/components/home/ImpactCell';
 import StatBlock from '@/components/home/StatBlock';
 import ValueCard from '@/components/home/ValueCard';
-import FeatureCard from '@/components/home/FeatureCard';
 import HeroGraphics from '@/components/home/HeroGraphics';
 import HeroActions from '@/components/home/HeroActions';
 import StoryCard from '@/components/cards/StoryCard';
 import TimelineRow from '@/components/cards/TimelineRow';
+import ProjectCard from '@/components/projects/ProjectCard';
 import { pageMetadata, readSeoOverrides, webPageJsonLd } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
@@ -30,12 +30,16 @@ export default async function HomePage() {
   const content = await getContent();
   const h = content?.home || {};
   const docs = content?.documents || {};
+  const projectsSection = content?.projects || content?.programs || {};
   const impactStats = visibleSorted(h.impactStats || []);
   const statsBand   = visibleSorted(h.statsBand   || []);
   const values      = visibleSorted(h.coreValues  || []);
-  const features    = visibleSorted(h.features    || []);
+  const projectItems = visibleSorted(projectsSection.items || []);
   const stories     = visibleSorted(docs.stories  || []);
   const blogs       = visibleSorted(docs.blogs    || []);
+
+  const showLiveLabel = h.liveLabelEnabled !== false && !!h.liveLabel;
+  const showImpact    = h.impactEnabled    !== false && impactStats.length > 0;
 
   const latest = [stories[0], blogs[0], stories[1]].filter(Boolean);
   const timelineStories = stories.slice(0, 5);
@@ -46,12 +50,14 @@ export default async function HomePage() {
       <JsonLd data={webPageJsonLd({ title: h.heroEyebrow ? 'Home' : undefined, path: '/' })} />
       <section className="hero">
         <div className="hero-photo" aria-hidden="true"></div>
-        <HeroGraphics liveLabel={h.liveLabel} />
+        <HeroGraphics liveLabel={showLiveLabel ? h.liveLabel : null} />
         <div className="hero-inner">
           {h.heroEyebrow ? <div className="hero-eyebrow">{h.heroEyebrow}</div> : null}
           <RichText as="h1" className="hero-title" html={h.heroTitle || ''} />
-          {h.impactEyebrow ? <div className="hero-impact-eyebrow">{h.impactEyebrow}</div> : null}
-          {impactStats.length > 0 ? (
+          {showImpact && h.impactEyebrow ? (
+            <div className="hero-impact-eyebrow">{h.impactEyebrow}</div>
+          ) : null}
+          {showImpact ? (
             <div className="hero-impact">
               {impactStats.map((s, i) => <ImpactCell key={s.id || i} stat={s} />)}
             </div>
@@ -87,19 +93,19 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      {features.length > 0 ? (
+      {projectItems.length > 0 ? (
         <section className="section">
           <div className="section-inner">
             <div className="section-heading">
               <div className="section-eyebrow">What We Build</div>
-              <h2 className="section-title">Tools built for every kind of vision</h2>
+              <h2 className="section-title">Voice-first tools, built with our community</h2>
               <p className="section-subtitle">
-                Our assistive technology works across devices, languages, and environments — from
-                smartphones on a village network to desktop workstations.
+                Two active projects — a voice navigator for the web, and a social network for
+                blind and low-vision users. Each starts from voice, not vision.
               </p>
             </div>
-            <div className="feature-grid">
-              {features.map((f, i) => <FeatureCard key={f.id || i} feature={f} />)}
+            <div className="home-projects-grid">
+              {projectItems.map((p) => <ProjectCard key={p.id || p.slug} project={p} />)}
             </div>
           </div>
         </section>

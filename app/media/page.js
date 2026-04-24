@@ -4,6 +4,7 @@ import Subnav from '@/components/site/Subnav';
 import FilterablePhotoGrid from '@/components/media/FilterablePhotoGrid';
 import PodcastFeatured from '@/components/media/PodcastFeatured';
 import PodcastRow from '@/components/media/PodcastRow';
+import PodcastComingSoon from '@/components/media/PodcastComingSoon';
 import FilterableVideoGrid from '@/components/media/FilterableVideoGrid';
 import PhotoLightbox from '@/components/media/PhotoLightbox';
 import { pageMetadata, readSeoOverrides } from '@/lib/seo';
@@ -46,16 +47,22 @@ function PhotosTab({ photos, cats }) {
 }
 
 function PodcastsTab({ show, pods }) {
+  const isComingSoon = (show?.status === 'coming-soon') || pods.length === 0;
+
   return (
     <section className="section">
       <div className="section-inner">
-        <PodcastFeatured show={show} episodeCount={pods.length} />
-        <h3 className="pod-list-heading">Recent episodes</h3>
-        <div className="pod-list">
-          {pods.length > 0
-            ? pods.map((ep) => <PodcastRow key={ep.id || ep.ep} episode={ep} />)
-            : <p style={{ color: 'var(--fg-muted)' }}>No episodes yet.</p>}
-        </div>
+        {isComingSoon ? (
+          <PodcastComingSoon show={show} />
+        ) : (
+          <>
+            <PodcastFeatured show={show} episodeCount={pods.length} />
+            <h3 className="pod-list-heading">Recent episodes</h3>
+            <div className="pod-list">
+              {pods.map((ep) => <PodcastRow key={ep.id || ep.ep} episode={ep} />)}
+            </div>
+          </>
+        )}
       </div>
     </section>
   );
