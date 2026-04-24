@@ -198,10 +198,15 @@ consistent brand focus ring across all interactive elements.
 ## Deployment & DX
 
 ### D1 (P1) — No containerised deploy story
-**Status:** open — dedicated PR planned.
+**Status:** ✅ resolved — PR #28.
 
-The project ships without a `Dockerfile` or `docker-compose.yml`. For
-self-hosted deploys (common for NGOs) this is a real blocker.
+Adds a multi-stage `Dockerfile` producing a ~170 MB Alpine runtime, a
+`docker-compose.yml` with a named volume for the SQLite file, and
+`scripts/docker-entrypoint.sh` that migrates + seeds idempotently on
+first boot. `DEPLOYMENT.md` documents both docker and non-docker paths
+(Vercel / Netlify / bare Node / SystemD template). `next.config.mjs`
+enables `output: 'standalone'` — harmless for PaaS deploys, essential
+for the slim container.
 
 ### D2 (P2) — No CI
 **Status:** open.
