@@ -8,9 +8,11 @@ import { useEffect, useState } from 'react';
  * `{ id, label, content }` tabs. Content can be any React node
  * including server components.
  *
- * Active state initializes from the URL hash (e.g. /about#team) or
- * from localStorage['teww-sub-<page>'] to match the legacy behavior
- * wired up by ClientBootstrap. Clicking a tab updates both.
+ * Active tab initializes from the URL hash (e.g. /about#team) only,
+ * so a fresh visit to /about always lands on the `defaultTab`.
+ * Hash-based persistence is enough for sharing/back-forward; we
+ * deliberately don't restore from localStorage anymore because it led
+ * to confusing returning-visitor state ("I expected Overview, got Team").
  */
 export default function Subnav({ page, tabs, defaultTab, ariaLabel }) {
   const fallbackTab = defaultTab || tabs?.[0]?.id || '';
@@ -19,20 +21,12 @@ export default function Subnav({ page, tabs, defaultTab, ariaLabel }) {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const hash = window.location.hash.slice(1);
-    if (hash && tabs.some((t) => t.id === hash)) {
-      setActive(hash);
-      return;
-    }
-    try {
-      const saved = localStorage.getItem('teww-sub-' + page);
-      if (saved && tabs.some((t) => t.id === saved)) setActive(saved);
-    } catch { /* noop */ }
+    if (hash && tabs.some((t) => t.id === hash)) setActive(hash);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function activate(id) {
     setActive(id);
-    try { localStorage.setItem('teww-sub-' + page, id); } catch {}
     try {
       const url = new URL(window.location.href);
       url.hash = id;

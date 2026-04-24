@@ -7,13 +7,13 @@
     "title": "Third Eye Worldwide — Technology that opens new worlds"
   },
   "seo": {
-    "defaultDescription": "Third Eye Worldwide builds free, open-source assistive technology for people with visual impairment — screen readers, magnifiers, navigation aids, and community projects in 47 countries.",
+    "defaultDescription": "Third Eye Worldwide builds free, open-source voice-first assistive technology for blind and low-vision users — led by a visually impaired founder. A world beyond vision.",
     "defaultImage": "",
     "twitter": "@thirdeyeworldwide",
     "pages": {
       "/": {
         "title": "Third Eye Worldwide — Technology that opens new worlds",
-        "description": "Free, open-source assistive technology for the 2.2 billion people worldwide with visual impairment. Screen readers, magnifiers, and community projects in 47 countries.",
+        "description": "A world beyond vision. Free, open-source voice-first assistive technology for the 2.2 billion people worldwide with visual impairment — led by a visually impaired founder.",
         "image": "",
         "noindex": false
       },
@@ -25,7 +25,7 @@
       },
       "/projects": {
         "title": "Projects — Third Eye Worldwide",
-        "description": "Twelve flagship projects: screen readers, magnifiers, navigation aids, audiolibraries, device lending, and training — all free at point of use.",
+        "description": "Voice-first tools that let blind and low-vision users operate the web and each other's stories — no sighted assumptions. Two projects, one mission.",
         "image": "",
         "noindex": false
       },
@@ -63,9 +63,11 @@
   },
   "home": {
     "heroEyebrow": "Tech NGO · Est. 2025",
-    "heroTitle": "See the world<br><em>your way.</em>",
+    "heroTitle": "A world <em>Beyond Vision.</em>",
     "liveLabel": "Live · 1,284 users online now",
+    "liveLabelEnabled": false,
     "impactEyebrow": "Our impact, to date",
+    "impactEnabled": false,
     "impactStats": [
       { "number": "<em>1.2M</em>+", "label": "Users worldwide" },
       { "number": "47", "label": "Countries reached" },
@@ -73,17 +75,16 @@
       { "number": "$0", "label": "Cost of core tools" }
     ],
     "statsBand": [
-      { "number": "2.2B", "label": "People with visual impairment globally" },
-      { "number": "90%", "label": "Live in low- and middle-income countries" },
-      { "number": "1 in 3", "label": "Cases are preventable or treatable" },
-      { "number": "$0", "label": "Price we charge for any of our tools" }
+      { "id": "global",     "number": "<em>2.2B</em>",  "label": "People with vision impairment globally (WHO)" },
+      { "id": "lmic",       "number": "<em>89%</em>",   "label": "Live in low- and middle-income countries" },
+      { "id": "treatable",  "number": "<em>1B</em>+",   "label": "Cases could be prevented or treated" }
     ],
     "coreValuesEyebrow": "Core Values",
     "coreValuesTitle": "Five promises we make <em>every day.</em>",
     "coreValuesSub": "Every tool we ship, every partnership we sign, and every hire we make is measured against these. They are non-negotiable.",
     "coreValues": [
       { "num": "01", "icon": "ph-hand-heart", "variant": "v-brand", "title": "Dignity first", "desc": "Accessibility is not a feature we add at the end — it is the foundation we start from. Every user deserves full, independent access with no compromise.", "meta": "Non-negotiable" },
-      { "num": "02", "icon": "ph-users-three", "variant": "v-accent", "title": "Nothing about us, without us", "desc": "Half of our staff and leadership are visually impaired. No product, policy, or program is designed without the people it serves in the room.", "meta": "50% representation" },
+      { "num": "02", "icon": "ph-eye-slash", "variant": "v-accent", "title": "Our founder is visually impaired", "desc": "No product decision gets made without lived experience in the room. Our founder lives the problem we build for — and steers every design call accordingly.", "meta": "Founder-led accessibility" },
       { "num": "03", "icon": "ph-code", "variant": "v-ink", "title": "Open by default", "desc": "All our core software is MIT-licensed. Translations are crowd-sourced. Knowledge and access should never be gatekept by cost, language, or geography.", "meta": "MIT licensed · Forever" },
       { "num": "04", "icon": "ph-globe-hemisphere-east", "variant": "v-brand", "title": "Built for where people live", "desc": "We design for 2G networks, five-year-old smartphones, and the last mile. If it only works in a lab in San Francisco, it doesn't work.", "meta": "Low-bandwidth tested" },
       { "num": "05", "icon": "ph-scales", "variant": "v-accent", "title": "Radical transparency", "desc": "Every dollar donated is tracked to a program. Every impact number is auditable. Every mistake we make is published — because trust is earned, not claimed.", "meta": "94¢ / $ to programs" }
@@ -93,7 +94,7 @@
       { "icon": "ph-magnifying-glass", "title": "Visual Magnifier", "desc": "Dynamic screen magnification with edge detection and color enhancement for low-vision users." },
       { "icon": "ph-map-pin", "title": "Navigation Aid", "desc": "Audio-described wayfinding that guides users through cities, transit systems, and indoor spaces." },
       { "icon": "ph-chalkboard-teacher", "title": "Digital Literacy", "desc": "Training workshops that teach visually impaired individuals to use technology confidently and safely." },
-      { "icon": "ph-hand-heart", "title": "Community Access", "desc": "Local partnerships that distribute devices and data plans to underserved communities in 47 countries." },
+      { "icon": "ph-hand-heart", "title": "Community Access", "desc": "Local partnerships that distribute devices and data plans to underserved blind and low-vision communities." },
       { "icon": "ph-code", "title": "Open Source", "desc": "All core tools are MIT licensed. Developers worldwide contribute fixes, translations, and features." }
     ]
   },
@@ -139,32 +140,25 @@
     "heroTitle": "Read <em>deeper.</em>",
     "heroSub": "Long-form writing from our team and community — research, opinion, and the stories of people our work reaches.",
     "blogs": [
-      { "id": "b1", "extra": "featured", "heroType": "type-blog", "tagClass": "blog", "tagLabel": "Research", "cat": "research", "title": "What WCAG misses — and how we test for it", "desc": "Our field research methodology, and why audits alone will never be enough to guarantee accessibility in the real world.", "author": "Dr. Rhea Nair", "initials": "DR", "meta": "12 min read · Apr 14" },
-      { "id": "b2", "extra": "", "heroType": "type-tutorial", "tagClass": "tutorial", "tagLabel": "Tutorial", "cat": "tutorials", "title": "A developer's guide to proper ARIA labels", "desc": "The five mistakes we see most often, and the simple fixes that make your app usable.", "author": "Tomás Luján", "initials": "TL", "meta": "6 min · Apr 10" },
-      { "id": "b3", "extra": "", "heroType": "type-policy", "tagClass": "policy", "tagLabel": "Policy", "cat": "policy", "title": "Inside the EU Accessibility Act", "desc": "What the 2025 deadline means for every digital service in Europe.", "author": "Fatima Al-Harbi", "initials": "FA", "meta": "9 min · Apr 3" },
-      { "id": "b4", "extra": "", "heroType": "type-report", "tagClass": "report", "tagLabel": "Research", "cat": "research", "title": "Measuring digital independence", "desc": "A new framework for evaluating assistive-tech impact — developed across four field sites.", "author": "Dr. Rhea Nair", "initials": "DR", "meta": "15 min · Mar 28" },
-      { "id": "b5", "extra": "", "heroType": "type-blog", "tagClass": "blog", "tagLabel": "Engineering", "cat": "engineering", "title": "Shipping an offline-first screen reader", "desc": "Why our latest release works with zero data, and how we got there.", "author": "Priya Sharma", "initials": "PS", "meta": "8 min · Mar 22" },
-      { "id": "b6", "extra": "", "heroType": "type-tutorial", "tagClass": "tutorial", "tagLabel": "Tutorial", "cat": "tutorials", "title": "Configuring Navigation Aid for your city", "desc": "Step-by-step: import transit data, tag stops, deploy to users.", "author": "Juma Kimani", "initials": "JK", "meta": "11 min · Mar 15" },
-      { "id": "b7", "extra": "", "heroType": "type-policy", "tagClass": "policy", "tagLabel": "Policy", "cat": "policy", "title": "Accessible voting — three country study", "desc": "How Brazil, Kenya, and India are each solving the accessible-ballot problem.", "author": "Beatriz Coelho", "initials": "BC", "meta": "14 min · Mar 8" },
-      { "id": "b8", "extra": "", "heroType": "type-blog", "tagClass": "blog", "tagLabel": "Engineering", "cat": "engineering", "title": "Building with variable fonts for low-vision users", "desc": "A technical deep-dive on optical sizing, weight, and contrast.", "author": "Tomás Luján", "initials": "TL", "meta": "7 min · Feb 28" },
-      { "id": "b9", "extra": "", "heroType": "type-report", "tagClass": "report", "tagLabel": "Research", "cat": "research", "title": "The cost of inaccessibility", "desc": "Economic analysis of global productivity loss due to inaccessible digital infrastructure.", "author": "Prof. Ian Wells", "initials": "IW", "meta": "22 min · Feb 14" }
+      { "id": "b1", "extra": "featured", "heroType": "type-blog", "tagClass": "blog", "tagLabel": "Research", "cat": "research", "title": "Why 'accessibility mode' is the wrong mental model", "desc": "Bolting accessibility onto a product late is how we ended up with second-class experiences. We argue for voice-first as the default — not an afterthought mode.", "author": "Said Mohaddes Sadeqi", "initials": "SM", "meta": "9 min read · Apr 18", "img": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80" },
+      { "id": "b2", "extra": "", "heroType": "type-blog", "tagClass": "blog", "tagLabel": "Engineering", "cat": "engineering", "title": "Building for 2G: performance lessons from the last mile", "desc": "Our first users live on networks where a 200KB page is a meaningful cost. Here's what we changed in the build pipeline — and why it helped sighted users too.", "author": "Said Mohaddes Sadeqi", "initials": "SM", "meta": "7 min · Apr 12", "img": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" },
+      { "id": "b3", "extra": "", "heroType": "type-tutorial", "tagClass": "tutorial", "tagLabel": "Tutorial", "cat": "tutorials", "title": "What Pete Gustin taught us about voice-first interface design", "desc": "A blind longboard surfer can feel terrain his eyes can't report. We learned the same lesson building TE — the richest signals often aren't visual.", "author": "Sayed Towfiq Mowafaq", "initials": "ST", "meta": "6 min · Apr 6", "img": "https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=1200&q=80" },
+      { "id": "b4", "extra": "", "heroType": "type-report", "tagClass": "report", "tagLabel": "Research", "cat": "research", "title": "Field notes from our first three users", "desc": "Hours on real devices with real users who had never touched a screen reader. Patterns we did not expect, and three fixes we shipped the next week.", "author": "Tom DeMeo", "initials": "TD", "meta": "11 min · Mar 30", "img": "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=1200&q=80" }
     ],
     "stories": [
-      { "id": "s1", "extra": "", "heroType": "type-story", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Kofi builds a software company from his kitchen", "desc": "Born blind. Taught himself to code. Now ships accessibility tools to 200,000 developers.", "author": "Maya Osei", "initials": "MO", "meta": "8 min · Apr 12" },
-      { "id": "s2", "extra": "", "heroType": "type-story2", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Miriam rides solo — the Nairobi matatu system, unassisted", "desc": "How the Navigation Aid integrates with one of the world's most informal transit networks.", "author": "Juma Kimani", "initials": "JK", "meta": "4 min · Apr 5" },
-      { "id": "s3", "extra": "", "heroType": "type-story", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Ten students, one year of code", "desc": "The inaugural class of Access Scholars graduates from Cairo.", "author": "Fatima Al-Harbi", "initials": "FA", "meta": "9 min · Mar 30" },
-      { "id": "s4", "extra": "", "heroType": "type-story2", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Dhaka after the flood", "desc": "How a Device Lending Library helped families rebuild.", "author": "Priya Sharma", "initials": "PS", "meta": "6 min · Mar 22" },
-      { "id": "s5", "extra": "", "heroType": "type-story", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Sebastián's first job interview", "desc": "Low-vision, 22, freshly employed as a junior developer.", "author": "Beatriz Coelho", "initials": "BC", "meta": "5 min · Mar 15" },
-      { "id": "s6", "extra": "", "heroType": "type-story2", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "The translator guild", "desc": "Meet five of the 240 volunteers localising our tools.", "author": "Sofia Ferreira", "initials": "SF", "meta": "10 min · Mar 8" }
+      { "id": "s1", "extra": "featured", "heroType": "type-story", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Pete Gustin and the feel of a wave", "desc": "A longboard surfer who has been blind for most of his career reads waves with his feet, ears, and a spotter in the channel. His craft is a working demo of what 'voice-first' and 'feel-first' can be.", "author": "TEWW Editorial", "initials": "TE", "meta": "5 min · Apr 20", "img": "https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=1200&q=80" },
+      { "id": "s2", "extra": "", "heroType": "type-story2", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Haben Girma — lawyer, author, first deafblind Harvard Law graduate", "desc": "Haben's career is a reminder that the 'access' in accessibility is a practice, not a compliance checkbox. She changed the courts. She is still changing the internet.", "author": "TEWW Editorial", "initials": "TE", "meta": "6 min · Apr 15", "img": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1200&q=80" },
+      { "id": "s3", "extra": "", "heroType": "type-story", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Erik Weihenmayer's Everest — and the quiet engineering behind it", "desc": "The first blind climber to summit Everest did it with a team, a rope, and a patiently-built toolkit of haptic and verbal cues. Good assistive tech is the same discipline at smaller scale.", "author": "TEWW Editorial", "initials": "TE", "meta": "7 min · Apr 9", "img": "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80" },
+      { "id": "s4", "extra": "", "heroType": "type-story2", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Christine Ha cooks without sight — and teaches why that matters", "desc": "The MasterChef winner runs a restaurant kitchen by smell, sound, timing, and muscle memory. Every visit is a case study in adaptive design, translated into the web.", "author": "TEWW Editorial", "initials": "TE", "meta": "5 min · Mar 30", "img": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80" }
     ],
     "featuredStory": {
-      "eyebrow": "Featured Story · 12 min read",
-      "pullQuote": "For the first time, the internet feels like mine too.",
-      "title": "Amara Mwangi started her own delivery business this year. She also happens to be blind.",
-      "desc": "A year ago, Amara had never used a smartphone. Today, she runs a food delivery business in Lagos with 40 regular customers. We spent a week with her learning how TEWW's Screen Reader and Navigation Aid fit into her day — and what the tools still need to become.",
-      "author": "Maya Osei",
-      "initials": "MO",
-      "role": "Chief Program Officer · Published Apr 17, 2026"
+      "eyebrow": "Featured Story · 5 min read",
+      "pullQuote": "I don't miss the wave. I feel it coming.",
+      "title": "Pete Gustin and the feel of a wave",
+      "desc": "Pete Gustin has been a professional longboard surfer for most of his adult life — and blind for most of that. His craft is built on touch, sound, timing, and a trusted spotter. We follow his line to understand why voice-first tools we build for the web borrow the same principle: the richest signals often aren't visual.",
+      "author": "TEWW Editorial",
+      "initials": "TE",
+      "role": "Published Apr 20, 2026"
     }
   },
   "volunteers": {
@@ -204,27 +198,26 @@
         "id": "faq1",
         "num": "01",
         "question": "Who <em>are</em> we?",
-        "body": "<p><strong>Third Eye Worldwide (TEWW)</strong> is a registered non-profit technology NGO, founded in Mumbai in 2025 by two engineers — one sighted, one blind — who believed the tools available to visually impaired users were decades behind what was possible.</p><p>Today we're a team of 120 full-time staff and 800+ active volunteers, operating across 47 countries from regional offices in Mumbai, Nairobi, São Paulo, Mexico City, Manila, Cairo, Dakar, and Jakarta. Half of our staff and leadership live with visual impairment — nothing is built about us, without us.</p>",
+        "body": "<p><strong>Third Eye Worldwide (TEWW)</strong> is a registered non-profit technology NGO, founded in 2025 by a visually impaired engineer who believed the tools available to blind and low-vision users were decades behind what was possible.</p><p>Today we're a small team — three full-time staff and six active volunteers — building voice-first, open-source tools for the blind and low-vision community. Our founder lives the problem we build for: no product decision ships without lived experience in the room.</p>",
         "chips": [
-          { "icon": "ph-buildings", "text": "8 regional offices" },
-          { "icon": "ph-users-three", "text": "50% representation", "accent": true },
-          { "icon": "ph-globe-hemisphere-east", "text": "47 countries" }
+          { "icon": "ph-eye-slash", "text": "Founder-led accessibility", "accent": true },
+          { "icon": "ph-users-three", "text": "3 staff · 6 volunteers" },
+          { "icon": "ph-code", "text": "Open source" }
         ]
       },
       {
         "id": "faq2",
         "num": "02",
         "question": "What do we <em>do?</em>",
-        "body": "<p>We build, distribute, and teach <strong>assistive technology</strong> — all of it free, all of it open source. Our core work falls into four buckets:</p><ul><li><strong>Software.</strong> Screen reader, visual magnifier, navigation aid, and an audio workbench — localised in 41 languages, tuned for 2G networks and five-year-old devices.</li><li><strong>Hardware.</strong> The Device Lending Library has placed 18,000+ pre-configured smartphones with users who can't afford one.</li><li><strong>Training.</strong> Digital literacy workshops for visually impaired individuals and the teachers, parents, and employers around them.</li><li><strong>Research &amp; advocacy.</strong> Field studies, WCAG contributions, and policy work that makes the whole ecosystem better.</li></ul>",
+        "body": "<p>We build <strong>voice-first, open-source assistive tools</strong> — free at point of use. Today we have two active projects:</p><ul><li><strong>TE — AI Voice Navigator.</strong> A voice assistant built into our website. Say \"Hey TE\" and go anywhere on the site, read the page aloud, switch themes, or control the audio tour — no mouse, no keyboard.</li><li><strong>Third Eye World.</strong> A voice-first social network for blind and low-vision users — every post is a voice memo, every action is a voice command. In build; public beta coming soon.</li></ul><p>Everything we ship is MIT-licensed forever, designed for the lowest-bandwidth conditions, and shaped by users who live with visual impairment.</p>",
         "chips": []
       },
       {
         "id": "faq3",
         "num": "03",
         "question": "Our <em>mission.</em>",
-        "body": "<p>To give every visually impaired person on earth <strong>full, independent, dignified access</strong> to the digital world — at no cost, in their own language, on whatever device they already own.</p><p>We measure this mission in three ways: the number of people who gain a capability they didn't have yesterday, the share of our tools that remain free and open forever, and the percentage of users who say our software feels like it was built <em>for them</em>, not adapted to them.</p>",
+        "body": "<p>To give every blind and low-vision person on earth <strong>full, independent, dignified access</strong> to the digital world — at no cost, on whatever device they already own.</p><p>We measure the mission in three ways: the number of people who gain a capability they didn't have yesterday, the share of our tools that stay free and open forever, and the percentage of users who say our software feels like it was built <em>for them</em> — not adapted to them.</p>",
         "chips": [
-          { "icon": "ph-heart", "text": "1.2M active users" },
           { "icon": "ph-code", "text": "MIT licensed forever", "accent": true },
           { "icon": "ph-currency-circle-dollar", "text": "$0 for end users" }
         ]
@@ -240,21 +233,21 @@
         "id": "faq5",
         "num": "05",
         "question": "Why should you <em>join us?</em>",
-        "body": "<p>Because the work is <strong>unambiguous, measurable, and personal</strong>. Every feature you ship, every language you translate, every device you configure ends up in the hands of a real person who gains independence they didn't have before.</p><ul><li><strong>You'll have ownership.</strong> Small teams, big mandates. Engineers ship to production in week one; program leads run regional strategy.</li><li><strong>You'll work with experts by experience.</strong> Half your colleagues navigate the tools we build every day as users.</li><li><strong>Your work stays free.</strong> Everything you build is MIT-licensed forever. No acquisitions, no paywalls, no \"pro tier\" someday.</li><li><strong>You'll get paid fairly.</strong> Transparent salary bands, pegged to local cost of living — benchmarked to the 75th percentile of non-profit tech.</li></ul>",
+        "body": "<p>Because the work is <strong>unambiguous, measurable, and personal</strong>. Every feature you ship, every language you translate, every voice command you tune lands in the hands of a real person who gains independence they didn't have before.</p><ul><li><strong>You'll have ownership.</strong> Tiny team, real mandates. We're three full-time staff and six volunteers; new contributors ship to production in their first week.</li><li><strong>Founder-led accessibility.</strong> Our founder is visually impaired — every product decision is weighed against lived experience before it ships.</li><li><strong>Your work stays free.</strong> Everything you build is MIT-licensed forever. No acquisitions, no paywalls, no \"pro tier\" someday.</li><li><strong>Voice-first, by design.</strong> We're building tools where blind users are the default users, not an accommodation.</li></ul>",
         "chips": [
-          { "icon": "ph-briefcase", "text": "120 full-time roles" },
-          { "icon": "ph-hand-heart", "text": "800+ volunteers", "accent": true },
+          { "icon": "ph-briefcase", "text": "3 full-time roles" },
+          { "icon": "ph-hand-heart", "text": "6 volunteers", "accent": true },
           { "icon": "ph-house-line", "text": "Remote-first" }
         ]
       }
     ],
     "missionStats": [
-      { "number": "2025", "label": "Year founded" },
-      { "number": "47", "label": "Countries" },
-      { "number": "120", "label": "Full-time staff" },
-      { "number": "800+", "label": "Active volunteers" },
-      { "number": "1.2M", "label": "Active users" },
-      { "number": "$0", "label": "Cost of core tools" }
+      { "id": "founded",    "number": "2025", "label": "Year founded" },
+      { "id": "countries",  "number": "1",    "label": "Country we operate in" },
+      { "id": "staff",      "number": "3",    "label": "Full-time staff" },
+      { "id": "volunteers", "number": "6",    "label": "Active volunteers" },
+      { "id": "activeusers","number": "1.2M", "label": "Active users", "visible": false },
+      { "id": "cost",       "number": "$0",   "label": "Cost of core tools", "visible": false }
     ],
     "team": [
       { "initials": "SM", "bg": "bg-1", "name": "Said Mohaddes Sadeqi", "role": "Founder & President", "bio": "Engineer, educator, and humanitarian innovator dedicated to creating an inclusive world through technology and compassion.", "img": "/assets/team/said-mohaddes-sadeqi.jpg" },
@@ -263,12 +256,12 @@
       { "initials": "ST", "bg": "bg-4", "name": "Sayed Towfiq Mowafaq", "role": "Technology Advisor", "bio": "Humanitarian and former U.S. military interpreter from Afghanistan. Co-founder focused on expanding opportunities for the blind community.", "img": "/assets/team/sayed-towfiq-mowafaq.jpg" }
     ],
     "board": [
-      { "name": "Lillian Osundu", "title": "Board Chair · Disability Rights Fund" },
-      { "name": "Sanjay Mehta", "title": "Treasurer · Accessibility Works Ltd." },
-      { "name": "Fatima Al-Harbi", "title": "Secretary · UN ESCWA, Inclusive Tech" },
-      { "name": "Prof. Ian Wells", "title": "Director · MIT Media Lab" },
-      { "name": "Beatriz Coelho", "title": "Director · Federação Brasileira de Inclusão" },
-      { "name": "Hamid Reza", "title": "Director · Open Source Initiative" }
+      { "name": "Lillian Osundu",   "title": "Board Chair · Disability Rights Fund",          "visible": false },
+      { "name": "Sanjay Mehta",     "title": "Treasurer · Accessibility Works Ltd.",           "visible": false },
+      { "name": "Fatima Al-Harbi",  "title": "Secretary · UN ESCWA, Inclusive Tech",           "visible": false },
+      { "name": "Prof. Ian Wells",  "title": "Director · MIT Media Lab",                       "visible": false },
+      { "name": "Beatriz Coelho",   "title": "Director · Federação Brasileira de Inclusão",    "visible": false },
+      { "name": "Hamid Reza",       "title": "Director · Open Source Initiative",              "visible": false }
     ]
   },
   "media": {
@@ -276,36 +269,30 @@
     "heroTitle": "From the <em>field.</em>",
     "heroSub": "Photos, podcasts, and videos from our community — every video captioned, every podcast transcribed, every photo described.",
     "photos": [
-      { "id": "p1", "cls": "p-6-4", "cat": "field", "loc": "Nairobi, Kenya", "caption": "A matatu driver and a TEWW user test the new Navigation Aid", "grad1": "#1f61ff", "grad2": "#1349d4", "img": "https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=1200&q=80" },
-      { "id": "p2", "cls": "p-3-2", "cat": "training", "loc": "Mumbai, India", "caption": "Week-one cohort introductions", "grad1": "#e76021", "grad2": "#f07a3d", "img": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=900&q=80" },
-      { "id": "p3", "cls": "p-3-2", "cat": "events", "loc": "São Paulo, Brazil", "caption": "Annual community assembly", "grad1": "#0d0407", "grad2": "#4a4a6a", "img": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=900&q=80" },
-      { "id": "p4", "cls": "p-4-2", "cat": "team", "loc": "Accra, Ghana", "caption": "Our West Africa office opens", "grad1": "#1349d4", "grad2": "#4d7eff", "img": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80" },
-      { "id": "p5", "cls": "p-4-2", "cat": "field", "loc": "Dhaka, Bangladesh", "caption": "Device distribution, flood recovery", "grad1": "#c04c18", "grad2": "#e76021", "img": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=900&q=80" },
-      { "id": "p6", "cls": "p-4-4", "cat": "training", "loc": "Cairo, Egypt", "caption": "Code academy graduation day", "grad1": "#eef3ff", "grad2": "#d6e4ff", "img": "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=80" },
-      { "id": "p7", "cls": "p-4-2", "cat": "events", "loc": "Jakarta, Indonesia", "caption": "Advocacy summit 2025", "grad1": "#1f61ff", "grad2": "#4d7eff", "img": "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80" },
-      { "id": "p8", "cls": "p-4-2", "cat": "field", "loc": "La Paz, Bolivia", "caption": "Mountain village screenings", "grad1": "#333350", "grad2": "#0d0407", "img": "https://images.unsplash.com/photo-1497449493050-aad1e7cad165?auto=format&fit=crop&w=900&q=80" },
-      { "id": "p9", "cls": "p-6-2", "cat": "team", "loc": "Virtual", "caption": "All-hands meeting, 120 staff in 47 countries", "grad1": "#e76021", "grad2": "#c04c18", "img": "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=1200&q=80" },
-      { "id": "p10", "cls": "p-6-2", "cat": "training", "loc": "Manila, Philippines", "caption": "Instructor-led sessions in a public library", "grad1": "#7a9fff", "grad2": "#1f61ff", "img": "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80" }
+      { "id": "p1",  "cls": "p-6-4", "cat": "sports",    "loc": "Oceanside, USA",      "caption": "A blind longboarder reads the set by sound and balance",   "grad1": "#1f61ff", "grad2": "#1349d4", "img": "https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=1400&q=80" },
+      { "id": "p2",  "cls": "p-3-2", "cat": "daily",     "loc": "Tokyo, Japan",        "caption": "Morning commute with a cane — learned routes, felt edges",  "grad1": "#e76021", "grad2": "#f07a3d", "img": "https://images.unsplash.com/photo-1519677584237-752f8853252e?auto=format&fit=crop&w=1000&q=80" },
+      { "id": "p3",  "cls": "p-3-2", "cat": "music",     "loc": "New Orleans, USA",    "caption": "A blind pianist mid-phrase — no sheet in sight",            "grad1": "#0d0407", "grad2": "#4a4a6a", "img": "https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=1000&q=80" },
+      { "id": "p4",  "cls": "p-4-2", "cat": "daily",     "loc": "London, UK",          "caption": "Reading braille on the tube at rush hour",                  "grad1": "#1349d4", "grad2": "#4d7eff", "img": "https://images.unsplash.com/photo-1543165365-3bee94e3e4bf?auto=format&fit=crop&w=1000&q=80" },
+      { "id": "p5",  "cls": "p-4-2", "cat": "sports",    "loc": "Chamonix, France",    "caption": "Tandem mountain biking — verbal cues, trust, velocity",     "grad1": "#c04c18", "grad2": "#e76021", "img": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1000&q=80" },
+      { "id": "p6",  "cls": "p-4-4", "cat": "work",      "loc": "Berlin, Germany",     "caption": "A blind engineer pair-coding with a screen reader",         "grad1": "#0d0407", "grad2": "#333350", "img": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1000&q=80" },
+      { "id": "p7",  "cls": "p-4-2", "cat": "everyday",  "loc": "Dakar, Senegal",      "caption": "Laughing across a table — a family dinner, no spotlight",   "grad1": "#1f61ff", "grad2": "#4d7eff", "img": "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=1000&q=80" },
+      { "id": "p8",  "cls": "p-4-2", "cat": "sports",    "loc": "Kilimanjaro, Tanzania","caption": "A blind climber's summit selfie — taken by a friend",       "grad1": "#333350", "grad2": "#0d0407", "img": "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80" },
+      { "id": "p9",  "cls": "p-6-2", "cat": "work",      "loc": "Manila, Philippines", "caption": "Teaching a class the first hotkeys — the room is all ears",  "grad1": "#e76021", "grad2": "#c04c18", "img": "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1400&q=80" },
+      { "id": "p10", "cls": "p-6-2", "cat": "everyday",  "loc": "Lisbon, Portugal",    "caption": "A guide dog at a café window, patient, pretending to nap",   "grad1": "#7a9fff", "grad2": "#1f61ff", "img": "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1400&q=80" }
     ],
     "podcastShow": {
-      "name": "The Third Eye",
-      "desc": "Weekly conversations with visually impaired builders, designers, educators, and policymakers around the world. Hosted by Maya Osei. 142 episodes. Transcripts for every episode."
+      "name": "The Third Eye Podcast",
+      "desc": "Coming soon — conversations with blind and low-vision builders, athletes, teachers, and storytellers, in their own voices.",
+      "status": "coming-soon",
+      "guestCopy": "Want to share your story on our first season? Record a 60-second pitch, or email us.",
+      "guestEmail": "guest@teww.org"
     },
-    "podcasts": [
-      { "id": "ep142", "num": "142", "artV": "", "ep": "Ep 142", "title": "Kofi on building an accessibility company from Accra", "desc": "From Screen Reader user to CTO — a 5-year journey.", "len": "52 min", "date": "Released Apr 18" },
-      { "id": "ep141", "num": "141", "artV": "v2", "ep": "Ep 141", "title": "Why WCAG alone is not enough, with Dr. Rhea Nair", "desc": "Our head of research on field-testing methodology.", "len": "38 min", "date": "Released Apr 11" },
-      { "id": "ep140", "num": "140", "artV": "v3", "ep": "Ep 140", "title": "Navigating Nairobi — Miriam Waithera", "desc": "A matatu ride with the TEWW Navigation Aid.", "len": "44 min", "date": "Released Apr 4" },
-      { "id": "ep139", "num": "139", "artV": "v4", "ep": "Ep 139", "title": "The global braille renaissance", "desc": "With Tomás Luján, VP of Engineering.", "len": "61 min", "date": "Released Mar 28" },
-      { "id": "ep138", "num": "138", "artV": "v5", "ep": "Ep 138", "title": "Inside a Device Lending Library in Dhaka", "desc": "A day of deliveries with field officer Rahim.", "len": "35 min", "date": "Released Mar 21" },
-      { "id": "ep137", "num": "137", "artV": "", "ep": "Ep 137", "title": "Civic tech that works for everyone", "desc": "On accessible ballots in three countries.", "len": "49 min", "date": "Released Mar 14" }
-    ],
+    "podcasts": [],
     "videos": [
-      { "id": "v1", "bg": "vid-bg-1", "label": "FEATURE", "dur": "4:12", "title": "A day in the life — Amara, Lagos", "cat": "stories", "desc": "Follow Amara from morning commute to job interview using only TEWW tools.", "date": "Apr 12, 2026", "views": "8.2K views" },
-      { "id": "v2", "bg": "vid-bg-2", "label": "TUTORIAL", "dur": "6:45", "title": "Getting started with Screen Reader", "cat": "tutorials", "desc": "Installation, first-run setup, and the 10 keyboard shortcuts you need first.", "date": "Apr 5, 2026", "views": "14K views" },
-      { "id": "v3", "bg": "vid-bg-3", "label": "STORY", "dur": "3:58", "title": "Kofi: From student to CTO", "cat": "stories", "desc": "Five years. One screen reader. A software company in Accra.", "date": "Mar 28, 2026", "views": "22K views" },
-      { "id": "v4", "bg": "vid-bg-4", "label": "BEHIND", "dur": "5:20", "title": "Inside our Nairobi office", "cat": "behind", "desc": "Meet Juma Kimani and the East Africa team.", "date": "Mar 19, 2026", "views": "5.1K views" },
-      { "id": "v5", "bg": "vid-bg-5", "label": "TUTORIAL", "dur": "8:14", "title": "Visual Magnifier deep-dive", "cat": "tutorials", "desc": "Every setting, every gesture, every use case.", "date": "Mar 12, 2026", "views": "11K views" },
-      { "id": "v6", "bg": "vid-bg-6", "label": "EVENT", "dur": "12:03", "title": "Access Summit 2026 keynote", "cat": "events", "desc": "Arjun Rao on the next decade of assistive technology.", "date": "Feb 28, 2026", "views": "31K views" }
+      { "id": "v1", "bg": "vid-bg-1", "label": "FEATURE",  "dur": "",      "title": "Meet the TE voice assistant",     "cat": "product",   "desc": "A 60-second tour of our in-house voice navigator.",       "date": "",  "views": "", "youtubeId": "" },
+      { "id": "v2", "bg": "vid-bg-2", "label": "STORY",    "dur": "",      "title": "Pete Gustin: surfing blind",       "cat": "stories",   "desc": "A short cut from the blind longboarder's film reel.",     "date": "",  "views": "", "youtubeId": "" },
+      { "id": "v3", "bg": "vid-bg-3", "label": "TALK",     "dur": "",      "title": "Designing with the blind in mind", "cat": "talks",     "desc": "A canonical TEDx talk on inclusive design.",              "date": "",  "views": "", "youtubeId": "" },
+      { "id": "v4", "bg": "vid-bg-4", "label": "TUTORIAL", "dur": "",      "title": "Enable TE on the TEWW site",       "cat": "tutorials", "desc": "Grant mic, say 'Hey TE', and go anywhere on the site.",   "date": "",  "views": "", "youtubeId": "" }
     ]
   },
   "donate": {

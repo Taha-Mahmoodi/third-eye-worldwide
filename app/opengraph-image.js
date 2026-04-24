@@ -91,7 +91,7 @@ export default function OpengraphImage() {
             paddingTop: 24,
           }}
         >
-          <div>47 countries · 1.2M+ users · MIT-licensed forever</div>
+          <div>Voice-first · Open source · MIT-licensed forever</div>
           <div style={{ fontWeight: 600 }}>{SITE.baseUrl.replace(/^https?:\/\//, '')}</div>
         </div>
       </div>

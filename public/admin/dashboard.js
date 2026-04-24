@@ -293,19 +293,20 @@ const CMS = (function () {
         key: 'media.videos',
         title: 'Videos',
         eyebrow: 'Media',
-        sub: 'Videos shown under the Videos tab.',
-        newItem: () => ({ id: uid(), bg: 'vid-bg-1', label: 'STORY', dur: '0:00', title: 'New video', cat: 'stories', desc: '', date: '', views: '0 views' }),
+        sub: 'Videos shown under the Videos tab. Paste a YouTube ID to embed the player; leave blank to show the placeholder card.',
+        newItem: () => ({ id: uid(), bg: 'vid-bg-1', label: 'STORY', dur: '', title: 'New video', cat: 'stories', desc: '', date: '', views: '', youtubeId: '' }),
         fields: [
           { k: 'title', label: 'Title', type: 'text', required: true },
+          { k: 'youtubeId', label: 'YouTube video ID', type: 'text', hint: 'Just the 11-char ID (e.g. "dQw4w9WgXcQ"). Not the full URL. Leave blank to show the placeholder.' },
           { k: 'desc', label: 'Description', type: 'textarea' },
-          { k: 'label', label: 'Label', type: 'text', hint: 'e.g. "FEATURE" / "TUTORIAL"' },
-          { k: 'dur', label: 'Duration', type: 'text', hint: 'e.g. "4:12"' },
-          { k: 'cat', label: 'Category', type: 'select', options: ['stories','tutorials','behind','events'] },
-          { k: 'bg', label: 'Background variant', type: 'select', options: ['vid-bg-1','vid-bg-2','vid-bg-3','vid-bg-4','vid-bg-5','vid-bg-6'] },
-          { k: 'date', label: 'Release date', type: 'text' },
-          { k: 'views', label: 'View count label', type: 'text' }
+          { k: 'cat', label: 'Category', type: 'select', options: ['stories','tutorials','behind','events','product','talks'] },
+          { k: 'label', label: 'Placeholder label', type: 'text', hint: 'Shown on the placeholder card when no YouTube ID is set.' },
+          { k: 'bg', label: 'Placeholder gradient', type: 'select', options: ['vid-bg-1','vid-bg-2','vid-bg-3','vid-bg-4','vid-bg-5','vid-bg-6'] },
+          { k: 'dur', label: 'Duration (optional)', type: 'text' },
+          { k: 'date', label: 'Release date (optional)', type: 'text' },
+          { k: 'views', label: 'View count label (optional)', type: 'text' }
         ],
-        itemDisplay: (it) => ({ iconText: '▶', title: it.title, meta: `${it.label} · ${it.dur} · ${it.date}` })
+        itemDisplay: (it) => ({ iconText: it.youtubeId ? '▶' : '…', title: it.title, meta: it.youtubeId ? `YouTube · ${it.youtubeId}` : 'Awaiting YouTube ID' })
       }),
       donate: renderDonate,
       pages: () => renderCollection({
@@ -424,11 +425,18 @@ const CMS = (function () {
       <div class="cms-form">
         <div class="cms-field"><label>Hero eyebrow</label>${plainInput('home.heroEyebrow', h.heroEyebrow)}</div>
         <div class="cms-field"><label>Hero title (HTML)</label>${plainInput('home.heroTitle', h.heroTitle, 'Use <em>…</em> for the colored word')}</div>
-        <div class="cms-field"><label>Live badge label</label>${plainInput('home.liveLabel', h.liveLabel)}</div>
+        <div class="cms-field"><label>Live "users online" badge</label>
+          ${boolInput('home.liveLabelEnabled', h.liveLabelEnabled === true, 'On', 'Off', 'Toggle shows the live-users label above the hero. Hidden by default until we wire real analytics.')}
+        </div>
+        <div class="cms-field"><label>Live badge text</label>${plainInput('home.liveLabel', h.liveLabel, 'Shown only when the toggle above is On.')}</div>
+        <div class="cms-field"><label>"Our impact, to date" stats</label>
+          ${boolInput('home.impactEnabled', h.impactEnabled === true, 'On', 'Off', 'Toggle shows the impact-stats row (1.2M users, 47 countries, etc.) above the hero. Hidden by default — turn back on when we have verifiable numbers.')}
+        </div>
         <div class="cms-field"><label>Impact eyebrow</label>${plainInput('home.impactEyebrow', h.impactEyebrow)}</div>
       </div>
 
       <h3 style="font-family:var(--font-display);font-size:1.05rem;font-weight:700;margin:32px 0 12px;color:var(--fg);">Hero impact stats</h3>
+      <div class="hint" style="margin:-6px 0 10px;">These only show when "Our impact, to date" is toggled on above.</div>
       ${renderSimpleList('home.impactStats', ['number','label'], () => ({ number: '0', label: 'New stat' }))}
 
       <h3 style="font-family:var(--font-display);font-size:1.05rem;font-weight:700;margin:32px 0 12px;color:var(--fg);">Stats band (below hero)</h3>
@@ -437,7 +445,8 @@ const CMS = (function () {
       <h3 style="font-family:var(--font-display);font-size:1.05rem;font-weight:700;margin:32px 0 12px;color:var(--fg);">Core values</h3>
       ${renderSimpleList('home.coreValues', ['num','icon','title','desc','meta','variant'], () => ({ num: '0X', icon: 'ph-heart', title: 'New value', desc: '', meta: '', variant: 'v-brand' }))}
 
-      <h3 style="font-family:var(--font-display);font-size:1.05rem;font-weight:700;margin:32px 0 12px;color:var(--fg);">What we build (feature cards)</h3>
+      <h3 style="font-family:var(--font-display);font-size:1.05rem;font-weight:700;margin:32px 0 12px;color:var(--fg);">Legacy "feature cards" (not shown on home anymore)</h3>
+      <div class="hint" style="margin:-6px 0 10px;">The "What we build" section now renders the items from the Projects collection. These feature-card fields are kept for backward compat.</div>
       ${renderSimpleList('home.features', ['icon','title','desc'], () => ({ icon: 'ph-stack', title: 'New feature', desc: '' }))}
     `;
     bindFieldInputs();
@@ -852,9 +861,19 @@ const CMS = (function () {
   let inputDebounce;
   function onFieldInput(e) {
     const path = e.target.dataset.bind;
-    const val = e.target.value;
+    const type = e.target.dataset.type;
+    const val = (type === 'bool' || e.target.type === 'checkbox') ? !!e.target.checked : e.target.value;
     setStatus('saving');
     deepSet(state.data, path, val);
+    // Update inline toggle label text if this is a bool toggle
+    if (type === 'bool') {
+      const wrap = e.target.closest('.cms-toggle');
+      const textEl = wrap?.querySelector('.cms-toggle-text');
+      if (textEl) {
+        const on = !!e.target.checked;
+        textEl.textContent = on ? (wrap.dataset.labelOn || 'Enabled') : (wrap.dataset.labelOff || 'Disabled');
+      }
+    }
     // live icon preview update
     if (path.endsWith('.icon')) {
       const container = e.target.closest('.cms-icon-input');
@@ -1079,6 +1098,15 @@ const CMS = (function () {
   }
   function plainInput(path, val, hint) {
     return `<input type="text" class="cms-input" data-bind="${escapeAttr(path)}" value="${escapeAttr(val || '')}">
+    ${hint ? `<div class="hint">${escapeHtml(hint)}</div>` : ''}`;
+  }
+  function boolInput(path, val, labelOn = 'Enabled', labelOff = 'Disabled', hint) {
+    const checked = val === true ? 'checked' : '';
+    return `<label class="cms-toggle">
+      <input type="checkbox" data-bind="${escapeAttr(path)}" data-type="bool" ${checked}>
+      <span class="cms-toggle-track"><span class="cms-toggle-dot"></span></span>
+      <span class="cms-toggle-text">${checked ? escapeHtml(labelOn) : escapeHtml(labelOff)}</span>
+    </label>
     ${hint ? `<div class="hint">${escapeHtml(hint)}</div>` : ''}`;
   }
   function emptyState(what) {

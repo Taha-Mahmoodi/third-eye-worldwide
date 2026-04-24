@@ -730,9 +730,17 @@ footer { background: var(--bg-inverse); color: var(--fg-inverse); padding: 72px 
 .story-h2 {
   font-family: var(--font-display); font-weight: 700;
   font-size: clamp(1.9rem, 3.6vw, 3rem);
-  letter-spacing: -.035em; line-height: 1.06;
-  color: var(--fg); text-wrap: balance;
+  letter-spacing: -.035em; line-height: 1.1;
+  color: var(--fg);
+  /* text-wrap: balance interacts badly with <br> inside the heading and
+     causes "Every story we've / published," line breaks on some viewports.
+     `pretty` keeps the explicit <br> as the only break and prevents orphans. */
+  text-wrap: pretty;
+  max-width: 26ch;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
+.story-h2 br { display: block; }
 .story-h2 em { font-style: normal; color: var(--brand); }
 
 /* Featured story card */
@@ -1976,6 +1984,141 @@ details.faq-item[open] .faq-chev { transform: rotate(45deg); background: var(--b
   gap: 12px;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+/* Home — "What We Build" projects grid */
+.home-projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+/* Media — video embed (16:9 iframe) + pending state */
+.video-embed {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  background: #000;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.video-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.video-card .video-pending {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  font-family: var(--font-display);
+  font-size: .64rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .7);
+  background: rgba(0, 0, 0, .35);
+  padding: 4px 10px;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+
+/* Media — podcast "coming soon" layout */
+.pod-coming-soon {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+  padding: clamp(24px, 4vw, 40px);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+.pod-coming-soon-intro { padding: 10px 4px; }
+.pod-coming-soon-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 18px;
+}
+.pod-coming-soon-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 0 color-mix(in oklab, var(--accent) 40%, transparent);
+  animation: pod-pulse 1.8s infinite;
+}
+@keyframes pod-pulse {
+  0%   { box-shadow: 0 0 0 0   color-mix(in oklab, var(--accent) 40%, transparent); }
+  70%  { box-shadow: 0 0 0 8px color-mix(in oklab, var(--accent) 0%,  transparent); }
+  100% { box-shadow: 0 0 0 0   color-mix(in oklab, var(--accent) 0%,  transparent); }
+}
+.pod-coming-soon-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.1;
+  color: var(--fg);
+  margin: 0 0 14px;
+}
+.pod-coming-soon-desc {
+  color: var(--fg-muted);
+  line-height: 1.65;
+  margin: 0;
+  max-width: 46ch;
+}
+
+.pod-coming-soon-form {
+  padding: 28px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.pod-coming-soon-form-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--fg);
+  margin: 0 0 8px;
+}
+.pod-coming-soon-form-desc {
+  font-size: .9rem;
+  color: var(--fg-muted);
+  line-height: 1.55;
+  margin: 0 0 18px;
+}
+.pod-guest-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.pod-guest-email {
+  color: var(--brand);
+  text-decoration: underline;
+}
+.pod-guest-email:hover { color: var(--brand-hover); }
+
+@media (max-width: 780px) {
+  .pod-coming-soon {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 }
 
 /* Screen-reader-only text */
