@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 // by a user-defined page slug.
 const RESERVED = new Set([
   'about', 'programs', 'projects', 'donate', 'media', 'documents',
-  'volunteers', 'blog-detail', 'story-detail', 'admin', 'api',
+  'volunteers', 'blog-detail', 'story-detail', 'coming-soon', 'admin', 'api',
 ]);
 
 export async function generateMetadata({ params }) {
