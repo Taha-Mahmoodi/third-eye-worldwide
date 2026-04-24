@@ -3,20 +3,16 @@
 import { useState } from 'react';
 import DocCard from '@/components/documents/DocCard';
 
-function chunk(arr, size) {
-  const out = [];
-  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
-  return out;
-}
-
 /*
  * Filter pills + card grid for the blogs subpage.
  * `cats` is the unique list of blog categories; 'all' is injected.
+ *
+ * Uses a single .doc-grid with auto-fit tracks so cards reflow
+ * cleanly as the list is filtered (no JS chunking into fixed rows).
  */
 export default function FilterableBlogGrid({ blogs, cats }) {
   const [filter, setFilter] = useState('all');
   const visible = filter === 'all' ? blogs : blogs.filter((b) => b.cat === filter);
-  const rows = chunk(visible, 3);
 
   return (
     <>
@@ -44,15 +40,9 @@ export default function FilterableBlogGrid({ blogs, cats }) {
       ) : null}
 
       {visible.length > 0 ? (
-        rows.map((row, i) => (
-          <div
-            key={i}
-            className="doc-grid"
-            style={i > 0 ? { marginTop: 24 } : undefined}
-          >
-            {row.map((b) => <DocCard key={b.id || b.title} doc={b} defaultKind="blog" />)}
-          </div>
-        ))
+        <div className="doc-grid">
+          {visible.map((b) => <DocCard key={b.id || b.title} doc={b} defaultKind="blog" />)}
+        </div>
       ) : (
         <p style={{ color: 'var(--fg-muted)' }}>No posts match this filter.</p>
       )}
