@@ -2,6 +2,7 @@ import './globals.css';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import ClientBootstrap from '@/components/ClientBootstrap';
+import AudioTour from '@/components/AudioTour';
 
 export const metadata = {
   title: 'Third Eye Worldwide — Technology that opens new worlds',
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
         <main id="main">{children}</main>
         <Footer />
         <ClientBootstrap />
+        <AudioTour />
       </body>
     </html>
   );
