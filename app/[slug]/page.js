@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import HtmlContent from '@/components/HtmlContent';
 import { getContent } from '@/lib/cms/db';
 import { findCustomPage, renderCustomPage } from '@/lib/pages/custom';
+import { pageMetadata, readSeoOverrides } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,7 +19,14 @@ export async function generateMetadata({ params }) {
   const content = await getContent();
   const page = findCustomPage(content, slug);
   if (!page) return {};
-  return { title: (page.title || slug) + ' — Third Eye Worldwide' };
+  const o = readSeoOverrides(content, '/' + slug);
+  return pageMetadata({
+    title: o.title || (page.title || slug),
+    description: o.description || page.description || page.excerpt,
+    path: '/' + slug,
+    image: o.image || page.image,
+    noindex: o.noindex,
+  });
 }
 
 export default async function CustomPage({ params }) {

@@ -53,11 +53,13 @@ export async function PUT(req) {
   const note = req.headers.get('x-cms-note') || null;
   await saveContent(body, { author, note });
 
-  // Revalidate fixed routes + any user-defined /[slug] pages.
+  // Revalidate fixed routes + any user-defined /[slug] pages +
+  // the sitemap (so SEO crawlers see CMS updates immediately).
   const slugRoutes = Array.isArray(body.pages)
     ? body.pages.filter((p) => p?.slug && p?.visible !== false).map((p) => '/' + p.slug)
     : [];
-  for (const path of [...ALL_ROUTES, ...slugRoutes]) {
+  const seoRoutes = ['/sitemap.xml', '/robots.txt'];
+  for (const path of [...ALL_ROUTES, ...slugRoutes, ...seoRoutes]) {
     try { revalidatePath(path); } catch {}
   }
 

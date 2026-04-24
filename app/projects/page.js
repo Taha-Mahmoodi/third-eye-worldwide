@@ -2,9 +2,22 @@ import Link from 'next/link';
 import { getContent, visibleSorted } from '@/lib/cms/db';
 import RichText from '@/components/RichText';
 import ProjectCard from '@/components/projects/ProjectCard';
+import { pageMetadata, readSeoOverrides } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Projects — Third Eye Worldwide' };
+
+export async function generateMetadata() {
+  const content = await getContent();
+  const o = readSeoOverrides(content, '/projects');
+  const p = content?.projects || content?.programs || {};
+  return pageMetadata({
+    title: o.title || `${p.heroEyebrow || 'Projects'} · Twelve projects. One goal.`,
+    description: o.description || p.heroSub,
+    path: '/projects',
+    image: o.image,
+    noindex: o.noindex,
+  });
+}
 
 export default async function ProjectsPage() {
   const content = await getContent();

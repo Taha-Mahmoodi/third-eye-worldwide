@@ -1,14 +1,19 @@
 import Link from 'next/link';
 import Countdown from '@/components/Countdown';
+import { pageMetadata } from '@/lib/seo';
 
 // Target launch time — 2 days from the initial deploy (2026-04-23).
 // Edit this ISO string to shift the launch date without touching anything else.
 const LAUNCH_ISO = '2026-04-25T12:00:00Z';
 
-export const metadata = {
+// noindex: a placeholder page shouldn't rank on search engines.
+// The marketing team can flip this when the launch actually ships.
+export const metadata = pageMetadata({
   title: 'Coming soon — Third Eye Worldwide',
   description: 'Something new from Third Eye Worldwide is launching in just 2 days.',
-};
+  path: '/coming-soon',
+  noindex: true,
+});
 
 export default function ComingSoonPage() {
   const launchDate = new Date(LAUNCH_ISO);

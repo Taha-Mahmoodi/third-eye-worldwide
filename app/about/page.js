@@ -6,9 +6,22 @@ import FaqItem from '@/components/about/FaqItem';
 import TeamCard from '@/components/about/TeamCard';
 import BoardRow from '@/components/about/BoardRow';
 import StatTile from '@/components/site/StatTile';
+import { pageMetadata, readSeoOverrides } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'About — Third Eye Worldwide' };
+
+export async function generateMetadata() {
+  const content = await getContent();
+  const o = readSeoOverrides(content, '/about');
+  const a = content?.about || {};
+  return pageMetadata({
+    title: o.title || 'About — Third Eye Worldwide',
+    description: o.description || a.heroSub || 'Our mission, our team, and the values that guide our work.',
+    path: '/about',
+    image: o.image,
+    noindex: o.noindex,
+  });
+}
 
 function FaqTab({ faqs }) {
   return (
