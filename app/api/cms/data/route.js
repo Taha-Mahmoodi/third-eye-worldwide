@@ -12,6 +12,11 @@ const ALL_ROUTES = [
   '/documents', '/volunteers', '/blog-detail', '/story-detail',
 ];
 
+// Hard ceiling on the CMS publish payload. The content doc is small in
+// practice (~50 KB). 2 MB leaves ample headroom for images-in-JSON while
+// preventing a rogue payload from stalling the server.
+const MAX_PUT_BYTES = 2 * 1024 * 1024;
+
 export async function GET() {
   const data = await getContent();
   if (!data) return NextResponse.json({ error: 'No content' }, { status: 404 });
@@ -21,6 +26,14 @@ export async function GET() {
 export async function PUT(req) {
   const admin = await isAdmin(req);
   if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+  const declaredSize = Number(req.headers.get('content-length') || 0);
+  if (Number.isFinite(declaredSize) && declaredSize > MAX_PUT_BYTES) {
+    return NextResponse.json(
+      { error: `Payload too large — max ${Math.round(MAX_PUT_BYTES / 1024)} KB.` },
+      { status: 413 }
+    );
+  }
 
   let body;
   try { body = await req.json(); } catch { return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 }); }
