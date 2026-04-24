@@ -6,18 +6,21 @@ import { usePathname } from 'next/navigation';
 const CHOICE_KEY = 'teww-tour-choice';
 const AUTO_DELAY_SECONDS = 8;
 
-const TOUR_SCRIPTS = {
-  '/': 'Welcome to Third Eye Worldwide. We build free, open-source assistive technology for people with visual impairment — screen readers, magnifiers, navigation aids, and community programs in forty-seven countries. Use the tab key or your screen reader to explore, or press escape at any time to stop this audio tour.',
-  '/about': 'About Third Eye Worldwide. Our mission is to open new worlds through technology — building tools designed by and for visually impaired people. Learn about our story, our team, and the values that guide our work.',
-  '/programs': 'Our programs. From the TEWW Screen Reader to the Audiolibrary Project and the Device Lending Library, each program is free to use and shaped by the community it serves.',
-  '/donate': 'Donate to Third Eye Worldwide. Every contribution funds free tools, free training, and free devices for those who need them most. Ten dollars a month supports one user for a full year.',
-  '/media': 'Media. Browse our podcasts, press coverage, and video library. All media is captioned, transcribed, and audio-described.',
-  '/documents': 'Documents. Read the stories, blog posts, and reports that chronicle our work and the people we serve.',
-  '/volunteers': 'Volunteer with Third Eye Worldwide. Translators, open-source contributors, audio narrators, and community organisers are always welcome.',
+// Map pathname → pre-recorded audio track in /public/audio.
+// Generated with Windows SAPI (see prisma/seed.mjs siblings — audio files
+// committed under public/audio/). Falls back to the home tour.
+const TOUR_TRACKS = {
+  '/':             '/audio/tour-home.wav',
+  '/about':        '/audio/tour-about.wav',
+  '/programs':     '/audio/tour-programs.wav',
+  '/donate':       '/audio/tour-donate.wav',
+  '/media':        '/audio/tour-media.wav',
+  '/documents':    '/audio/tour-documents.wav',
+  '/volunteers':   '/audio/tour-volunteers.wav',
 };
 
-function scriptFor(pathname) {
-  return TOUR_SCRIPTS[pathname] || TOUR_SCRIPTS['/'];
+function trackFor(pathname) {
+  return TOUR_TRACKS[pathname] || TOUR_TRACKS['/'];
 }
 
 export default function AudioTour() {
@@ -26,35 +29,35 @@ export default function AudioTour() {
   const [countdown, setCountdown] = useState(AUTO_DELAY_SECONDS);
   const autoTimerRef = useRef(null);
   const tickTimerRef = useRef(null);
-  const utteranceRef = useRef(null);
+  const audioRef = useRef(null);
 
   function clearTimers() {
     if (autoTimerRef.current) { clearTimeout(autoTimerRef.current); autoTimerRef.current = null; }
     if (tickTimerRef.current) { clearInterval(tickTimerRef.current); tickTimerRef.current = null; }
   }
 
-  function stopSpeech() {
-    if (typeof window === 'undefined') return;
-    if (window.speechSynthesis) {
-      try { window.speechSynthesis.cancel(); } catch {}
+  function ensureAudio() {
+    if (typeof window === 'undefined') return null;
+    if (!audioRef.current) {
+      const a = new Audio();
+      a.preload = 'auto';
+      audioRef.current = a;
     }
-    utteranceRef.current = null;
+    return audioRef.current;
   }
 
-  function speak(text) {
-    if (typeof window === 'undefined' || !window.speechSynthesis || !window.SpeechSynthesisUtterance) return false;
-    try {
-      window.speechSynthesis.cancel();
-      const u = new window.SpeechSynthesisUtterance(text);
-      u.rate = 0.95;
-      u.pitch = 1;
-      u.volume = 1;
-      utteranceRef.current = u;
-      window.speechSynthesis.speak(u);
-      return true;
-    } catch {
-      return false;
-    }
+  function playTrack(src) {
+    const a = ensureAudio();
+    if (!a) return Promise.resolve(false);
+    if (a.src !== src && !a.src.endsWith(src)) a.src = src;
+    a.currentTime = 0;
+    return a.play().then(() => true).catch(() => false);
+  }
+
+  function stopAudio() {
+    const a = audioRef.current;
+    if (!a) return;
+    try { a.pause(); a.currentTime = 0; } catch {}
   }
 
   function dismiss(choice) {
@@ -67,7 +70,7 @@ export default function AudioTour() {
     clearTimers();
     setVisible(false);
     try { sessionStorage.setItem(CHOICE_KEY, 'audio'); } catch {}
-    speak(scriptFor(pathname));
+    playTrack(trackFor(pathname));
   }
 
   useEffect(() => {
@@ -78,12 +81,25 @@ export default function AudioTour() {
       window.startAudioTour = () => {
         clearTimers();
         setVisible(false);
-        speak(scriptFor(window.location.pathname));
+        playTrack(trackFor(window.location.pathname));
       };
       window.stopAudioTour = () => {
         clearTimers();
         setVisible(false);
-        stopSpeech();
+        stopAudio();
+      };
+      window.getAudioTourState = () => {
+        const a = audioRef.current;
+        if (!a) return { hasAudio: false };
+        return {
+          hasAudio: true,
+          src: a.src,
+          paused: a.paused,
+          currentTime: a.currentTime,
+          duration: Number.isFinite(a.duration) ? a.duration : null,
+          readyState: a.readyState,
+          error: a.error ? { code: a.error.code, message: a.error.message } : null,
+        };
       };
     }
 
@@ -102,9 +118,9 @@ export default function AudioTour() {
 
     return () => {
       clearTimers();
-      stopSpeech();
+      stopAudio();
     };
-    // Run once on mount; pathname-specific script resolved at play time.
+    // Run once on mount; track resolved at play time via window.location.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
