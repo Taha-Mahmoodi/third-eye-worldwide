@@ -1654,6 +1654,35 @@ details.faq-item[open] .faq-chev { transform: rotate(45deg); background: var(--b
   margin-bottom: 18px;
 }
 
+/* Volunteers page — small extras (moved from inline styles) */
+.vol-how-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 2.8vw, 2.5rem);
+  font-weight: 700;
+  color: var(--fg);
+  margin-bottom: 24px;
+  letter-spacing: -.03em;
+  line-height: 1.1;
+}
+.vol-textarea {
+  font-family: var(--font-body);
+  font-size: .95rem;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 11px 14px;
+  outline: none;
+  resize: none;
+}
+.vol-textarea:focus { border-color: var(--brand); }
+.vol-status {
+  font-size: .85rem;
+  margin-top: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+
 /* Screen-reader-only text */
 .sr-only {
   position: absolute !important;
