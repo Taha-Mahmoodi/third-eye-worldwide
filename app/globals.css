@@ -65,10 +65,8 @@ nav.topnav { position: sticky; top: 0; z-index: 100; background: var(--bg-elevat
 .nav-links a:hover, .nav-links a.active, .nav-links button.nav-link-btn:hover, .nav-links button.nav-link-btn.active { color: var(--fg); border-bottom-color: var(--brand); }
 .nav-dropdown { position: absolute; top: calc(100% + 6px); left: -16px; min-width: 220px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); padding: 8px; opacity: 0; visibility: hidden; transform: translateY(-4px); transition: opacity .15s, transform .15s, visibility .15s; z-index: 110; }
 .nav-links > li:hover .nav-dropdown, .nav-links > li:focus-within .nav-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
-.nav-dropdown a { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: var(--radius-md); border-bottom: none; color: var(--fg); font-weight: 500; font-size: .88rem; }
-.nav-dropdown a .dd-sub { font-family: var(--font-body); font-size: .75rem; color: var(--fg-muted); font-weight: 400; }
+.nav-dropdown a { display: block; padding: 10px 12px; border-radius: var(--radius-md); border-bottom: none; color: var(--fg); font-weight: 500; font-size: .88rem; }
 .nav-dropdown a:hover { background: var(--bg-subtle); color: var(--fg); }
-.nav-dropdown a:hover .dd-sub { color: var(--fg-muted); }
 
 .nav-controls { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
 .icon-btn { width: 38px; height: 38px; border-radius: var(--radius-md); border: 1.5px solid var(--border); background: var(--bg); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--fg-muted); font-size: 17px; transition: background .15s, border-color .15s, color .15s; }
