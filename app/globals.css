@@ -1375,6 +1375,62 @@ html, body { overflow-x: hidden; }
   .te-panel { animation: none; }
 }
 
+/* About page — FAQ styles (moved from inline <style> in the old renderer) */
+.faq-wrap { max-width: 880px; margin: 0 auto; padding: 0 var(--space-8); display: flex; flex-direction: column; gap: 18px; }
+.faq-intro-row { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: end; margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.faq-intro-row h2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.9rem, 3.2vw, 2.6rem); letter-spacing: -.035em; line-height: 1.1; color: var(--fg); text-wrap: balance; }
+.faq-intro-row h2 em { font-style: normal; color: var(--brand); }
+.faq-intro-row p { font-size: 1.02rem; color: var(--fg-muted); line-height: 1.65; }
+.faq-counter { font-family: var(--font-display); font-weight: 700; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--fg-subtle); margin-bottom: 10px; display: block; }
+details.faq-item { border: 1px solid var(--border); border-radius: var(--radius-xl); background: var(--bg-elevated); overflow: hidden; transition: border-color .25s, box-shadow .25s; }
+details.faq-item[open] { border-color: var(--border-strong); box-shadow: var(--shadow-sm); }
+details.faq-item:hover:not([open]) { border-color: var(--border-strong); }
+details.faq-item > summary { list-style: none; cursor: pointer; padding: 28px 32px; display: grid; grid-template-columns: 56px 1fr 40px; align-items: center; gap: 20px; outline: none; }
+details.faq-item > summary::-webkit-details-marker { display: none; }
+.faq-num { font-family: var(--font-display); font-weight: 700; font-size: .78rem; letter-spacing: .14em; color: var(--fg-subtle); border: 1px solid var(--border); padding: 8px 10px; border-radius: 10px; text-align: center; transition: color .2s, border-color .2s, background .2s; }
+details.faq-item[open] .faq-num { color: var(--brand); border-color: var(--brand); background: var(--brand-subtle); }
+.faq-q { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.15rem, 1.6vw, 1.4rem); letter-spacing: -.02em; line-height: 1.25; color: var(--fg); text-wrap: balance; }
+.faq-q em { font-style: italic; font-weight: 600; color: var(--accent); }
+.faq-chev { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--bg-subtle); color: var(--fg-muted); border: 1px solid var(--border); transition: transform .3s ease, background .2s, color .2s; font-size: 16px; }
+details.faq-item[open] .faq-chev { transform: rotate(45deg); background: var(--brand); color: white; border-color: var(--brand); }
+.faq-panel { padding: 4px 32px 34px 108px; border-top: 1px dashed var(--border); margin-top: 0; animation: faqFade .35s ease; }
+@keyframes faqFade { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+.faq-panel > p + p { margin-top: 14px; }
+.faq-panel p { font-size: 1rem; line-height: 1.72; color: var(--fg-muted); max-width: 62ch; }
+.faq-panel p strong { color: var(--fg); font-weight: 600; }
+.faq-panel ul { list-style: none; padding: 0; margin: 18px 0 6px; display: flex; flex-direction: column; gap: 10px; }
+.faq-panel li { font-size: .98rem; color: var(--fg-muted); line-height: 1.55; padding-left: 24px; position: relative; }
+.faq-panel li::before { content: ''; position: absolute; left: 0; top: 10px; width: 14px; height: 2px; background: var(--accent); }
+.faq-panel li strong { color: var(--fg); font-weight: 600; }
+.faq-stats { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--border); }
+.faq-chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; background: var(--bg-subtle); border: 1px solid var(--border); border-radius: 999px; font-family: var(--font-display); font-size: .78rem; font-weight: 600; color: var(--fg); }
+.faq-chip i { color: var(--brand); font-size: 14px; }
+.faq-chip.accent i { color: var(--accent); }
+.faq-cta { margin-top: 56px; padding: 40px 44px; border: 1px solid var(--border); border-radius: var(--radius-xl); background: var(--bg-elevated); display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.faq-cta h3 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; letter-spacing: -.02em; color: var(--fg); margin-bottom: 6px; }
+.faq-cta p { font-size: .94rem; color: var(--fg-muted); }
+.faq-cta-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+@media (max-width: 720px) {
+  .faq-intro-row { grid-template-columns: 1fr; gap: 18px; }
+  details.faq-item > summary { padding: 22px 20px; grid-template-columns: 44px 1fr 32px; gap: 14px; }
+  .faq-panel { padding: 4px 22px 26px 22px; }
+  .faq-chev { width: 32px; height: 32px; }
+  .faq-cta { padding: 28px 24px; }
+}
+
+/* About page — mission + board (moved from inline styles in the old renderer) */
+.about-mission-title { font-family: var(--font-display); font-size: clamp(1.75rem, 2.8vw, 2.5rem); font-weight: 700; letter-spacing: -.03em; line-height: 1.1; color: var(--fg); margin-bottom: 20px; }
+.about-mission-body { font-size: 1.05rem; color: var(--fg-muted); line-height: 1.75; margin-bottom: 16px; }
+
+.board-card { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.board-row { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; border-bottom: 1px solid var(--border); }
+.board-row:last-child { border-bottom: none; }
+.board-row-left { display: flex; align-items: center; gap: 14px; }
+.board-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--bg-subtle); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; font-size: .78rem; color: var(--fg-muted); }
+.board-name { font-family: var(--font-display); font-weight: 600; color: var(--fg); font-size: .95rem; }
+.board-title { font-size: .82rem; color: var(--fg-muted); }
+.board-row > i { color: var(--fg-subtle); }
+
 /* Screen-reader-only text */
 .sr-only {
   position: absolute !important;
