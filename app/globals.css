@@ -1200,6 +1200,187 @@ html, body { overflow-x: hidden; }
   .audio-tour-toast { animation: none; }
 }
 
+/* Screen-reader-only text */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0,0,0,0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Coming-soon page + countdown */
+.coming-soon {
+  position: relative;
+  min-height: calc(100vh - 200px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(40px, 8vw, 100px) clamp(16px, 6vw, 40px);
+  overflow: hidden;
+}
+.coming-soon .cs-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+}
+.coming-soon .cs-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  opacity: .55;
+}
+.coming-soon .cs-ring-1 { width: 520px; height: 520px; }
+.coming-soon .cs-ring-2 { width: 760px; height: 760px; border-style: dashed; }
+.coming-soon .cs-ring-3 { width: 980px; height: 980px; opacity: .3; }
+
+.coming-soon .cs-inner {
+  position: relative;
+  max-width: 720px;
+  text-align: center;
+  z-index: 1;
+}
+.coming-soon .cs-eye {
+  color: var(--brand);
+  width: 72px;
+  height: 84px;
+  margin: 0 auto 20px;
+}
+.coming-soon .cs-eye svg { width: 100%; height: 100%; display: block; }
+.coming-soon .cs-eyebrow { margin-bottom: 10px; }
+.coming-soon .cs-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5.5vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -.025em;
+  line-height: 1.08;
+  color: var(--fg);
+  margin: 0 0 18px;
+}
+.coming-soon .cs-title em {
+  font-style: italic;
+  color: var(--brand);
+  font-weight: 700;
+}
+.coming-soon .cs-sub {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--fg-muted);
+  max-width: 560px;
+  margin: 0 auto 36px;
+}
+.coming-soon .cs-launch-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .9rem;
+  color: var(--fg-muted);
+  margin: 22px 0 32px;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-subtle);
+}
+.coming-soon .cs-launch-date i { color: var(--brand); font-size: 16px; }
+.coming-soon .cs-actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+.coming-soon .cs-footnote {
+  font-size: .9rem;
+  color: var(--fg-muted);
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+  line-height: 1.6;
+}
+.coming-soon .cs-footnote a {
+  color: var(--brand);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color .15s;
+}
+.coming-soon .cs-footnote a:hover { border-bottom-color: var(--brand); }
+
+.countdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 2vw, 18px);
+  margin: 12px 0 4px;
+  font-variant-numeric: tabular-nums;
+}
+.countdown-cell {
+  min-width: clamp(72px, 13vw, 120px);
+  padding: 18px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+  box-shadow: 0 6px 22px rgba(0,0,0,.06);
+  display: grid;
+  gap: 4px;
+}
+.countdown-num {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5.8vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.03em;
+  color: var(--fg);
+  background: linear-gradient(135deg, var(--brand) 0%, var(--accent, var(--brand)) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.countdown-lbl {
+  font-family: var(--font-display);
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.countdown-sep {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
+  font-weight: 700;
+  color: var(--brand);
+  opacity: .5;
+}
+
+.countdown-done .countdown-num {
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  color: var(--brand);
+}
+
+[data-theme="high-contrast"] .countdown-num {
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  color: var(--brand);
+}
+
+@media (max-width: 640px) {
+  .countdown { gap: 6px; }
+  .countdown-cell { min-width: 0; padding: 12px 8px; }
+  .countdown-sep { display: none; }
+}
+@media (max-width: 440px) {
+  .coming-soon .cs-actions { flex-direction: column; align-items: stretch; }
+  .coming-soon .cs-actions > * { justify-content: center; }
+  .coming-soon .cs-ring-2, .coming-soon .cs-ring-3 { display: none; }
+}
+
 /* Error pages (404 / 500 / runtime error boundary) */
 .error-page {
   min-height: calc(100vh - 200px);
