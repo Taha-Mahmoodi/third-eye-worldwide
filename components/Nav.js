@@ -42,8 +42,8 @@ export default function Nav() {
               About <i className="ph ph-caret-down" style={{ fontSize: '10px' }}></i>
             </Link>
             <div className="nav-dropdown">
-              <Link href="/about#mission"><span>Mission</span><span className="dd-sub">Why we exist</span></Link>
-              <Link href="/about#team"><span>Team</span><span className="dd-sub">The people behind TEWW</span></Link>
+              <Link href="/about#mission">Mission</Link>
+              <Link href="/about#team">Team</Link>
             </div>
           </li>
           <li>
@@ -60,9 +60,9 @@ export default function Nav() {
               Media <i className="ph ph-caret-down" style={{ fontSize: '10px' }}></i>
             </Link>
             <div className="nav-dropdown">
-              <Link href="/media#photos"><span>Photos</span><span className="dd-sub">From the field</span></Link>
-              <Link href="/media#podcasts"><span>Podcasts</span><span className="dd-sub">Listen & subscribe</span></Link>
-              <Link href="/media#videos"><span>Videos</span><span className="dd-sub">Watch & learn</span></Link>
+              <Link href="/media#photos">Photos</Link>
+              <Link href="/media#podcasts">Podcasts</Link>
+              <Link href="/media#videos">Videos</Link>
             </div>
           </li>
           <li>
@@ -74,8 +74,8 @@ export default function Nav() {
               Documents <i className="ph ph-caret-down" style={{ fontSize: '10px' }}></i>
             </Link>
             <div className="nav-dropdown">
-              <Link href="/documents#blogs"><span>Blogs</span><span className="dd-sub">Insights & research</span></Link>
-              <Link href="/documents#stories"><span>Stories</span><span className="dd-sub">Voices from our community</span></Link>
+              <Link href="/documents#blogs">Blogs</Link>
+              <Link href="/documents#stories">Stories</Link>
             </div>
           </li>
           <li>
