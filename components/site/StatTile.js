@@ -1,10 +1,10 @@
 import RichText from '@/components/RichText';
 
 /*
- * Single stat tile inside the mission "about-visual" panel.
- * `stat` shape: { number, label, visible, order } — number may be rich HTML.
+ * Reusable stat tile (about mission panel, volunteers stats, …).
+ * `stat` shape: { number, label } — number may contain rich markup.
  */
-export default function MissionStat({ stat }) {
+export default function StatTile({ stat }) {
   const { number, label } = stat || {};
   return (
     <div className="about-stat">

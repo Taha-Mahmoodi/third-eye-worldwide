@@ -5,7 +5,7 @@ import Subnav from '@/components/site/Subnav';
 import FaqItem from '@/components/about/FaqItem';
 import TeamCard from '@/components/about/TeamCard';
 import BoardRow from '@/components/about/BoardRow';
-import MissionStat from '@/components/about/MissionStat';
+import StatTile from '@/components/site/StatTile';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'About — Third Eye Worldwide' };
@@ -69,7 +69,7 @@ function MissionTab({ missionStats }) {
               </div>
             </div>
             <div className="about-visual">
-              {missionStats.map((s, i) => <MissionStat key={s.id || i} stat={s} />)}
+              {missionStats.map((s, i) => <StatTile key={s.id || i} stat={s} />)}
             </div>
           </div>
         </div>
