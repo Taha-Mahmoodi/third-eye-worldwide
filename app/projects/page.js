@@ -4,7 +4,6 @@ import RichText from '@/components/RichText';
 import ProjectCard from '@/components/projects/ProjectCard';
 import { pageMetadata, readSeoOverrides } from '@/lib/seo';
 
-export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
   const content = await getContent();

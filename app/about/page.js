@@ -8,7 +8,6 @@ import BoardRow from '@/components/about/BoardRow';
 import StatTile from '@/components/site/StatTile';
 import { pageMetadata, readSeoOverrides } from '@/lib/seo';
 
-export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
   const content = await getContent();

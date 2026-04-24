@@ -7,7 +7,6 @@ import StepItem from '@/components/volunteers/StepItem';
 import VolunteerForm from '@/components/volunteers/VolunteerForm';
 import { pageMetadata, readSeoOverrides } from '@/lib/seo';
 
-export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
   const content = await getContent();

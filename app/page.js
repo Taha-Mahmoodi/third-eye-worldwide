@@ -12,7 +12,6 @@ import TimelineRow from '@/components/cards/TimelineRow';
 import ProjectCard from '@/components/projects/ProjectCard';
 import { pageMetadata, readSeoOverrides, webPageJsonLd } from '@/lib/seo';
 
-export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
   const content = await getContent();

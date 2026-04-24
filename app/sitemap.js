@@ -6,12 +6,8 @@ import { siteUrl } from '@/lib/seo';
  * custom pages the CMS has defined. Uses Next's built-in sitemap
  * convention — no manual XML needed.
  *
- * Revalidates every 10 minutes so CMS publishes propagate without a
- * redeploy. The `/api/cms/data` PUT handler already calls
- * revalidatePath('/sitemap.xml') via its ALL_ROUTES list; this just
- * caps staleness.
+ * Generated once at build time in the static export.
  */
-export const revalidate = 600;
 
 const FIXED = [
   { path: '/',            priority: 1.0, changeFrequency: 'weekly' },

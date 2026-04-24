@@ -4,7 +4,6 @@ import DonateWidget from '@/components/donate/DonateWidget';
 import ImpactRow from '@/components/donate/ImpactRow';
 import { pageMetadata, readSeoOverrides } from '@/lib/seo';
 
-export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
   const content = await getContent();
