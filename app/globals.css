@@ -746,7 +746,7 @@ footer { background: var(--bg-inverse); color: var(--fg-inverse); padding: 72px 
 /* Featured story card */
 .story-featured {
   display: grid;
-  grid-template-columns: 1.05fr 1fr;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
   gap: 0;
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
@@ -756,12 +756,16 @@ footer { background: var(--bg-inverse); color: var(--fg-inverse); padding: 72px 
   cursor: pointer;
   transition: box-shadow .25s, transform .25s, border-color .25s;
   margin-bottom: 72px;
+  text-decoration: none;
+  color: inherit;
 }
 .story-featured:hover {
   box-shadow: var(--shadow-lg);
   border-color: var(--border-strong);
   transform: translateY(-2px);
 }
+/* min-width: 0 so long titles don't force the body track wider than its share. */
+.story-featured > * { min-width: 0; }
 .sf-media {
   position: relative; min-height: 420px;
   background: var(--brand);
@@ -813,11 +817,16 @@ footer { background: var(--bg-inverse); color: var(--fg-inverse); padding: 72px 
   font-size: clamp(1.5rem, 2.4vw, 2.05rem);
   letter-spacing: -.025em; line-height: 1.15;
   color: var(--fg);
-  text-wrap: balance;
+  text-wrap: pretty;
+  word-break: normal;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 .sf-title em { font-style: italic; color: var(--accent); font-weight: 600; }
 .sf-excerpt {
   font-size: 1.02rem; color: var(--fg-muted); line-height: 1.65;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 .sf-footer {
   display: flex; align-items: center; justify-content: space-between;
@@ -942,13 +951,20 @@ footer { background: var(--bg-inverse); color: var(--fg-inverse); padding: 72px 
   color: var(--fg-subtle); font-weight: 600;
 }
 
-@media (max-width: 900px) {
+/* Collapse the two-column featured-story card below ~desktop width so the
+   body never gets squeezed into a one-word-per-line strip. */
+@media (max-width: 1040px) {
   .story-featured { grid-template-columns: 1fr; }
   .sf-media { min-height: 260px; }
   .sf-body { padding: 32px 28px; }
+}
+@media (max-width: 900px) {
   .story-list { margin-left: 0; border-left: none; }
   .story-row { grid-template-columns: 70px 1fr; margin-left: 0; }
   .sr-rail { display: none; }
+}
+@media (max-width: 520px) {
+  .sf-body { padding: 24px 20px; gap: 16px; }
 }
 
 /* ── Responsive ─────────── */
