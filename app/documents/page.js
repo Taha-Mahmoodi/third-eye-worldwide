@@ -46,7 +46,6 @@ function BlogsTab({ blogs, cats }) {
 }
 
 function StoriesTab({ stories, fs }) {
-  const rows = chunk(stories, 3);
   return (
     <section className="section">
       <div className="section-inner">
@@ -62,15 +61,9 @@ function StoriesTab({ stories, fs }) {
 
         <h3 className="stories-list-heading">More stories</h3>
         {stories.length > 0 ? (
-          rows.map((row, i) => (
-            <div
-              key={i}
-              className="doc-grid"
-              style={i > 0 ? { marginTop: 24 } : undefined}
-            >
-              {row.map((s) => <DocCard key={s.id || s.title} doc={s} defaultKind="story" />)}
-            </div>
-          ))
+          <div className="doc-grid">
+            {stories.map((s) => <DocCard key={s.id || s.title} doc={s} defaultKind="story" />)}
+          </div>
         ) : (
           <p style={{ color: 'var(--fg-muted)' }}>No stories yet.</p>
         )}
