@@ -5,9 +5,22 @@ import DocCard from '@/components/documents/DocCard';
 import FilterableBlogGrid from '@/components/documents/FilterableBlogGrid';
 import NewsletterForm from '@/components/documents/NewsletterForm';
 import FeaturedStory from '@/components/documents/FeaturedStory';
+import { pageMetadata, readSeoOverrides } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Documents — Third Eye Worldwide' };
+
+export async function generateMetadata() {
+  const content = await getContent();
+  const o = readSeoOverrides(content, '/documents');
+  const d = content?.documents || {};
+  return pageMetadata({
+    title: o.title || 'Documents — Third Eye Worldwide',
+    description: o.description || d.heroSub || 'Blogs, stories, and long-form writing from the TEWW team and community.',
+    path: '/documents',
+    image: o.image,
+    noindex: o.noindex,
+  });
+}
 
 function chunk(arr, size) {
   const out = [];

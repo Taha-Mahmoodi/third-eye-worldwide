@@ -6,6 +6,61 @@
     "tagline": "Technology that opens new worlds",
     "title": "Third Eye Worldwide — Technology that opens new worlds"
   },
+  "seo": {
+    "defaultDescription": "Third Eye Worldwide builds free, open-source assistive technology for people with visual impairment — screen readers, magnifiers, navigation aids, and community projects in 47 countries.",
+    "defaultImage": "",
+    "twitter": "@thirdeyeworldwide",
+    "pages": {
+      "/": {
+        "title": "Third Eye Worldwide — Technology that opens new worlds",
+        "description": "Free, open-source assistive technology for the 2.2 billion people worldwide with visual impairment. Screen readers, magnifiers, and community projects in 47 countries.",
+        "image": "",
+        "noindex": false
+      },
+      "/about": {
+        "title": "About — Third Eye Worldwide",
+        "description": "An NGO building tools with — not just for — visually impaired people. Meet the team, the mission, and the values that guide every product decision.",
+        "image": "",
+        "noindex": false
+      },
+      "/projects": {
+        "title": "Projects — Third Eye Worldwide",
+        "description": "Twelve flagship projects: screen readers, magnifiers, navigation aids, audiolibraries, device lending, and training — all free at point of use.",
+        "image": "",
+        "noindex": false
+      },
+      "/donate": {
+        "title": "Donate — Third Eye Worldwide",
+        "description": "Every dollar funds free tools, free training, and free devices for visually impaired people worldwide. 94¢ of every dollar goes to programs.",
+        "image": "",
+        "noindex": false
+      },
+      "/media": {
+        "title": "Media — Third Eye Worldwide",
+        "description": "Photos, podcasts, and videos from the field — every item captioned, transcribed, and audio-described.",
+        "image": "",
+        "noindex": false
+      },
+      "/documents": {
+        "title": "Documents — Third Eye Worldwide",
+        "description": "Blogs, stories, and research from the TEWW team. Field studies, policy analysis, and community voices.",
+        "image": "",
+        "noindex": false
+      },
+      "/volunteers": {
+        "title": "Volunteer — Third Eye Worldwide",
+        "description": "Translators, developers, audio narrators, and community organisers always welcome. Every role is remote-friendly and paired with a mentor.",
+        "image": "",
+        "noindex": false
+      },
+      "/coming-soon": {
+        "title": "Coming soon — Third Eye Worldwide",
+        "description": "Something new is launching soon at Third Eye Worldwide.",
+        "image": "",
+        "noindex": true
+      }
+    }
+  },
   "home": {
     "heroEyebrow": "Tech NGO · Est. 2025",
     "heroTitle": "See the world<br><em>your way.</em>",

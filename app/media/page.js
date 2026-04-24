@@ -6,9 +6,22 @@ import PodcastFeatured from '@/components/media/PodcastFeatured';
 import PodcastRow from '@/components/media/PodcastRow';
 import FilterableVideoGrid from '@/components/media/FilterableVideoGrid';
 import PhotoLightbox from '@/components/media/PhotoLightbox';
+import { pageMetadata, readSeoOverrides } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Media — Third Eye Worldwide' };
+
+export async function generateMetadata() {
+  const content = await getContent();
+  const o = readSeoOverrides(content, '/media');
+  const m = content?.media || {};
+  return pageMetadata({
+    title: o.title || 'Media — Third Eye Worldwide',
+    description: o.description || m.heroSub || 'Photos, podcasts, and videos from the field — all captioned, transcribed, and audio-described.',
+    path: '/media',
+    image: o.image,
+    noindex: o.noindex,
+  });
+}
 
 function PhotosTab({ photos, cats }) {
   return (

@@ -5,9 +5,22 @@ import StatTile from '@/components/site/StatTile';
 import RoleCard from '@/components/volunteers/RoleCard';
 import StepItem from '@/components/volunteers/StepItem';
 import VolunteerForm from '@/components/volunteers/VolunteerForm';
+import { pageMetadata, readSeoOverrides } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Volunteer — Third Eye Worldwide' };
+
+export async function generateMetadata() {
+  const content = await getContent();
+  const o = readSeoOverrides(content, '/volunteers');
+  const v = content?.volunteers || {};
+  return pageMetadata({
+    title: o.title || 'Volunteer — Third Eye Worldwide',
+    description: o.description || v.heroSub || 'Help build free assistive technology. Translators, developers, narrators, and organisers always welcome.',
+    path: '/volunteers',
+    image: o.image,
+    noindex: o.noindex,
+  });
+}
 
 export default async function VolunteersPage() {
   const content = await getContent();

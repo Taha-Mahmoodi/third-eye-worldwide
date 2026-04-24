@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getContent, visibleSorted } from '@/lib/cms/db';
 import RichText from '@/components/RichText';
+import JsonLd from '@/components/JsonLd';
 import ImpactCell from '@/components/home/ImpactCell';
 import StatBlock from '@/components/home/StatBlock';
 import ValueCard from '@/components/home/ValueCard';
@@ -9,8 +10,21 @@ import HeroGraphics from '@/components/home/HeroGraphics';
 import HeroActions from '@/components/home/HeroActions';
 import StoryCard from '@/components/cards/StoryCard';
 import TimelineRow from '@/components/cards/TimelineRow';
+import { pageMetadata, readSeoOverrides, webPageJsonLd } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
+
+export async function generateMetadata() {
+  const content = await getContent();
+  const o = readSeoOverrides(content, '/');
+  return pageMetadata({
+    title: o.title || content?.site?.title,
+    description: o.description,
+    path: '/',
+    image: o.image,
+    noindex: o.noindex,
+  });
+}
 
 export default async function HomePage() {
   const content = await getContent();
@@ -29,6 +43,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <JsonLd data={webPageJsonLd({ title: h.heroEyebrow ? 'Home' : undefined, path: '/' })} />
       <section className="hero">
         <div className="hero-photo" aria-hidden="true"></div>
         <HeroGraphics liveLabel={h.liveLabel} />

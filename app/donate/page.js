@@ -2,9 +2,22 @@ import { getContent, visibleSorted } from '@/lib/cms/db';
 import RichText from '@/components/RichText';
 import DonateWidget from '@/components/donate/DonateWidget';
 import ImpactRow from '@/components/donate/ImpactRow';
+import { pageMetadata, readSeoOverrides } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Donate — Third Eye Worldwide' };
+
+export async function generateMetadata() {
+  const content = await getContent();
+  const o = readSeoOverrides(content, '/donate');
+  const d = content?.donate || {};
+  return pageMetadata({
+    title: o.title || 'Donate — Third Eye Worldwide',
+    description: o.description || d.heroSub || 'Every dollar funds free assistive technology for visually impaired people worldwide.',
+    path: '/donate',
+    image: o.image,
+    noindex: o.noindex,
+  });
+}
 
 export default async function DonatePage() {
   const content = await getContent();
