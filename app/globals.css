@@ -1683,6 +1683,85 @@ details.faq-item[open] .faq-chev { transform: rotate(45deg); background: var(--b
   text-align: center;
 }
 
+/* Donate page — moved from inline styles */
+.custom-amount-suffix {
+  font-family: var(--font-display);
+  font-size: .85rem;
+  color: var(--fg-muted);
+}
+.donate-note {
+  font-size: .88rem;
+  color: var(--fg-muted);
+  margin-bottom: 20px;
+  line-height: 1.55;
+}
+.donate-note strong { color: var(--fg); }
+.donate-submit-btn {
+  width: 100%;
+  justify-content: center;
+  font-size: 1.05rem;
+  padding: 16px;
+}
+.donate-details-heading {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--fg);
+  margin-bottom: 16px;
+}
+.donate-status {
+  margin-top: 10px;
+  font-size: .9rem;
+  min-height: 1.4em;
+}
+
+.donate-sidebar { position: sticky; top: 140px; }
+.donate-impact-eyebrow {
+  font-family: var(--font-display);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.donate-other {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-top: 20px;
+}
+.donate-other-eyebrow {
+  font-family: var(--font-display);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 10px;
+}
+.donate-other-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.donate-other-links a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--fg);
+  font-family: var(--font-display);
+  font-size: .92rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+.donate-other-links a i {
+  color: var(--brand);
+  font-size: 18px;
+}
+.donate-other-links a:hover { color: var(--brand); }
+
 /* Screen-reader-only text */
 .sr-only {
   position: absolute !important;
