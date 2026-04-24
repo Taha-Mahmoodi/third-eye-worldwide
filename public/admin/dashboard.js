@@ -163,6 +163,7 @@ const CMS = (function () {
       dashboard: renderDashboard,
       site: renderSite,
       home: renderHome,
+      seo: renderSeo,
       projects: () => renderCollection({
         key: 'projects.items',
         title: 'Projects',
@@ -466,6 +467,172 @@ const CMS = (function () {
     `;
     bindFieldInputs();
     bindListControls();
+  }
+
+  /* ── SEO ─── */
+  // Routes that are editable in the SEO panel. Order controls on-screen order.
+  // Adding a route here automatically gives it a per-page override card.
+  const SEO_ROUTES = [
+    { path: '/',             label: 'Home' },
+    { path: '/about',        label: 'About' },
+    { path: '/projects',     label: 'Projects' },
+    { path: '/donate',       label: 'Donate' },
+    { path: '/media',        label: 'Media' },
+    { path: '/documents',    label: 'Documents' },
+    { path: '/volunteers',   label: 'Volunteer' },
+    { path: '/coming-soon',  label: 'Coming soon' },
+    { path: '/blog-detail',  label: 'Blog detail (article)' },
+    { path: '/story-detail', label: 'Story detail (article)' },
+  ];
+  // Recommended length bands. Anything outside warns the editor.
+  const TITLE_SOFT = { min: 30, max: 60 };
+  const DESC_SOFT  = { min: 120, max: 160 };
+
+  function ensureSeoShape() {
+    if (!state.data.seo) state.data.seo = {};
+    if (!state.data.seo.pages) state.data.seo.pages = {};
+    for (const r of SEO_ROUTES) {
+      if (!state.data.seo.pages[r.path]) {
+        state.data.seo.pages[r.path] = { title: '', description: '', image: '', noindex: false };
+      }
+    }
+  }
+
+  function renderSeo() {
+    ensureSeoShape();
+    const main = document.getElementById('cms-main');
+    const seo = state.data.seo;
+
+    const guidanceCard = `
+      <div class="cms-seo-guide" role="note">
+        <div class="cms-seo-guide-head">
+          <i class="ph-fill ph-lightbulb" aria-hidden="true"></i>
+          <h3>Edit without breaking SEO</h3>
+        </div>
+        <ul>
+          <li><strong>Keep titles between 30 and 60 characters.</strong> Google truncates
+              beyond ~60. Put the most specific phrase first, the brand last.</li>
+          <li><strong>Descriptions: 120–160 characters.</strong> Write for humans: a single
+              clear sentence that answers "why click this?".</li>
+          <li><strong>Never leave both title and description blank.</strong> A blank override
+              falls back to the page's own content, which works — but you lose control
+              of the social-share card.</li>
+          <li><strong>One H1 per page is baked into the design.</strong> Don't add another
+              H1 inside rich-text fields or you'll split the page's topic for crawlers.</li>
+          <li><strong>Images should be at least 1200×630 and land in /public/assets.</strong>
+              Leave the field blank to use the site-wide generated card.</li>
+          <li><strong>Check "no index" only for placeholder, internal, or duplicate pages.</strong>
+              A no-indexed page won't appear in Google — useful for /coming-soon,
+              disastrous for /projects.</li>
+          <li><strong>After publishing, the site and the sitemap update within a minute.</strong>
+              You don't need a redeploy.</li>
+        </ul>
+      </div>
+    `;
+
+    const siteDefaults = `
+      <h3 class="cms-seo-heading">Site-wide defaults</h3>
+      <p class="cms-seo-desc">These appear when a page has no override of its own.</p>
+      <div class="cms-form">
+        ${textField('Default description (≈150 chars)', 'seo.defaultDescription', seo.defaultDescription, 'Used on the home page when no per-page description is set.')}
+        ${textField('Default OG / Twitter image path', 'seo.defaultImage', seo.defaultImage, 'Optional. A public path like /assets/og-default.png. Leave blank to use the auto-generated card.')}
+        ${textField('Twitter / X handle', 'seo.twitter', seo.twitter, 'Include the @. Used on every page share card.')}
+      </div>
+    `;
+
+    const routeCards = SEO_ROUTES.map((r) => {
+      const page = seo.pages[r.path] || {};
+      const titleLen = (page.title || '').length;
+      const descLen = (page.description || '').length;
+      const titleWarn = titleLen > 0 && (titleLen < TITLE_SOFT.min || titleLen > TITLE_SOFT.max);
+      const descWarn = descLen > 0 && (descLen < DESC_SOFT.min || descLen > DESC_SOFT.max);
+      const pathAttr = escapeAttr(r.path);
+      return `
+        <div class="cms-seo-row">
+          <div class="cms-seo-row-head">
+            <div>
+              <div class="cms-seo-row-path">${escapeHtml(r.path)}</div>
+              <div class="cms-seo-row-label">${escapeHtml(r.label)}</div>
+            </div>
+            <label class="cms-seo-noindex">
+              <input type="checkbox" data-seo-path="${pathAttr}" data-seo-field="noindex" ${page.noindex ? 'checked' : ''}>
+              <span>Tell search engines not to index this page</span>
+            </label>
+          </div>
+          <div class="cms-seo-row-body">
+            <div class="cms-field">
+              <label>
+                Title
+                <span class="cms-seo-counter ${titleWarn ? 'warn' : ''}" data-count-for="${pathAttr}|title">${titleLen} / ${TITLE_SOFT.max}</span>
+              </label>
+              <input type="text" class="cms-input cms-seo-input" data-seo-path="${pathAttr}" data-seo-field="title" data-seo-len="title" value="${escapeAttr(page.title || '')}">
+            </div>
+            <div class="cms-field">
+              <label>
+                Description
+                <span class="cms-seo-counter ${descWarn ? 'warn' : ''}" data-count-for="${pathAttr}|description">${descLen} / ${DESC_SOFT.max}</span>
+              </label>
+              <textarea class="cms-input cms-seo-input" rows="2" data-seo-path="${pathAttr}" data-seo-field="description" data-seo-len="description">${escapeHtml(page.description || '')}</textarea>
+            </div>
+            <div class="cms-field">
+              <label>OG image path (optional)</label>
+              <input type="text" class="cms-input" data-seo-path="${pathAttr}" data-seo-field="image" value="${escapeAttr(page.image || '')}" placeholder="/assets/og-about.png">
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    main.innerHTML = `
+      ${pageHeader('SEO', 'Search', 'Titles, descriptions, and social-share cards for every public page.')}
+      ${guidanceCard}
+      ${siteDefaults}
+      <h3 class="cms-seo-heading">Per-page overrides</h3>
+      <p class="cms-seo-desc">A blank field falls back to the page content. Clear a field to let it track the page hero automatically.</p>
+      <div class="cms-seo-grid">${routeCards}</div>
+    `;
+    bindFieldInputs(); // site-default text fields use the standard path-based binding
+    bindSeoPageInputs();
+    bindSeoCounters();
+  }
+
+  // Direct binding for per-page fields. Standard data-bind splits on dots,
+  // which would shred paths like "/about". Custom writer targets
+  // state.data.seo.pages[path][field] instead.
+  let seoDebounce;
+  function bindSeoPageInputs() {
+    document.querySelectorAll('[data-seo-path]').forEach((el) => {
+      const handler = () => {
+        ensureSeoShape();
+        const path = el.getAttribute('data-seo-path');
+        const field = el.getAttribute('data-seo-field');
+        const val = el.type === 'checkbox' ? el.checked : el.value;
+        state.data.seo.pages[path][field] = val;
+        setStatus('saving');
+        clearTimeout(seoDebounce);
+        seoDebounce = setTimeout(() => save(), 400);
+      };
+      el.addEventListener('input', handler);
+      el.addEventListener('change', handler);
+    });
+  }
+
+  // Live character counters next to each title/description.
+  function bindSeoCounters() {
+    document.querySelectorAll('[data-seo-len]').forEach((input) => {
+      const kind = input.getAttribute('data-seo-len');
+      const soft = kind === 'title' ? TITLE_SOFT : DESC_SOFT;
+      const path = input.getAttribute('data-seo-path');
+      const counter = document.querySelector(`[data-count-for="${path}|${kind}"]`);
+      if (!counter) return;
+      const update = () => {
+        const len = (input.value || '').length;
+        counter.textContent = `${len} / ${soft.max}`;
+        const warn = len > 0 && (len < soft.min || len > soft.max);
+        counter.classList.toggle('warn', warn);
+      };
+      input.addEventListener('input', update);
+    });
   }
 
   /* ── COLLECTION VIEW (generic) ─── */
