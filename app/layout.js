@@ -3,6 +3,7 @@ import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import ClientBootstrap from '@/components/ClientBootstrap';
 import AudioTour from '@/components/AudioTour';
+import VoiceAssistant from '@/components/VoiceAssistant';
 
 export const metadata = {
   title: 'Third Eye Worldwide — Technology that opens new worlds',
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
         <Footer />
         <ClientBootstrap />
         <AudioTour />
+        <VoiceAssistant />
       </body>
     </html>
   );
