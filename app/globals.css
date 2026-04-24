@@ -913,20 +913,31 @@ footer { background: var(--bg-inverse); color: var(--fg-inverse); padding: 72px 
   border-left: 1px dashed var(--border);
   margin-left: 58px;
 }
+/*
+ * A TimelineRow is wrapped in a next/link (.story-row-link) to make
+ * the whole row clickable. That wrapper must be the grid container —
+ * if we put `display: grid` on the <li>, the Link sits as a single
+ * grid item in the first 42px track and squeezes all the row content
+ * into a 42px column.
+ */
 .story-row {
-  display: grid;
-  grid-template-columns: 42px 90px 1fr;
-  gap: 24px;
-  padding: 30px 0 30px 0;
   border-bottom: 1px solid var(--border);
-  cursor: pointer;
   margin-left: -59px;
-  padding-left: 0;
   position: relative;
-  transition: background .2s;
 }
 .story-row:last-child { border-bottom: none; }
-.story-row:hover { background: var(--bg-elevated); }
+.story-row-link {
+  display: grid;
+  grid-template-columns: 42px 90px minmax(0, 1fr);
+  gap: 24px;
+  padding: 30px 0;
+  cursor: pointer;
+  transition: background .2s;
+  text-decoration: none;
+  color: inherit;
+}
+.story-row-link:hover { background: var(--bg-elevated); }
+.story-row-link > * { min-width: 0; }
 .sr-rail {
   position: relative;
   display: flex; align-items: flex-start; justify-content: center;
@@ -937,7 +948,7 @@ footer { background: var(--bg-inverse); color: var(--fg-inverse); padding: 72px 
   background: var(--bg); border: 2px solid var(--fg-subtle);
   transition: border-color .2s, background .2s, transform .2s;
 }
-.story-row:hover .sr-dot { border-color: var(--brand); background: var(--brand); transform: scale(1.15); }
+.story-row-link:hover .sr-dot { border-color: var(--brand); background: var(--brand); transform: scale(1.15); }
 .sr-date {
   font-family: var(--font-display);
   text-align: left;
@@ -968,7 +979,7 @@ footer { background: var(--bg-inverse); color: var(--fg-inverse); padding: 72px 
   text-wrap: balance;
   transition: color .2s;
 }
-.story-row:hover .sr-body h4 { color: var(--brand); }
+.story-row-link:hover .sr-body h4 { color: var(--brand); }
 .sr-body p {
   font-size: .94rem; color: var(--fg-muted);
   line-height: 1.6;
@@ -1005,7 +1016,8 @@ footer { background: var(--bg-inverse); color: var(--fg-inverse); padding: 72px 
 }
 @media (max-width: 900px) {
   .story-list { margin-left: 0; border-left: none; }
-  .story-row { grid-template-columns: 70px 1fr; margin-left: 0; }
+  .story-row { margin-left: 0; }
+  .story-row-link { grid-template-columns: 70px minmax(0, 1fr); }
   .sr-rail { display: none; }
 }
 @media (max-width: 520px) {
