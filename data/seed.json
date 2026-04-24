@@ -99,21 +99,39 @@
   },
   "projects": {
     "heroEyebrow": "Projects",
-    "heroTitle": "Twelve projects. <em>One goal.</em>",
-    "heroSub": "From assistive software to grassroots training, every project is designed for real-world independence. Every tool is free at point of use.",
+    "heroTitle": "Two projects. <em>One mission.</em>",
+    "heroSub": "Voice-first tools that let blind and low-vision users operate the web and each other's stories without a single sighted assumption.",
     "items": [
-      { "id": "screen-reader", "icon": "ph-speaker-high", "title": "TEWW Screen Reader", "desc": "Our flagship open-source screen reader supports all major platforms and 40+ languages. Designed from the ground up by and for visually impaired users.", "tag": "Software · Free" },
-      { "id": "magnifier", "icon": "ph-magnifying-glass", "title": "Visual Magnifier Pro", "desc": "Adaptive screen magnification with AI-enhanced edge detection, custom contrast modes, and cursor tracking for low-vision users.", "tag": "Software · Free" },
-      { "id": "navigation", "icon": "ph-map-pin", "title": "Navigation Aid", "desc": "GPS and indoor positioning with real-time audio guidance. Partners with public transit systems in 12 cities to provide blind-friendly route data.", "tag": "App · Free" },
-      { "id": "training", "icon": "ph-chalkboard-teacher", "title": "Digital Access Training", "desc": "Hands-on 4-week bootcamp teaching screen reader use, smartphone navigation, and online safety to newly visually impaired adults.", "tag": "Training · Community" },
-      { "id": "devices", "icon": "ph-device-mobile", "title": "Device Lending Library", "desc": "Provides smartphones pre-configured with our tools to users in low-income settings. 18,000+ devices distributed since 2019.", "tag": "Hardware · Subsidised" },
-      { "id": "grants", "icon": "ph-code", "title": "Open Source Grants", "desc": "Annual grants for developers building accessible tools. Funded 63 projects across 28 countries, reaching 400K+ beneficiaries.", "tag": "Grants · Open" },
-      { "id": "audiolib", "icon": "ph-book-open", "title": "Audiolibrary Project", "desc": "A free, human-narrated library of 14,000 educational and cultural texts in 22 languages — free to stream, free to download.", "tag": "Content · Free" },
-      { "id": "scholars", "icon": "ph-graduation-cap", "title": "Access Scholars", "desc": "Full scholarships for visually impaired students pursuing STEM and design degrees. 180 scholars funded since 2018.", "tag": "Education · Funded" },
-      { "id": "workforce", "icon": "ph-briefcase", "title": "Workforce Pathway", "desc": "Employer partnerships that match trained TEWW users to accessibility-mature companies. 1,200+ placements to date.", "tag": "Employment · Program" },
-      { "id": "prevention", "icon": "ph-eye", "title": "Prevention & Screening", "desc": "Mobile clinics deliver vision screenings in rural and underserved areas — 220,000 people screened since 2020.", "tag": "Health · Partnered" },
-      { "id": "civic", "icon": "ph-buildings", "title": "Accessible Civic Tech", "desc": "We partner with city and national governments to make public services — ballots, tax filings, benefits — usable for everyone.", "tag": "Civic · Partnered" },
-      { "id": "translator", "icon": "ph-translate", "title": "TEWW Translator Guild", "desc": "Our volunteer network of 240+ native speakers localises every interface, guide, and audio file we publish.", "tag": "Localisation · Open" }
+      {
+        "id": "te-voice",
+        "slug": "te",
+        "icon": "ph-microphone",
+        "title": "TE — AI Voice Navigator",
+        "desc": "Say \"Hey TE\" and go anywhere on our site, read the page aloud, switch themes, or control the audio tour — no mouse, no keyboard.",
+        "tag": "AI Assistant · Live on web",
+        "status": "live",
+        "statusLabel": "Live — on teww.org",
+        "what": "TE (Third Eye) is our voice-first navigator. It listens for the wake phrase \"Hey TE\", takes a spoken command, performs the action — navigate, read aloud, control the audio tour, switch theme — and confirms verbally. TE is built into every page on our website.",
+        "how": "A small client-side agent uses the browser's Web Speech API to listen continuously for the wake word. When it fires, a second recognition pass captures the command, which is routed through a rules-based intent parser. Confirmations are spoken back via speech synthesis. Commands map to keyword patterns — there is no cloud round-trip and no network dependency once the page has loaded, so TE keeps working on slow or intermittent connections.",
+        "why": "Mouse and keyboard navigation assume a user can see the interface. For someone blind or low-vision, every click is a search. TE removes the search: speak the destination and get there. It also helps hands-free users — caregivers, users with motor impairments — explore the same site with no pointing device at all.",
+        "usage": "Click the <strong>TE</strong> pill under the top navigation and grant microphone permission once. After that, say \"Hey TE\" anywhere on the site. Try: <em>\"Hey TE, go to donate.\"</em> <em>\"Hey TE, read this page.\"</em> <em>\"Hey TE, dark mode.\"</em> <em>\"Hey TE, pause the audio.\"</em> Say <em>\"Hey TE, help\"</em> for the full command list, or <em>\"goodbye\"</em> to turn TE off.",
+        "future": "Today TE only lives in our web browser. Next milestones: a standalone iOS and Android app so TE travels with our users, then a browser extension that brings the same voice interface to any site on the internet, and finally an OS-level integration that runs TE alongside system screen readers without fighting them for focus."
+      },
+      {
+        "id": "third-eye-world",
+        "slug": "third-eye-world",
+        "icon": "ph-users-three",
+        "title": "Third Eye World",
+        "desc": "A voice-first social network built from scratch for blind and low-vision users. Every post is a voice memo. Every action is a voice command.",
+        "tag": "Social · Coming soon",
+        "status": "coming-soon",
+        "statusLabel": "Coming soon",
+        "what": "Third Eye World is a social platform built exclusively for blind and low-vision users. Posts are voice memos — no images, no text, no visual-first timelines. Navigation is voice-driven; interactions are deliberately simple: <strong>like</strong> and <strong>comment</strong>, nothing else. Accounts exist, but there is no follow graph, no ranking algorithm, and no vanity metrics.",
+        "how": "The whole app is organised around voice. Users record a voice memo to post. The timeline is an audio stream — memos play one after another. To interact, the user speaks a simple command (\"like\", \"comment\", \"next\") or taps a single on-screen button that the screen reader announces clearly. Comments are themselves voice memos. Server-side, memos are stored as short audio files with machine-generated transcripts for search — never displayed visually by default.",
+        "why": "Mainstream social media was designed for sighted browsing: visual feeds, thumb-scroll mechanics, endless follow graphs. For blind users, adapting that through a screen reader is exhausting and slow. We wanted a platform that starts from voice as the first-class input and output — one where a blind user is the default user, not an accommodation.",
+        "usage": "Create an account with your voice (TE guides the onboarding flow). Record a voice memo to post — up to two minutes. The timeline plays new memos from the community. Say <em>\"like\"</em> to like, <em>\"comment\"</em> to reply with your own short memo, or <em>\"next\"</em> to skip. There's no follow button and no algorithmic feed; everyone you follow in spirit is simply everyone on Third Eye World.",
+        "future": "Third Eye World is in build. The roadmap: private beta with fifty blind testers in Nairobi, Lagos, and Dhaka; a voice transcription and search layer for memo discovery; accessibility certification (WCAG 2.2 AAA as a floor, then real-world field validation); moderation tooling that flags abusive audio without requiring visual review; and finally a global open beta paired with free onboarding training in every user's first language."
+      }
     ]
   },
   "documents": {

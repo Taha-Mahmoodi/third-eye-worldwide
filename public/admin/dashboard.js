@@ -168,15 +168,27 @@ const CMS = (function () {
         key: 'projects.items',
         title: 'Projects',
         eyebrow: 'Content',
-        sub: 'Each project appears as a card on the Projects page.',
-        newItem: () => ({ id: uid(), icon: 'ph-stack', title: 'New project', desc: '', tag: '' }),
+        sub: 'Each project appears as a card on the Projects page and gets its own detail page at /projects/<slug>.',
+        newItem: () => ({
+          id: uid(), slug: '', icon: 'ph-stack', title: 'New project', desc: '',
+          tag: '', status: 'live', statusLabel: 'Live',
+          what: '', how: '', why: '', usage: '', future: '',
+        }),
         fields: [
           { k: 'title', label: 'Title', type: 'text', required: true },
+          { k: 'slug', label: 'URL slug', type: 'text', required: true, hint: 'Lowercase, no spaces. Becomes /projects/<slug>.' },
           { k: 'icon', label: 'Icon', type: 'icon' },
-          { k: 'desc', label: 'Description', type: 'textarea' },
-          { k: 'tag', label: 'Tag label', type: 'text', hint: 'Format: Category · Status (e.g. "Software · Free")' }
+          { k: 'tag', label: 'Tag label', type: 'text', hint: 'e.g. "AI Assistant · Live on web"' },
+          { k: 'status', label: 'Status', type: 'select', options: ['live', 'coming-soon', 'beta'] },
+          { k: 'statusLabel', label: 'Status label', type: 'text', hint: 'Shown as a pill on the detail page hero.' },
+          { k: 'desc', label: 'Short description (card + hero)', type: 'textarea' },
+          { k: 'what', label: 'What is it?', type: 'textarea', hint: 'Rich HTML allowed (e.g. <strong>, <em>).' },
+          { k: 'how', label: 'How does it work?', type: 'textarea', hint: 'Rich HTML allowed.' },
+          { k: 'why', label: 'Why we built it', type: 'textarea', hint: 'Rich HTML allowed.' },
+          { k: 'usage', label: 'How is it used?', type: 'textarea', hint: 'Rich HTML allowed.' },
+          { k: 'future', label: 'What is the future of it?', type: 'textarea', hint: 'Rich HTML allowed.' },
         ],
-        itemDisplay: (it) => ({ icon: it.icon, title: it.title, meta: it.tag })
+        itemDisplay: (it) => ({ icon: it.icon, title: it.title, meta: (it.slug ? '/projects/' + it.slug : '') + (it.tag ? ' · ' + it.tag : '') })
       }),
       blogs: () => renderCollection({
         key: 'documents.blogs',

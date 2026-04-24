@@ -36,6 +36,20 @@ export default async function sitemap() {
 
   try {
     const content = await getContent();
+
+    // Individual project detail pages (/projects/<slug>).
+    const projectItems = visibleSorted(content?.projects?.items || content?.programs?.items || []);
+    for (const item of projectItems) {
+      if (!item?.slug) continue;
+      entries.push({
+        url: siteUrl(`/projects/${item.slug}`),
+        lastModified: now,
+        changeFrequency: 'monthly',
+        priority: 0.7,
+      });
+    }
+
+    // CMS custom pages at /<slug>.
     const pages = visibleSorted(content?.pages || []);
     for (const p of pages) {
       if (!p?.slug) continue;
