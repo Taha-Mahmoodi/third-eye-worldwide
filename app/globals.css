@@ -1574,6 +1574,86 @@ details.faq-item[open] .faq-chev { transform: rotate(45deg); background: var(--b
   .fs-body { padding: 24px; }
 }
 
+/* Media page — photo-accessibility band + podcast featured (moved from inline styles) */
+.photo-accessibility-eyebrow {
+  font-family: var(--font-display);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 10px;
+}
+.photo-accessibility-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--fg);
+  margin-bottom: 10px;
+  letter-spacing: -.02em;
+}
+.photo-accessibility-body {
+  color: var(--fg-muted);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.65;
+}
+
+.pod-featured-eyebrow {
+  font-family: var(--font-display);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.pod-featured-title {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--fg);
+  margin-bottom: 12px;
+  letter-spacing: -.025em;
+  line-height: 1.15;
+}
+.pod-featured-desc { color: var(--fg-muted); margin-bottom: 20px; line-height: 1.65; }
+.pod-art-bg {
+  aspect-ratio: 1;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--brand) 0%, var(--accent) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.pod-art-inner {
+  color: #fff;
+  text-align: center;
+  z-index: 1;
+  font-family: var(--font-display);
+}
+.pod-art-name {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: 1;
+}
+.pod-art-meta {
+  font-size: .75rem;
+  margin-top: 14px;
+  letter-spacing: .12em;
+  opacity: .85;
+}
+.pod-list-heading {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--fg);
+  margin-bottom: 18px;
+}
+
 /* Screen-reader-only text */
 .sr-only {
   position: absolute !important;
