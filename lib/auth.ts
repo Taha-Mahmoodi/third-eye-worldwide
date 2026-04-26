@@ -7,6 +7,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { scryptSync, timingSafeEqual } from 'node:crypto';
 import { prisma } from '@/lib/cms/db';
 import { requireAuthSecret } from '@/lib/env';
+import { SESSION_MAX_AGE_SECONDS } from '@/lib/constants';
 
 function verifyPassword(password: string, stored: string | null | undefined): boolean {
   if (!stored || !password) return false;
@@ -22,7 +23,7 @@ function verifyPassword(password: string, stored: string | null | undefined): bo
 }
 
 export const authOptions: NextAuthOptions = {
-  session: { strategy: 'jwt', maxAge: 60 * 60 * 12 },
+  session: { strategy: 'jwt', maxAge: SESSION_MAX_AGE_SECONDS },
   pages: { signIn: '/admin/login' },
   providers: [
     CredentialsProvider({

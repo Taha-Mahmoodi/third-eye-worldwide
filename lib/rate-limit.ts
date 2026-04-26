@@ -7,6 +7,8 @@
  * implementation behind the same `check()` signature.
  */
 
+import { RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS } from '@/lib/constants';
+
 interface Bucket {
   tokens: number;
   lastRefill: number;
@@ -39,7 +41,7 @@ export interface CheckResult {
 
 export function check(
   key: string,
-  { capacity = 20, refillIntervalMs = 15 * 60 * 1000 }: CheckOptions = {}
+  { capacity = RATE_LIMIT_MAX_REQUESTS, refillIntervalMs = RATE_LIMIT_WINDOW_MS }: CheckOptions = {}
 ): CheckResult {
   const now = Date.now();
   let b = buckets.get(key);

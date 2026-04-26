@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/cms/db';
 import { isAdmin } from '@/lib/cms/auth-guard';
 import { check, requestIp } from '@/lib/rate-limit';
+import { RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS } from '@/lib/constants';
 
 interface VolunteerBody {
   name?: unknown;
@@ -17,7 +18,10 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export async function POST(req: NextRequest) {
   const ip = requestIp(req);
-  const rl = check(`submit:volunteer:${ip}`, { capacity: 20, refillIntervalMs: 15 * 60 * 1000 });
+  const rl = check(`submit:volunteer:${ip}`, {
+    capacity: RATE_LIMIT_MAX_REQUESTS,
+    refillIntervalMs: RATE_LIMIT_WINDOW_MS,
+  });
   if (!rl.allowed) {
     return NextResponse.json(
       { error: 'Too many submissions — please try again later.' },
