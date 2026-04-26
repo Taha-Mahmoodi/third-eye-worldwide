@@ -649,6 +649,20 @@ footer { background: var(--bg-inverse); color: var(--fg-inverse); padding: 72px 
 
 .secure-note { display: flex; align-items: center; gap: 8px; font-size: .82rem; color: var(--fg-muted); padding: 10px 14px; background: var(--bg-subtle); border-radius: var(--radius-md); margin-bottom: 14px; }
 .secure-note i { color: var(--brand); font-size: 16px; }
+/* Donation page notice: this form is intent-only, no payment is taken.
+   Slightly louder than .secure-note so donors actually read it before
+   submitting. */
+.donate-payment-notice {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: .9rem; line-height: 1.55; color: var(--fg);
+  padding: 14px 16px;
+  background: color-mix(in oklab, var(--accent) 10%, var(--bg-elevated));
+  border: 1px solid color-mix(in oklab, var(--accent) 35%, var(--border));
+  border-radius: var(--radius-md);
+  margin-bottom: 18px;
+}
+.donate-payment-notice i { color: var(--accent); font-size: 18px; flex-shrink: 0; line-height: 1.4; }
+.donate-payment-notice strong { color: var(--fg); }
 
 /* ── CORE VALUES ─────────────────── */
 .values-section {
