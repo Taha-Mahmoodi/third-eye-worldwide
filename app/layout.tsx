@@ -8,6 +8,8 @@ import AudioTour from '@/components/AudioTour';
 import VoiceAssistant from '@/components/VoiceAssistant';
 import JsonLd from '@/components/JsonLd';
 import { SITE, pageMetadata, organizationJsonLd } from '@/lib/seo';
+import { ThemeProvider } from '@/lib/context/theme-context';
+import { NavProvider } from '@/lib/context/nav-context';
 
 // Root metadata — every route inherits these and overrides via
 // its own generateMetadata() / pageMetadata() calls.
@@ -52,12 +54,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <a href="#main" className="skip-link">Skip to main content</a>
-        <Nav />
-        <main id="main">{children}</main>
-        <Footer />
-        <ClientBootstrap />
-        <AudioTour />
-        <VoiceAssistant />
+        <ThemeProvider>
+          <NavProvider>
+            <Nav />
+            <main id="main">{children}</main>
+            <Footer />
+            <ClientBootstrap />
+            <AudioTour />
+            <VoiceAssistant />
+          </NavProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

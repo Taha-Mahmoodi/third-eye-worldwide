@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import LogoAnimated from '@/components/LogoAnimated';
 import NavTabIcon, { type NavTabIconName } from '@/components/animate-ui/icons/nav-tab-icon';
+import { useTheme } from '@/lib/context/theme-context';
+import { useNav } from '@/lib/context/nav-context';
 
 const NAV_MATCH: Record<string, (p: string) => boolean> = {
   home: (p) => p === '/',
@@ -33,6 +35,8 @@ function isActive(key: string, pathname: string | null): boolean {
 
 export default function Nav() {
   const pathname = usePathname();
+  const { textSize, setTextSize, cycleTheme } = useTheme();
+  const { toggle: toggleMobileNav } = useNav();
   // Which top-level tab is currently being hovered or keyboard-focused.
   // Drives the per-tab icon animation in NavTabIcon. We keep the active
   // tab's icon visible too so the user can still see the icon for the
@@ -123,24 +127,27 @@ export default function Nav() {
           <div className="text-size-btns" title="Text size" role="group" aria-label="Text size">
             <button
               type="button"
-              className="ts-btn active"
+              className={`ts-btn ${textSize === 'a' ? 'active' : ''}`}
               data-size="a"
               aria-label="Default text size"
-              onClick={() => window.setSize && window.setSize('a')}
+              aria-pressed={textSize === 'a'}
+              onClick={() => setTextSize('a')}
             >A</button>
             <button
               type="button"
-              className="ts-btn"
+              className={`ts-btn ${textSize === 'a-plus' ? 'active' : ''}`}
               data-size="a-plus"
               aria-label="Larger text size"
-              onClick={() => window.setSize && window.setSize('a-plus')}
+              aria-pressed={textSize === 'a-plus'}
+              onClick={() => setTextSize('a-plus')}
             >A+</button>
             <button
               type="button"
-              className="ts-btn"
+              className={`ts-btn ${textSize === 'a-plus-plus' ? 'active' : ''}`}
               data-size="a-plus-plus"
               aria-label="Largest text size"
-              onClick={() => window.setSize && window.setSize('a-plus-plus')}
+              aria-pressed={textSize === 'a-plus-plus'}
+              onClick={() => setTextSize('a-plus-plus')}
             >A++</button>
           </div>
           <button
@@ -149,7 +156,7 @@ export default function Nav() {
             id="theme-btn"
             title="Toggle theme"
             aria-label="Toggle theme"
-            onClick={() => window.cycleTheme && window.cycleTheme()}
+            onClick={cycleTheme}
           >
             <i className="ph ph-sun"></i>
           </button>
@@ -164,7 +171,7 @@ export default function Nav() {
             aria-label="Open navigation menu"
             aria-expanded="false"
             aria-controls="primary-nav"
-            onClick={() => window.toggleNav && window.toggleNav()}
+            onClick={toggleMobileNav}
           >
             <i className="ph ph-list"></i>
           </button>
