@@ -7,7 +7,7 @@ import NewsletterForm from '@/components/documents/NewsletterForm';
 import FeaturedStory from '@/components/documents/FeaturedStory';
 import { pageMetadata, readSeoOverrides } from '@/lib/seo';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 export async function generateMetadata() {
   const content = await getContent();

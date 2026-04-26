@@ -4,7 +4,7 @@ import { getContent } from '@/lib/cms/db';
 import { findCustomPage, renderCustomPage } from '@/lib/pages/custom';
 import { pageMetadata, readSeoOverrides } from '@/lib/seo';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 // Reserved slugs that already resolve to concrete routes; must not be shadowed
 // by a user-defined page slug.
