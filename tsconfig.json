@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2022",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
+    "allowJs": false,
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
@@ -24,11 +24,10 @@
   },
   "include": [
     "next-env.d.ts",
+    "types/**/*.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "**/*.js",
-    "**/*.jsx",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", ".next", "tailwind.config.js", "postcss.config.js"]
 }
