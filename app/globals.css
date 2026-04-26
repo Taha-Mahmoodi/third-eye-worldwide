@@ -64,7 +64,8 @@ img { max-width: 100%; display: block; }
 nav.topnav { position: sticky; top: 0; z-index: 100; background: var(--bg-elevated); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm); transition: background .25s, border-color .25s; }
 .nav-inner { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--space-8); height: 68px; display: flex; align-items: center; justify-content: space-between; gap: var(--space-6); }
 .nav-logo { display: flex; align-items: center; cursor: pointer; flex-shrink: 0; background: none; border: none; padding: 0; color: inherit; }
-.nav-logo img { height: 28px; width: auto; display: block; }
+.nav-logo img,
+.nav-logo .brand-logo-svg { height: 28px; width: auto; display: block; }
 .nav-links { display: flex; align-items: center; gap: var(--space-6); list-style: none; }
 .nav-links > li { position: relative; }
 .nav-links a, .nav-links button.nav-link-btn { font-family: var(--font-display); font-size: .9rem; font-weight: 500; color: var(--fg-muted); padding: 6px 0; border-bottom: 2px solid transparent; transition: color .15s, border-color .15s; background: none; border-left: none; border-right: none; border-top: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
@@ -616,7 +617,13 @@ footer { background: var(--bg-inverse); color: var(--fg-inverse); padding: 72px 
 .footer-bottom p { font-size: .82rem; opacity: .55; }
 [data-theme="dark"] .footer-bottom p, [data-theme="high-contrast"] .footer-bottom p { color: var(--fg-muted); opacity: 1; }
 .footer-logo { display: flex; align-items: center; }
-.footer-logo img { height: 32px; width: auto; display: block; }
+.footer-logo img,
+.footer-logo .footer-logo-svg { height: 32px; width: auto; display: block; }
+/* Re-tone the inline SVG logo for the dark footer: the wordmark inherits
+   the footer's foreground color (white in light theme) instead of brand
+   blue, which would otherwise sit blue-on-dark with poor contrast. The
+   eyes keep --accent (orange) — already high-contrast on dark. */
+.footer-logo .footer-logo-svg { --brand: currentColor; }
 
 /* ── FILTERS (for media/docs) ────── */
 .filter-bar { display: flex; gap: 8px; margin-bottom: 36px; flex-wrap: wrap; align-items: center; }
@@ -1120,7 +1127,8 @@ footer { background: var(--bg-inverse); color: var(--fg-inverse); padding: 72px 
   .text-size-btns { display: none; }
   .nav-controls { gap: var(--space-2); }
   .nav-inner { padding: 0 var(--space-4); gap: var(--space-2); }
-  .nav-logo img { height: 24px; }
+  .nav-logo img,
+  .nav-logo .brand-logo-svg { height: 24px; }
 }
 
 /* 5. Hero impact strip — wrap to 2×2 on narrow screens instead of overflowing */
