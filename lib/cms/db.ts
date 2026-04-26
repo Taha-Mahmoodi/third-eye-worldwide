@@ -4,6 +4,7 @@
 
 import { PrismaClient } from '@prisma/client';
 import type { CmsItemMeta, SiteContent } from '@/lib/types';
+import { CONTENT_REVISION_KEEP_COUNT } from '@/lib/constants';
 
 declare global {
   // eslint-disable-next-line no-var
@@ -46,6 +47,35 @@ export async function saveContent(
       create: { id: 1, data: payload },
     }),
   ]);
+
+  // MED-4: keep only the most-recent N revisions. Each revision stores
+  // a full content snapshot (~50 KB-2 MB), so without pruning the
+  // table grew unbounded in proportion to publish frequency. We do this
+  // outside the transaction above because (a) it's not atomic with the
+  // publish (a stale read of older rows is harmless) and (b) Prisma
+  // transactions can't reference results from earlier statements.
+  await pruneRevisions(CONTENT_REVISION_KEEP_COUNT);
+}
+
+/**
+ * Drop all but the `keep` most-recent ContentRevision rows. Errors are
+ * logged at the call site, never thrown — pruning failure must never
+ * fail a publish.
+ */
+async function pruneRevisions(keep: number): Promise<void> {
+  try {
+    const stale = await prisma.contentRevision.findMany({
+      orderBy: { createdAt: 'desc' },
+      skip: keep,
+      select: { id: true },
+    });
+    if (stale.length === 0) return;
+    await prisma.contentRevision.deleteMany({
+      where: { id: { in: stale.map((r) => r.id) } },
+    });
+  } catch {
+    // Swallow — pruning is best-effort. The publish succeeded already.
+  }
 }
 
 // Utility to filter an array-of-items collection by visibility + sort by `order`.
