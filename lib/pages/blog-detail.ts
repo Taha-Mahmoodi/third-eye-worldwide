@@ -1,16 +1,22 @@
 import { visibleSorted } from '@/lib/cms/db';
+import type { CmsBlogPost, SiteContent } from '@/lib/types';
 
-function _esc(s) {
+// Legacy global helper, only defined in the standalone CMS preview iframe.
+// In the live app it's undefined and the `typeof doc === 'function'` guards skip these branches.
+declare const doc: ((...args: unknown[]) => string) | undefined;
+
+const HTML_ESCAPES: Record<string, string> = {
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+};
+function _esc(s: unknown): string {
   if (s == null) return '';
-  return String(s).replace(/[&<>"']/g, (c) =>
-    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])
-  );
+  return String(s).replace(/[&<>"']/g, (c) => HTML_ESCAPES[c] ?? c);
 }
 
-export function renderBlogDetail(content, slug) {
+export function renderBlogDetail(content: SiteContent | null | undefined, slug?: string): string {
   const docs = content?.documents || {};
-  const blogs = visibleSorted(docs.blogs || []);
-  const post = (slug && blogs.find((b) => b.id === slug || b.slug === slug)) || blogs[0] || {};
+  const blogs = visibleSorted<CmsBlogPost>(docs.blogs || []);
+  const post: CmsBlogPost = (slug && blogs.find((b) => b.id === slug || b.slug === slug)) || blogs[0] || {};
 
   const tag = _esc(post.tagLabel || 'Research');
   const title = _esc(post.title || 'What WCAG misses — and how we test for it.');

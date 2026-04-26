@@ -6,11 +6,13 @@
 
 const DEV_FALLBACK_SECRET = 'dev-secret-change-me-locally-only';
 
+let warned = false;
+
 /**
  * Returns NEXTAUTH_SECRET. In development, falls back to a fixed dev
  * value and logs a one-time warning. In production, throws if unset.
  */
-export function requireAuthSecret() {
+export function requireAuthSecret(): string {
   const secret = process.env.NEXTAUTH_SECRET;
   if (secret) return secret;
   if (process.env.NODE_ENV === 'production') {
@@ -19,10 +21,9 @@ export function requireAuthSecret() {
       'Generate one with `openssl rand -base64 32` and set it in your deploy env.'
     );
   }
-  if (!requireAuthSecret._warned) {
-    // eslint-disable-next-line no-console
+  if (!warned) {
     console.warn('[auth] NEXTAUTH_SECRET unset — using dev fallback. Set it before deploying.');
-    requireAuthSecret._warned = true;
+    warned = true;
   }
   return DEV_FALLBACK_SECRET;
 }

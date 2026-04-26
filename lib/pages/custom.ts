@@ -1,9 +1,10 @@
 import { visibleSorted } from '@/lib/cms/db';
 import { esc, rich } from '@/lib/pages/_helpers';
+import type { CmsCustomPage, CmsPageSection, SiteContent } from '@/lib/types';
 
 // Find a CMS-defined page by slug. Returns null if missing or hidden.
-export function findCustomPage(content, slug) {
-  const pages = Array.isArray(content?.pages) ? content.pages : [];
+export function findCustomPage(content: SiteContent | null | undefined, slug: string): CmsCustomPage | null {
+  const pages = Array.isArray(content?.pages) ? content!.pages! : [];
   const p = pages.find((x) => x && x.slug === slug);
   if (!p) return null;
   if (p.visible === false) return null;
@@ -12,7 +13,7 @@ export function findCustomPage(content, slug) {
 
 // Each page has an ordered list of sections; section types supported below.
 // Any extension just adds another case here + a matching editor form in the CMS.
-function renderSection(sec) {
+function renderSection(sec: CmsPageSection | null | undefined): string {
   if (!sec || sec.visible === false) return '';
   const type = sec.type || 'rich';
   switch (type) {
@@ -54,7 +55,7 @@ function renderSection(sec) {
   }
 }
 
-export function renderCustomPage(page) {
-  const sections = visibleSorted(page?.sections || []);
+export function renderCustomPage(page: CmsCustomPage | null | undefined): string {
+  const sections = visibleSorted<CmsPageSection>(page?.sections || []);
   return sections.map(renderSection).join('\n');
 }
