@@ -21,6 +21,8 @@ export default function VolunteerForm({ roles }: VolunteerFormProps) {
   const [hours, setHours] = useState(HOURS_OPTIONS[0]);
   const [message, setMessage] = useState('');
   const [chosen, setChosen] = useState<Set<string>>(() => new Set<string>());
+  // MED-1 honeypot — see DonateWidget for the explanation.
+  const [website, setWebsite] = useState('');
   const [status, setStatus] = useState<{ text: string; error: boolean }>({
     text: 'We accept applications from anywhere. Reviewed in the order received.',
     error: false,
@@ -57,6 +59,7 @@ export default function VolunteerForm({ roles }: VolunteerFormProps) {
           role: Array.from(chosen).join(', ') || null,
           skills: [country, hours].filter(Boolean).join(' · ') || null,
           message: message || null,
+          website,
         }),
       });
       if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -86,6 +89,24 @@ export default function VolunteerForm({ roles }: VolunteerFormProps) {
         <label htmlFor="vol-email">Email</label>
         <input id="vol-email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
       </div>
+      {/* MED-1 honeypot. */}
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        value={website}
+        onChange={(e) => setWebsite(e.target.value)}
+        style={{
+          position: 'absolute',
+          left: '-9999px',
+          width: 1,
+          height: 1,
+          opacity: 0,
+          pointerEvents: 'none',
+        }}
+      />
       <div className="pay-field">
         <label htmlFor="vol-country">Country / time zone</label>
         <input id="vol-country" type="text" placeholder="e.g. Lagos, WAT (UTC+1)" value={country} onChange={(e) => setCountry(e.target.value)} />
