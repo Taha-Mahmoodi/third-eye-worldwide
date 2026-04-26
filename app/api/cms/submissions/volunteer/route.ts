@@ -1,13 +1,21 @@
-import { NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/cms/db';
 import { isAdmin } from '@/lib/cms/auth-guard';
 import { check, requestIp } from '@/lib/rate-limit';
+
+interface VolunteerBody {
+  name?: unknown;
+  email?: unknown;
+  role?: unknown;
+  skills?: unknown;
+  message?: unknown;
+}
 
 export const dynamic = 'force-dynamic';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-export async function POST(req) {
+export async function POST(req: NextRequest) {
   const ip = requestIp(req);
   const rl = check(`submit:volunteer:${ip}`, { capacity: 20, refillIntervalMs: 15 * 60 * 1000 });
   if (!rl.allowed) {
@@ -17,8 +25,8 @@ export async function POST(req) {
     );
   }
 
-  let body;
-  try { body = await req.json(); } catch { return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 }); }
+  let body: VolunteerBody;
+  try { body = (await req.json()) as VolunteerBody; } catch { return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 }); }
 
   const name = typeof body?.name === 'string' ? body.name.trim() : '';
   const email = typeof body?.email === 'string' ? body.email.trim() : '';
@@ -41,7 +49,7 @@ export async function POST(req) {
   return NextResponse.json({ ok: true, id: row.id });
 }
 
-export async function GET(req) {
+export async function GET(req: NextRequest) {
   if (!(await isAdmin(req))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }

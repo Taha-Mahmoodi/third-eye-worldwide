@@ -1,7 +1,16 @@
-import { NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/cms/db';
 import { isAdmin } from '@/lib/cms/auth-guard';
 import { check, requestIp } from '@/lib/rate-limit';
+
+interface DonationBody {
+  name?: unknown;
+  email?: unknown;
+  amount?: unknown;
+  mode?: unknown;
+  currency?: unknown;
+  note?: unknown;
+}
 
 export const dynamic = 'force-dynamic';
 
@@ -13,7 +22,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const MIN_AMOUNT = 1;
 const MAX_AMOUNT = 1_000_000;
 
-export async function POST(req) {
+export async function POST(req: NextRequest) {
   const ip = requestIp(req);
   const rl = check(`submit:donation:${ip}`, { capacity: 20, refillIntervalMs: 15 * 60 * 1000 });
   if (!rl.allowed) {
@@ -23,13 +32,13 @@ export async function POST(req) {
     );
   }
 
-  let body;
-  try { body = await req.json(); } catch { return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 }); }
+  let body: DonationBody;
+  try { body = (await req.json()) as DonationBody; } catch { return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 }); }
 
   const name = typeof body?.name === 'string' ? body.name.trim() : '';
   const email = typeof body?.email === 'string' ? body.email.trim() : '';
   const amount = Number(body?.amount);
-  const mode = body?.mode;
+  const mode = typeof body?.mode === 'string' ? body.mode : '';
 
   if (!name || !email || !Number.isFinite(amount) || !mode) {
     return NextResponse.json({ error: 'name, email, amount, mode required' }, { status: 400 });
@@ -60,7 +69,7 @@ export async function POST(req) {
   return NextResponse.json({ ok: true, id: row.id });
 }
 
-export async function GET(req) {
+export async function GET(req: NextRequest) {
   if (!(await isAdmin(req))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }

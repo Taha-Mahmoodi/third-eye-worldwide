@@ -1,11 +1,11 @@
 // Next.js middleware: session-gates /admin (except /admin/login).
 // JWT cookie check — does not hit the DB, runs on the edge.
 
-import { NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import { requireAuthSecret } from '@/lib/env';
 
-export async function middleware(req) {
+export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Always allow the login page and NextAuth API itself

@@ -1,7 +1,10 @@
-import { NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getContent, saveContent } from '@/lib/cms/db';
 import { isAdmin } from '@/lib/cms/auth-guard';
+import type { SiteContent } from '@/lib/types';
+
+interface CmsItem { slug?: string; visible?: boolean }
 
 export const dynamic = 'force-dynamic';
 
@@ -23,7 +26,7 @@ export async function GET() {
   return NextResponse.json(data);
 }
 
-export async function PUT(req) {
+export async function PUT(req: NextRequest) {
   const admin = await isAdmin(req);
   if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
@@ -35,14 +38,20 @@ export async function PUT(req) {
     );
   }
 
-  let body;
+  let body: unknown;
   try { body = await req.json(); } catch { return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 }); }
   if (!body || typeof body !== 'object') return NextResponse.json({ error: 'Expected object' }, { status: 400 });
+  const data = body as SiteContent & {
+    site?: unknown;
+    home?: unknown;
+    projects?: { items?: CmsItem[] };
+    programs?: { items?: CmsItem[] };
+  };
 
   // Sanity floor: a valid content document must at minimum describe the site
   // and include the home page — refuse to silently wipe the DB with an empty
   // or malformed payload.
-  if (!body.site || !body.home) {
+  if (!data.site || !data.home) {
     return NextResponse.json(
       { error: 'Refusing to save: payload is missing required top-level sections (site, home).' },
       { status: 422 }
@@ -51,17 +60,17 @@ export async function PUT(req) {
 
   const author = admin.user?.email || admin.user?.name || req.headers.get('x-cms-author') || null;
   const note = req.headers.get('x-cms-note') || null;
-  await saveContent(body, { author, note });
+  await saveContent(data, { author, note });
 
   // Revalidate fixed routes + any user-defined /[slug] pages +
   // each project detail at /projects/<slug> + the sitemap
   // (so SEO crawlers see CMS updates immediately).
-  const slugRoutes = Array.isArray(body.pages)
-    ? body.pages.filter((p) => p?.slug && p?.visible !== false).map((p) => '/' + p.slug)
+  const slugRoutes = Array.isArray(data.pages)
+    ? (data.pages as CmsItem[]).filter((p) => p?.slug && p?.visible !== false).map((p) => '/' + p.slug)
     : [];
-  const projectItems = body?.projects?.items || body?.programs?.items || [];
+  const projectItems = data.projects?.items || data.programs?.items || [];
   const projectRoutes = Array.isArray(projectItems)
-    ? projectItems.filter((p) => p?.slug && p?.visible !== false).map((p) => '/projects/' + p.slug)
+    ? projectItems.filter((p: CmsItem) => p?.slug && p?.visible !== false).map((p: CmsItem) => '/projects/' + p.slug)
     : [];
   const seoRoutes = ['/sitemap.xml', '/robots.txt'];
   for (const path of [...ALL_ROUTES, ...slugRoutes, ...projectRoutes, ...seoRoutes]) {
