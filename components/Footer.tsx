@@ -57,7 +57,11 @@ export default function Footer() {
         </div>
         <div className="footer-bottom">
           <p>© 2026 Third Eye Worldwide. Registered 501(c)(3) · EIN 83-1102447</p>
-          <p>Built with accessibility first.</p>
+          <p>
+            <Link href="/privacy">Privacy Policy</Link>
+            {' · '}
+            Built with accessibility first.
+          </p>
         </div>
       </div>
     </footer>

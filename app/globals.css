@@ -625,6 +625,21 @@ footer { background: var(--bg-inverse); color: var(--fg-inverse); padding: 72px 
    eyes keep --accent (orange) — already high-contrast on dark. */
 .footer-logo .footer-logo-svg { --brand: currentColor; }
 
+/* ── PROSE (legal / long-form text pages) ────── */
+/* Used by /privacy and any future plain-text policy pages. Kept narrow
+   so line lengths stay readable and the typography matches the rest of
+   the site (display font for headings, body font for paragraphs). */
+.prose { color: var(--fg); font-size: 1rem; line-height: 1.7; }
+.prose h2 { font-family: var(--font-display); font-size: 1.35rem; font-weight: 600; letter-spacing: -.01em; color: var(--fg); margin: 36px 0 12px; }
+.prose h2:first-child { margin-top: 0; }
+.prose p { margin: 0 0 14px; color: var(--fg-muted); }
+.prose ul { margin: 0 0 14px; padding-left: 22px; color: var(--fg-muted); }
+.prose ul li { margin-bottom: 6px; }
+.prose a { color: var(--brand); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+.prose a:hover { color: var(--brand-hover); }
+.prose code { font-family: var(--font-mono, ui-monospace, monospace); font-size: .9em; background: var(--bg-subtle); padding: 1px 6px; border-radius: 4px; }
+.prose strong { color: var(--fg); font-weight: 600; }
+
 /* ── FILTERS (for media/docs) ────── */
 .filter-bar { display: flex; gap: 8px; margin-bottom: 36px; flex-wrap: wrap; align-items: center; }
 .filter-label { font-family: var(--font-display); font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--fg-muted); margin-right: 10px; }

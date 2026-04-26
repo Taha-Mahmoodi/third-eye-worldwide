@@ -1,6 +1,20 @@
 // Seed script: loads data/seed.json into the SiteContent row
 // and creates an initial admin user.
 // Run with: `npx prisma db seed` (configured in package.json).
+//
+// DATA RETENTION
+// --------------
+// VolunteerSubmission and DonationSubmission rows hold PII (name, email
+// and, for donations, an amount). Per the privacy policy at /privacy
+// they should be purged after ~2 years. This is NOT done here — it
+// belongs in a recurring job (cron / scheduled function), e.g.:
+//
+//   await prisma.volunteerSubmission.deleteMany({
+//     where: { createdAt: { lt: new Date(Date.now() - 2 * 365 * 86400e3) } },
+//   });
+//   await prisma.donationSubmission.deleteMany({ ...same... });
+//
+// Set this up before going live with real form submissions.
 
 import { PrismaClient } from '@prisma/client';
 import { readFileSync } from 'node:fs';
