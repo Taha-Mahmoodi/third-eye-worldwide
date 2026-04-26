@@ -3,6 +3,51 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+// The Web Speech API isn't in lib.dom.d.ts as a constructor — type as
+// a permissive shape that covers what we use.
+interface SpeechRecognitionLike {
+  lang: string;
+  continuous: boolean;
+  interimResults: boolean;
+  maxAlternatives: number;
+  onresult: ((event: { resultIndex: number; results: { [k: number]: { [k: number]: { transcript: string }; isFinal: boolean }; length: number } }) => void) | null;
+  onerror: (() => void) | null;
+  onend: (() => void) | null;
+  start: () => void;
+  stop: () => void;
+}
+type SpeechRecognitionCtor = new () => SpeechRecognitionLike;
+
+declare global {
+  interface Window {
+    SpeechRecognition?: SpeechRecognitionCtor;
+    webkitSpeechRecognition?: SpeechRecognitionCtor;
+    __teSimulate?: (text: string) => CommandDescriptor;
+  }
+}
+
+type Intent =
+  | 'noop'
+  | 'disable'
+  | 'help'
+  | 'audio-pause'
+  | 'audio-resume'
+  | 'audio-stop'
+  | 'audio-start'
+  | 'scroll'
+  | 'read-page'
+  | 'theme'
+  | 'navigate'
+  | 'unknown';
+
+interface CommandDescriptor {
+  intent: Intent;
+  payload?: string;
+  confirm?: string;
+}
+
+type Status = 'idle' | 'listening' | 'awake' | 'disabled';
+
 /*
  * TE — Third Eye voice assistant.
  *
@@ -30,7 +75,7 @@ import { useRouter } from 'next/navigation';
  * intent router without needing a real microphone.
  */
 
-const PAGE_ROUTES = {
+const PAGE_ROUTES: Record<string, { path: string; aliases: string[] }> = {
   home:       { path: '/',            aliases: ['home', 'the home page', 'main page', 'start page', 'front page'] },
   about:      { path: '/about',       aliases: ['about', 'about page', 'about us'] },
   projects:   { path: '/projects',    aliases: ['projects', 'project page', 'projects page', 'programs', 'program', 'our projects'] },
@@ -65,7 +110,7 @@ const WAKE_RE = /\b(hey|hi|okay|ok|yo)\s+(te|tee|t\s*e|t\.\s*e\.?)\b/i;
 // false-fire on words like "tea", "tell", "team".
 const BARE_WAKE_RE = /^(te|tee)[\s.,!?]*$/i;
 
-function speak(text) {
+function speak(text: string): SpeechSynthesisUtterance | null {
   if (typeof window === 'undefined' || !window.speechSynthesis || !window.SpeechSynthesisUtterance) return null;
   try {
     window.speechSynthesis.cancel();
@@ -84,7 +129,7 @@ function speak(text) {
  * Parse a raw command string and return an { intent, payload, confirm }
  * descriptor. Keyword-based; not a general NLU.
  */
-export function parseCommand(raw) {
+export function parseCommand(raw: string): CommandDescriptor {
   const text = String(raw || '').trim().toLowerCase();
   if (!text) return { intent: 'noop' };
 
@@ -135,21 +180,20 @@ export function parseCommand(raw) {
 export default function VoiceAssistant() {
   const router = useRouter();
   const [supported, setSupported] = useState(true);
-  // 'idle' | 'listening' | 'awake' | 'disabled'
-  const [status, setStatus] = useState('disabled');
+  const [status, setStatus] = useState<Status>('disabled');
   const [lastHeard, setLastHeard] = useState('');
   const [panelOpen, setPanelOpen] = useState(false);
-  const recognitionRef = useRef(null);
+  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const awakeRef = useRef(false);
   const enabledRef = useRef(false);
-  const restartTimerRef = useRef(null);
+  const restartTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const armedRef = useRef(false);
 
-  const statusRef = useRef(status);
+  const statusRef = useRef<Status>(status);
   useEffect(() => { statusRef.current = status; }, [status]);
 
-  function executeIntent(descriptor) {
-    const { intent, payload, confirm } = descriptor || {};
+  function executeIntent(descriptor: CommandDescriptor | null | undefined) {
+    const { intent, payload, confirm } = descriptor || ({} as CommandDescriptor);
     if (confirm) speak(confirm);
     switch (intent) {
       case 'navigate':
@@ -163,8 +207,8 @@ export default function VoiceAssistant() {
         break;
       }
       case 'read-page': {
-        const h = document.querySelector('main h1, main h2');
-        const p = document.querySelector('main p');
+        const h = document.querySelector<HTMLElement>('main h1, main h2');
+        const p = document.querySelector<HTMLElement>('main p');
         const parts = [h?.innerText, p?.innerText].filter(Boolean);
         if (parts.length) speak(parts.join('. '));
         else speak("I couldn't find readable content on this page.");
@@ -174,14 +218,14 @@ export default function VoiceAssistant() {
       case 'audio-pause':  window.pauseAudioTour?.();  break;
       case 'audio-resume': window.resumeAudioTour?.(); break;
       case 'audio-stop':   window.stopAudioTour?.();   break;
-      case 'theme':        window.setTheme?.(payload); break;
+      case 'theme':        if (payload) window.setTheme(payload); break;
       case 'disable':      disable();                  break;
       case 'help': /* HELP_TEXT already spoken via confirm */ break;
       default: /* unknown / noop */ break;
     }
   }
 
-  function handleCommand(text) {
+  function handleCommand(text: string) {
     setLastHeard(text);
     executeIntent(parseCommand(text));
     awakeRef.current = false;
@@ -201,7 +245,7 @@ export default function VoiceAssistant() {
     rec.continuous = true;
     rec.interimResults = true;
     rec.maxAlternatives = 1;
-    rec.onresult = (event) => {
+    rec.onresult = (event: { resultIndex: number; results: { [k: number]: { [k: number]: { transcript: string }; isFinal: boolean }; length: number } }) => {
       if (!enabledRef.current) return;
       let transcript = '';
       for (let i = event.resultIndex; i < event.results.length; i++) {
@@ -251,7 +295,7 @@ export default function VoiceAssistant() {
     try { rec.start(); setStatus('listening'); } catch {}
   }
 
-  function enable({ intro = false } = {}) {
+  function enable({ intro = false }: { intro?: boolean } = {}) {
     enabledRef.current = true;
     armedRef.current = false;
     setStatus('listening');
@@ -274,7 +318,7 @@ export default function VoiceAssistant() {
   // Browsers won't grant mic permission without an activation, so we
   // can't truly auto-enable — but this means the user only has to do
   // *one* thing (the next click anywhere) to start TE.
-  function armOnNextGesture(opts = {}) {
+  function armOnNextGesture(opts: { intro?: boolean } = {}) {
     if (typeof window === 'undefined' || armedRef.current || enabledRef.current) return;
     armedRef.current = true;
     const onGesture = () => {
@@ -291,7 +335,7 @@ export default function VoiceAssistant() {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     setSupported(!!SR);
 
-    window.__teSimulate = (text) => {
+    window.__teSimulate = (text: string): CommandDescriptor => {
       setLastHeard(text);
       const descriptor = parseCommand(text);
       executeIntent(descriptor);
@@ -310,7 +354,7 @@ export default function VoiceAssistant() {
     // Also arm on first mount in case the launch toast was already
     // dismissed in this session (returning visitor) — TE still wakes
     // up the next time the user clicks anywhere on the page.
-    let alreadyChose = null;
+    let alreadyChose: string | null = null;
     try { alreadyChose = sessionStorage.getItem('teww-tour-choice'); } catch {}
     if (SR && alreadyChose !== 'no-audio' && !enabledRef.current) {
       // Pre-arm without intro; toast will retrigger with intro:true.
@@ -325,17 +369,19 @@ export default function VoiceAssistant() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const statusLabel = {
+  const statusLabel: string = ({
     disabled:  'TE is off',
     listening: 'Listening for "Hey TE"',
     awake:     "Yes? I'm listening",
-  }[status] || 'TE';
+    idle:      'TE',
+  } as Record<Status, string>)[status] || 'TE';
 
-  const dotClass = {
+  const dotClass: string = ({
     disabled:  'te-dot-off',
     listening: 'te-dot-listen',
     awake:     'te-dot-awake',
-  }[status] || '';
+    idle:      '',
+  } as Record<Status, string>)[status] || '';
 
   return (
     <>

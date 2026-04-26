@@ -8,7 +8,25 @@ import Link from 'next/link';
  *   img, initials, author, meta, readTime }.
  * `featured` adds the .featured modifier class.
  */
-export default function StoryCard({ story, featured = false }) {
+export interface StoryCardData {
+  heroType?: string;
+  tagClass?: string;
+  tagLabel?: string;
+  img?: string;
+  title?: string;
+  desc?: string;
+  initials?: string;
+  author?: string;
+  meta?: string;
+  readTime?: string;
+}
+
+interface StoryCardProps {
+  story?: StoryCardData;
+  featured?: boolean;
+}
+
+export default function StoryCard({ story, featured = false }: StoryCardProps) {
   const {
     heroType = 'type-story',
     tagClass = 'story',

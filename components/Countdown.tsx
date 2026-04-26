@@ -8,8 +8,21 @@ import { useEffect, useState } from 'react';
  * values on the client so the server-rendered HTML matches the initial
  * client render, avoiding hydration mismatches.
  */
-export default function Countdown({ targetIso, ariaPrefix = 'Time remaining:' }) {
-  const [remaining, setRemaining] = useState(null);
+interface CountdownProps {
+  targetIso: string;
+  ariaPrefix?: string;
+}
+
+interface RemainingTime {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+  done: boolean;
+}
+
+export default function Countdown({ targetIso, ariaPrefix = 'Time remaining:' }: CountdownProps) {
+  const [remaining, setRemaining] = useState<RemainingTime | null>(null);
 
   useEffect(() => {
     const target = new Date(targetIso).getTime();
@@ -40,8 +53,8 @@ export default function Countdown({ targetIso, ariaPrefix = 'Time remaining:' })
     return () => clearInterval(id);
   }, [targetIso]);
 
-  const view = remaining || { days: 0, hours: 0, minutes: 0, seconds: 0, done: false };
-  const pad = (n) => String(n).padStart(2, '0');
+  const view: RemainingTime = remaining || { days: 0, hours: 0, minutes: 0, seconds: 0, done: false };
+  const pad = (n: number) => String(n).padStart(2, '0');
 
   const ariaText = view.done
     ? 'Launch time has arrived.'

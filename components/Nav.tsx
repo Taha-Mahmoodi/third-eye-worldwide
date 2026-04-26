@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-const NAV_MATCH = {
+const NAV_MATCH: Record<string, (p: string) => boolean> = {
   home: (p) => p === '/',
   about: (p) => p.startsWith('/about'),
   projects: (p) => p.startsWith('/projects'),
@@ -12,9 +12,10 @@ const NAV_MATCH = {
   volunteers: (p) => p.startsWith('/volunteers'),
 };
 
-function isActive(key, pathname) {
+function isActive(key: string, pathname: string | null): boolean {
   const fn = NAV_MATCH[key];
-  return fn ? fn(pathname) : false;
+  if (!fn || !pathname) return false;
+  return fn(pathname);
 }
 
 export default function Nav() {

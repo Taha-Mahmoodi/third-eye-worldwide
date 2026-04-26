@@ -14,9 +14,24 @@ import { useEffect, useState } from 'react';
  * deliberately don't restore from localStorage anymore because it led
  * to confusing returning-visitor state ("I expected Overview, got Team").
  */
-export default function Subnav({ page, tabs, defaultTab, ariaLabel }) {
+import type { ReactNode } from 'react';
+
+export interface SubnavTab {
+  id: string;
+  label: string;
+  content: ReactNode;
+}
+
+interface SubnavProps {
+  page: string;
+  tabs: SubnavTab[];
+  defaultTab?: string;
+  ariaLabel?: string;
+}
+
+export default function Subnav({ page, tabs, defaultTab, ariaLabel }: SubnavProps) {
   const fallbackTab = defaultTab || tabs?.[0]?.id || '';
-  const [active, setActive] = useState(fallbackTab);
+  const [active, setActive] = useState<string>(fallbackTab);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -25,7 +40,7 @@ export default function Subnav({ page, tabs, defaultTab, ariaLabel }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function activate(id) {
+  function activate(id: string) {
     setActive(id);
     try {
       const url = new URL(window.location.href);
