@@ -1,8 +1,10 @@
 'use client';
 
+import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import LogoAnimated from '@/components/LogoAnimated';
+import NavTabIcon, { type NavTabIconName } from '@/components/animate-ui/icons/nav-tab-icon';
 
 const NAV_MATCH: Record<string, (p: string) => boolean> = {
   home: (p) => p === '/',
@@ -13,6 +15,16 @@ const NAV_MATCH: Record<string, (p: string) => boolean> = {
   volunteers: (p) => p.startsWith('/volunteers'),
 };
 
+// Nav tab key → which Phosphor-shaped icon we reveal on hover/focus.
+const NAV_ICON: Record<string, NavTabIconName> = {
+  home: 'home',
+  about: 'about',
+  projects: 'projects',
+  media: 'media',
+  documents: 'documents',
+  volunteers: 'volunteer',
+};
+
 function isActive(key: string, pathname: string | null): boolean {
   const fn = NAV_MATCH[key];
   if (!fn || !pathname) return false;
@@ -21,6 +33,20 @@ function isActive(key: string, pathname: string | null): boolean {
 
 export default function Nav() {
   const pathname = usePathname();
+  // Which top-level tab is currently being hovered or keyboard-focused.
+  // Drives the per-tab icon animation in NavTabIcon. We keep the active
+  // tab's icon visible too so the user can still see the icon for the
+  // page they're on after the cursor leaves.
+  const [hoverTab, setHoverTab] = React.useState<string | null>(null);
+  const tabHandlers = (key: string) => ({
+    onPointerEnter: () => setHoverTab(key),
+    onPointerLeave: () =>
+      setHoverTab((prev) => (prev === key ? null : prev)),
+    onFocus: () => setHoverTab(key),
+    onBlur: () => setHoverTab((prev) => (prev === key ? null : prev)),
+  });
+  const showIcon = (key: string) =>
+    hoverTab === key || isActive(key, pathname);
 
   return (
     <nav className="topnav" aria-label="Main navigation">
@@ -30,17 +56,19 @@ export default function Nav() {
         </Link>
 
         <ul className="nav-links" id="primary-nav" role="menubar">
-          <li>
+          <li {...tabHandlers('home')}>
             <Link href="/" data-nav="home" className={isActive('home', pathname) ? 'active' : ''}>
+              <NavTabIcon name={NAV_ICON.home} visible={showIcon('home')} />
               Home
             </Link>
           </li>
-          <li>
+          <li {...tabHandlers('about')}>
             <Link
               href="/about"
               data-nav="about"
               className={`nav-link-btn ${isActive('about', pathname) ? 'active' : ''}`}
             >
+              <NavTabIcon name={NAV_ICON.about} visible={showIcon('about')} />
               About <i className="ph ph-caret-down" style={{ fontSize: '10px' }}></i>
             </Link>
             <div className="nav-dropdown">
@@ -48,17 +76,19 @@ export default function Nav() {
               <Link href="/about#team">Team</Link>
             </div>
           </li>
-          <li>
+          <li {...tabHandlers('projects')}>
             <Link href="/projects" data-nav="projects" className={isActive('projects', pathname) ? 'active' : ''}>
+              <NavTabIcon name={NAV_ICON.projects} visible={showIcon('projects')} />
               Projects
             </Link>
           </li>
-          <li>
+          <li {...tabHandlers('media')}>
             <Link
               href="/media"
               data-nav="media"
               className={`nav-link-btn ${isActive('media', pathname) ? 'active' : ''}`}
             >
+              <NavTabIcon name={NAV_ICON.media} visible={showIcon('media')} />
               Media <i className="ph ph-caret-down" style={{ fontSize: '10px' }}></i>
             </Link>
             <div className="nav-dropdown">
@@ -67,12 +97,13 @@ export default function Nav() {
               <Link href="/media#videos">Videos</Link>
             </div>
           </li>
-          <li>
+          <li {...tabHandlers('documents')}>
             <Link
               href="/documents"
               data-nav="documents"
               className={`nav-link-btn ${isActive('documents', pathname) ? 'active' : ''}`}
             >
+              <NavTabIcon name={NAV_ICON.documents} visible={showIcon('documents')} />
               Documents <i className="ph ph-caret-down" style={{ fontSize: '10px' }}></i>
             </Link>
             <div className="nav-dropdown">
@@ -80,8 +111,9 @@ export default function Nav() {
               <Link href="/documents#stories">Stories</Link>
             </div>
           </li>
-          <li>
+          <li {...tabHandlers('volunteers')}>
             <Link href="/volunteers" data-nav="volunteers" className={isActive('volunteers', pathname) ? 'active' : ''}>
+              <NavTabIcon name={NAV_ICON.volunteers} visible={showIcon('volunteers')} />
               Volunteer
             </Link>
           </li>
