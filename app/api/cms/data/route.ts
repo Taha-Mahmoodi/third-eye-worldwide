@@ -4,6 +4,7 @@ import { getContent, saveContent } from '@/lib/cms/db';
 import { isAdmin } from '@/lib/cms/auth-guard';
 import type { SiteContent } from '@/lib/types';
 import { CMS_MAX_PAYLOAD_BYTES } from '@/lib/constants';
+import logger from '@/lib/logger';
 
 interface CmsItem { slug?: string; visible?: boolean }
 
@@ -66,6 +67,7 @@ export async function PUT(req: NextRequest) {
   const author = admin.user?.email || admin.user?.name || req.headers.get('x-cms-author') || null;
   const note = req.headers.get('x-cms-note') || null;
   await saveContent(data, { author, note });
+  logger.info({ event: 'cms_published', author, via: admin.via });
 
   // Revalidate fixed routes + any user-defined /[slug] pages +
   // each project detail at /projects/<slug> + the sitemap

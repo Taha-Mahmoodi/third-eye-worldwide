@@ -3,6 +3,7 @@ import { prisma } from '@/lib/cms/db';
 import { isAdmin } from '@/lib/cms/auth-guard';
 import { check, requestIp } from '@/lib/rate-limit';
 import { RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS } from '@/lib/constants';
+import logger from '@/lib/logger';
 
 interface VolunteerBody {
   name?: unknown;
@@ -23,6 +24,7 @@ export async function POST(req: NextRequest) {
     refillIntervalMs: RATE_LIMIT_WINDOW_MS,
   });
   if (!rl.allowed) {
+    logger.warn({ event: 'rate_limited', ip, endpoint: 'volunteer_submit' });
     return NextResponse.json(
       { error: 'Too many submissions — please try again later.' },
       { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } }
@@ -41,16 +43,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'email format looks invalid' }, { status: 400 });
   }
 
-  const row = await prisma.volunteerSubmission.create({
-    data: {
-      name: name.slice(0, 200),
-      email: email.toLowerCase().slice(0, 200),
-      role: body.role ? String(body.role).slice(0, 200) : null,
-      skills: body.skills ? String(body.skills).slice(0, 500) : null,
-      message: body.message ? String(body.message).slice(0, 2000) : null,
-    },
-  });
-  return NextResponse.json({ ok: true, id: row.id });
+  try {
+    const row = await prisma.volunteerSubmission.create({
+      data: {
+        name: name.slice(0, 200),
+        email: email.toLowerCase().slice(0, 200),
+        role: body.role ? String(body.role).slice(0, 200) : null,
+        skills: body.skills ? String(body.skills).slice(0, 500) : null,
+        message: body.message ? String(body.message).slice(0, 2000) : null,
+      },
+    });
+    logger.info({ event: 'volunteer_submitted', id: row.id, ip, email: row.email });
+    return NextResponse.json({ ok: true, id: row.id });
+  } catch (err) {
+    logger.error({ err, event: 'volunteer_submit_failed', ip }, 'volunteer create failed');
+    return NextResponse.json({ error: 'Server error — please try again later.' }, { status: 500 });
+  }
 }
 
 export async function GET(req: NextRequest) {
