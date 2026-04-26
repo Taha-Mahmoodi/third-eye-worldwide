@@ -9,6 +9,7 @@ import {
   RATE_LIMIT_WINDOW_MS,
 } from '@/lib/constants';
 import logger from '@/lib/logger';
+import { isValidEmail } from '@/lib/validators';
 
 interface DonationBody {
   name?: unknown;
@@ -20,8 +21,6 @@ interface DonationBody {
 }
 
 export const dynamic = 'force-dynamic';
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export async function POST(req: NextRequest) {
   const ip = requestIp(req);
@@ -48,7 +47,7 @@ export async function POST(req: NextRequest) {
   if (!name || !email || !Number.isFinite(amount) || !mode) {
     return NextResponse.json({ error: 'name, email, amount, mode required' }, { status: 400 });
   }
-  if (!EMAIL_RE.test(email)) {
+  if (!isValidEmail(email)) {
     return NextResponse.json({ error: 'email format looks invalid' }, { status: 400 });
   }
   if (!['monthly', 'once'].includes(mode)) {

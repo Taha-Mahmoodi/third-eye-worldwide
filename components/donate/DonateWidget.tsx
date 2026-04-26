@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { isValidEmail } from '@/lib/validators';
 
 /*
  * Donation widget. Owns every interactive piece of the /donate page:
@@ -78,7 +79,7 @@ export default function DonateWidget({ monthly, once }: DonateWidgetProps) {
       setStatus({ text: 'Please enter your name.', error: true });
       return;
     }
-    if (!/\S+@\S+\.\S+/.test(email)) {
+    if (!isValidEmail(email)) {
       setStatus({ text: 'Please enter a valid email.', error: true });
       return;
     }

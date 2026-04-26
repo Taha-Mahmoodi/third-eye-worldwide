@@ -4,6 +4,7 @@ import { isAdmin } from '@/lib/cms/auth-guard';
 import { check, requestIp } from '@/lib/rate-limit';
 import { RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS } from '@/lib/constants';
 import logger from '@/lib/logger';
+import { isValidEmail } from '@/lib/validators';
 
 interface VolunteerBody {
   name?: unknown;
@@ -14,8 +15,6 @@ interface VolunteerBody {
 }
 
 export const dynamic = 'force-dynamic';
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export async function POST(req: NextRequest) {
   const ip = requestIp(req);
@@ -39,7 +38,7 @@ export async function POST(req: NextRequest) {
   if (!name || !email) {
     return NextResponse.json({ error: 'name and email required' }, { status: 400 });
   }
-  if (!EMAIL_RE.test(email)) {
+  if (!isValidEmail(email)) {
     return NextResponse.json({ error: 'email format looks invalid' }, { status: 400 });
   }
 
