@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Single in-flight run per ref. Newer pushes cancel the older run so
+# the queue doesn't fill up on rapid pushes.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    # CI uses a throwaway SQLite DB. Migrations run idempotently against
+    # this file, then the seed populates content so `next build` can
+    # statically render the ISR pages without a real database.
+    env:
+      DATABASE_URL: file:./ci.db
+      NEXTAUTH_SECRET: ci-secret-not-for-prod-do-not-deploy
+      NEXTAUTH_URL: http://localhost:3000
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      CMS_ADMIN_EMAIL: ci@example.com
+      CMS_ADMIN_PASSWORD: ci-password-not-for-prod
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Apply Prisma migrations + seed
+        run: |
+          npx prisma migrate deploy
+          npm run db:seed
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # Lint is intentionally not run yet — `next lint` requires an
+      # interactive setup that hasn't happened. Re-enable once
+      # eslint config lands.
+
+      - name: Build
+        run: npm run build
