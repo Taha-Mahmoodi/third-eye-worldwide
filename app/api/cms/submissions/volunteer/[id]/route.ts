@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/cms/db';
 import { isAdmin } from '@/lib/cms/auth-guard';
+import logger from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,7 +21,8 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } },
 ) {
-  if (!(await isAdmin(req))) {
+  const admin = await isAdmin(req);
+  if (!admin) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -31,12 +33,18 @@ export async function DELETE(
 
   try {
     await prisma.volunteerSubmission.delete({ where: { id } });
+    logger.info({
+      event: 'volunteer_deleted',
+      id,
+      by: admin.user?.email || admin.user?.name || 'token',
+    });
     return NextResponse.json({ ok: true });
   } catch (e) {
     // P2025 = "record to delete does not exist"
     if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
       return NextResponse.json({ error: 'Not found' }, { status: 404 });
     }
+    logger.error({ err: e, event: 'volunteer_delete_failed', id }, 'volunteer delete failed');
     throw e;
   }
 }

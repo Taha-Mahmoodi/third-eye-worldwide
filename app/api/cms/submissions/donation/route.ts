@@ -8,6 +8,7 @@ import {
   RATE_LIMIT_MAX_REQUESTS,
   RATE_LIMIT_WINDOW_MS,
 } from '@/lib/constants';
+import logger from '@/lib/logger';
 
 interface DonationBody {
   name?: unknown;
@@ -29,6 +30,7 @@ export async function POST(req: NextRequest) {
     refillIntervalMs: RATE_LIMIT_WINDOW_MS,
   });
   if (!rl.allowed) {
+    logger.warn({ event: 'rate_limited', ip, endpoint: 'donation_submit' });
     return NextResponse.json(
       { error: 'Too many submissions — please try again later.' },
       { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } }
@@ -59,17 +61,30 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const row = await prisma.donationSubmission.create({
-    data: {
-      name: name.slice(0, 200),
-      email: email.toLowerCase().slice(0, 200),
+  try {
+    const row = await prisma.donationSubmission.create({
+      data: {
+        name: name.slice(0, 200),
+        email: email.toLowerCase().slice(0, 200),
+        amount,
+        mode,
+        currency: body.currency ? String(body.currency).slice(0, 8) : 'USD',
+        note: body.note ? String(body.note).slice(0, 1000) : null,
+      },
+    });
+    logger.info({
+      event: 'donation_submitted',
+      id: row.id,
+      ip,
       amount,
       mode,
-      currency: body.currency ? String(body.currency).slice(0, 8) : 'USD',
-      note: body.note ? String(body.note).slice(0, 1000) : null,
-    },
-  });
-  return NextResponse.json({ ok: true, id: row.id });
+      currency: row.currency,
+    });
+    return NextResponse.json({ ok: true, id: row.id });
+  } catch (err) {
+    logger.error({ err, event: 'donation_submit_failed', ip }, 'donation create failed');
+    return NextResponse.json({ error: 'Server error — please try again later.' }, { status: 500 });
+  }
 }
 
 export async function GET(req: NextRequest) {
