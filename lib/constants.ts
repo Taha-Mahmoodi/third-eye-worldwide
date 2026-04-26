@@ -35,3 +35,9 @@ export const CONTENT_REVISION_KEEP_COUNT = 20;
 // ── Auth session lifetime ────────────────────────────────────────
 // 12 hours of NextAuth JWT validity for admin sessions.
 export const SESSION_MAX_AGE_SECONDS = 60 * 60 * 12;
+
+// ── Login rate limiting (used by lib/auth.ts authorize) ──────────
+// Tighter than form submissions because brute-force matters more.
+// 5 attempts per 15 minutes per IP per email.
+export const LOGIN_RATE_LIMIT_MAX_REQUESTS = 5;
+export const LOGIN_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;

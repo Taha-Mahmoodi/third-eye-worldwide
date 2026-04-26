@@ -7,7 +7,39 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { scryptSync, timingSafeEqual } from 'node:crypto';
 import { prisma } from '@/lib/cms/db';
 import { requireAuthSecret } from '@/lib/env';
-import { SESSION_MAX_AGE_SECONDS } from '@/lib/constants';
+import {
+  SESSION_MAX_AGE_SECONDS,
+  LOGIN_RATE_LIMIT_MAX_REQUESTS,
+  LOGIN_RATE_LIMIT_WINDOW_MS,
+} from '@/lib/constants';
+import { check } from '@/lib/rate-limit';
+import logger from '@/lib/logger';
+
+/**
+ * Pull a header value from either a Headers instance (Web) or a plain
+ * object (NextAuth v4's `authorize(credentials, req)` provides plain
+ * objects in some adapter versions). Returns null if missing.
+ */
+function pickHeader(headers: unknown, name: string): string | null {
+  if (!headers) return null;
+  const h = headers as { get?: (k: string) => string | null } & Record<string, unknown>;
+  if (typeof h.get === 'function') return h.get(name) ?? null;
+  const lower = name.toLowerCase();
+  for (const [k, v] of Object.entries(h)) {
+    if (k.toLowerCase() === lower) return typeof v === 'string' ? v : null;
+  }
+  return null;
+}
+
+/** Best-effort IP from the auth request — same precedence as lib/rate-limit. */
+function authReqIp(req: unknown): string {
+  const headers = (req as { headers?: unknown } | undefined)?.headers;
+  const xff = pickHeader(headers, 'x-forwarded-for');
+  if (xff) return xff.split(',')[0].trim();
+  const real = pickHeader(headers, 'x-real-ip');
+  if (real) return real;
+  return '0.0.0.0';
+}
 
 function verifyPassword(password: string, stored: string | null | undefined): boolean {
   if (!stored || !password) return false;
@@ -32,13 +64,32 @@ export const authOptions: NextAuthOptions = {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
         if (!credentials?.email || !credentials?.password) return null;
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email.toLowerCase().trim() },
+        const email = credentials.email.toLowerCase().trim();
+        const ip = authReqIp(req);
+
+        // MED-3: tight rate limit on the credentials path. Bucket key
+        // is `ip:email` so a shared NAT can still log distinct accounts
+        // in. 5 attempts per 15 minutes is enough to recover from a
+        // typo'd password without giving an attacker meaningful
+        // brute-force throughput.
+        const rl = check(`login:${ip}:${email}`, {
+          capacity: LOGIN_RATE_LIMIT_MAX_REQUESTS,
+          refillIntervalMs: LOGIN_RATE_LIMIT_WINDOW_MS,
         });
-        if (!user) return null;
-        if (!verifyPassword(credentials.password, user.passwordHash)) return null;
+        if (!rl.allowed) {
+          logger.warn({ event: 'rate_limited', ip, endpoint: 'login', email });
+          return null;
+        }
+
+        const user = await prisma.user.findUnique({ where: { email } });
+        if (!user || !verifyPassword(credentials.password, user.passwordHash)) {
+          logger.warn({ event: 'auth_failed', ip, email });
+          return null;
+        }
+
+        logger.info({ event: 'auth_success', email });
         return {
           id: String(user.id),
           email: user.email,
