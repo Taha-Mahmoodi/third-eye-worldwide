@@ -1,10 +1,22 @@
 /*
- * Per-key in-memory token bucket.
+ * Two-backend rate limiter behind a single `check()` signature.
  *
- * Good enough for single-instance deploys (Vercel/Netlify free tier,
- * a single Node container, etc). Multi-instance deploys need a
- * shared store — swap this for an Upstash Redis / Cloudflare KV
- * implementation behind the same `check()` signature.
+ * Backend selection:
+ *   - If UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN are set in
+ *     env, all calls go through @upstash/ratelimit's sliding window
+ *     against shared Redis. This is the right shape for any
+ *     multi-instance deploy (Vercel, Cloud Run, k8s replicas).
+ *   - Otherwise, fall back to a per-process in-memory token bucket.
+ *     Good enough for single-instance deploys; absolutely wrong for
+ *     anything horizontally scaled.
+ *
+ * Both paths return `{ allowed, remaining, retryAfter }` so callers
+ * don't care which one ran. Per HIGH-2 in CODEBASE_REVIEW.md.
+ *
+ * The Upstash path is async under the hood; we expose a sync `check()`
+ * for backward compat. Callers that need the precise sliding-window
+ * accuracy should use `checkAsync()` instead. The sync path falls back
+ * to the in-memory bucket even when Upstash is configured.
  */
 
 import { RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS } from '@/lib/constants';
@@ -39,7 +51,8 @@ export interface CheckResult {
   retryAfter: number;
 }
 
-export function check(
+/** In-memory token bucket. Sync, per-process. */
+function checkLocal(
   key: string,
   { capacity = RATE_LIMIT_MAX_REQUESTS, refillIntervalMs = RATE_LIMIT_WINDOW_MS }: CheckOptions = {}
 ): CheckResult {
@@ -49,7 +62,6 @@ export function check(
     b = { tokens: capacity, lastRefill: now };
     buckets.set(key, b);
   } else {
-    // Continuous refill: tokens added proportional to time elapsed.
     const elapsed = now - b.lastRefill;
     const refill = (elapsed / refillIntervalMs) * capacity;
     b.tokens = Math.min(capacity, b.tokens + refill);
@@ -60,9 +72,89 @@ export function check(
     b.tokens -= 1;
     return { allowed: true, remaining: Math.floor(b.tokens), retryAfter: 0 };
   }
-  // Seconds until the bucket refills one token.
   const retryAfter = Math.ceil((refillIntervalMs * (1 - b.tokens)) / capacity / 1000);
   return { allowed: false, remaining: 0, retryAfter };
+}
+
+export const check = checkLocal;
+
+// ── Upstash path ─────────────────────────────────────────────────
+// Loaded lazily so unrelated code doesn't pay the import cost when
+// Upstash isn't configured. Cached per (capacity, window) tuple.
+
+interface UpstashLimiter {
+  limit: (id: string) => Promise<{
+    success: boolean;
+    remaining: number;
+    reset: number; // ms-since-epoch when the next slot opens
+  }>;
+}
+
+let upstashCache: Map<string, UpstashLimiter> | null = null;
+
+function isUpstashConfigured(): boolean {
+  return Boolean(
+    process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN,
+  );
+}
+
+async function getLimiter(
+  capacity: number,
+  refillIntervalMs: number,
+): Promise<UpstashLimiter | null> {
+  if (!isUpstashConfigured()) return null;
+  if (!upstashCache) upstashCache = new Map();
+
+  const key = `${capacity}:${refillIntervalMs}`;
+  const cached = upstashCache.get(key);
+  if (cached) return cached;
+
+  // Dynamic import so SSR bundles for non-Upstash deploys don't pull
+  // either package into their server chunks.
+  const [{ Ratelimit }, { Redis }] = await Promise.all([
+    import('@upstash/ratelimit'),
+    import('@upstash/redis'),
+  ]);
+  const redis = new Redis({
+    url: process.env.UPSTASH_REDIS_REST_URL!,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+  });
+  const windowMinutes = Math.max(1, Math.round(refillIntervalMs / 60000));
+  const limiter = new Ratelimit({
+    redis,
+    limiter: Ratelimit.slidingWindow(capacity, `${windowMinutes} m`),
+    prefix: 'teww_form',
+    analytics: false,
+  }) as unknown as UpstashLimiter;
+  upstashCache.set(key, limiter);
+  return limiter;
+}
+
+/**
+ * Async variant of check(). Uses Upstash sliding-window when configured,
+ * otherwise falls through to the in-memory bucket. Use this from API
+ * route handlers that already do other async work — the round trip to
+ * Upstash is well under 100 ms regionally.
+ */
+export async function checkAsync(
+  key: string,
+  opts: CheckOptions = {},
+): Promise<CheckResult> {
+  const capacity = opts.capacity ?? RATE_LIMIT_MAX_REQUESTS;
+  const refillIntervalMs = opts.refillIntervalMs ?? RATE_LIMIT_WINDOW_MS;
+  const limiter = await getLimiter(capacity, refillIntervalMs);
+  if (!limiter) return checkLocal(key, opts);
+
+  try {
+    const r = await limiter.limit(key);
+    const retryAfter = r.success ? 0 : Math.max(1, Math.ceil((r.reset - Date.now()) / 1000));
+    return { allowed: r.success, remaining: Math.max(0, r.remaining), retryAfter };
+  } catch {
+    // Don't let a Redis hiccup block legitimate traffic — fall back
+    // to local. Worst-case: the limit isn't shared across instances
+    // until Redis comes back, which is the pre-Upstash behavior.
+    return checkLocal(key, opts);
+  }
 }
 
 interface IpRequest {

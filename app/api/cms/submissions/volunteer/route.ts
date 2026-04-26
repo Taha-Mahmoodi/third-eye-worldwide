@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/cms/db';
 import { isAdmin } from '@/lib/cms/auth-guard';
-import { check, requestIp } from '@/lib/rate-limit';
+import { checkAsync, requestIp } from '@/lib/rate-limit';
 import { RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS } from '@/lib/constants';
 import logger from '@/lib/logger';
 import { isValidEmail } from '@/lib/validators';
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
   }
 
   const ip = requestIp(req);
-  const rl = check(`submit:volunteer:${ip}`, {
+  const rl = await checkAsync(`submit:volunteer:${ip}`, {
     capacity: RATE_LIMIT_MAX_REQUESTS,
     refillIntervalMs: RATE_LIMIT_WINDOW_MS,
   });
