@@ -2,8 +2,13 @@
 
 import { useEffect, useRef } from 'react';
 
-export default function HtmlContent({ html, className = 'page active' }) {
-  const ref = useRef(null);
+interface HtmlContentProps {
+  html: string;
+  className?: string;
+}
+
+export default function HtmlContent({ html, className = 'page active' }: HtmlContentProps) {
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -14,7 +19,7 @@ export default function HtmlContent({ html, className = 'page active' }) {
       for (const attr of oldEl.attributes) s.setAttribute(attr.name, attr.value);
       s.text = oldEl.textContent || '';
       s.dataset.teExecuted = 'true';
-      oldEl.parentNode.replaceChild(s, oldEl);
+      oldEl.parentNode?.replaceChild(s, oldEl);
     });
   }, [html]);
 

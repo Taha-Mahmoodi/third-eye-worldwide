@@ -5,7 +5,17 @@ import Link from 'next/link';
  * `story` shape: { date, location, title, desc, initials, author, meta }.
  * Date is space-separated "Month Day" (e.g. "Apr 12").
  */
-export default function TimelineRow({ story }) {
+export interface TimelineRowData {
+  date?: string;
+  location?: string;
+  title?: string;
+  desc?: string;
+  initials?: string;
+  author?: string;
+  meta?: string;
+}
+
+export default function TimelineRow({ story }: { story?: TimelineRowData }) {
   const { date = '', location, title, desc, initials = 'TE', author = '', meta } = story || {};
   const [month = '', day = ''] = date.split(' ');
 

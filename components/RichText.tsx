@@ -7,7 +7,15 @@
  * For plain-text fields, pass the string as a normal JSX child — React
  * will escape it automatically.
  */
-export default function RichText({ as: Tag = 'span', html, className, ...rest }) {
+import type { ElementType, HTMLAttributes } from 'react';
+
+interface RichTextProps extends Omit<HTMLAttributes<HTMLElement>, 'dangerouslySetInnerHTML'> {
+  as?: ElementType;
+  html?: string | null;
+  className?: string;
+}
+
+export default function RichText({ as: Tag = 'span', html, className, ...rest }: RichTextProps) {
   if (html == null || html === '') return null;
   return (
     <Tag

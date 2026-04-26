@@ -3,7 +3,18 @@
 import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 
-const PAGE_TO_PATH = {
+declare global {
+  interface Window {
+    setTheme: (t: string) => void;
+    cycleTheme: () => void;
+    setSize: (s: string) => void;
+    goto: (page: string, sub?: string) => void;
+    toggleNav: () => void;
+    closeNav: () => void;
+  }
+}
+
+const PAGE_TO_PATH: Record<string, string> = {
   home: '/',
   about: '/about',
   projects: '/projects',
@@ -15,8 +26,8 @@ const PAGE_TO_PATH = {
   'story-detail': '/story-detail',
 };
 
-const THEMES = ['light', 'dark', 'high-contrast'];
-const THEME_ICONS = { light: 'ph-sun', dark: 'ph-moon', 'high-contrast': 'ph-circle-half' };
+const THEMES = ['light', 'dark', 'high-contrast'] as const;
+const THEME_ICONS: Record<string, string> = { light: 'ph-sun', dark: 'ph-moon', 'high-contrast': 'ph-circle-half' };
 
 /*
  * Tiny global controller: binds a handful of `window.*` helpers that the
@@ -40,8 +51,8 @@ export default function ClientBootstrap() {
 
     function applyLogoColors() {
       const theme = root.getAttribute('data-theme') || 'light';
-      const brandLogo = document.getElementById('brand-logo');
-      const footerLogo = document.getElementById('footer-logo');
+      const brandLogo = document.getElementById('brand-logo') as HTMLImageElement | null;
+      const footerLogo = document.getElementById('footer-logo') as HTMLImageElement | null;
       if (brandLogo) {
         brandLogo.src = (theme === 'dark' || theme === 'high-contrast')
           ? '/assets/logo-light.svg'
@@ -52,8 +63,8 @@ export default function ClientBootstrap() {
       }
     }
 
-    window.setTheme = function (t) {
-      if (!THEMES.includes(t)) t = 'light';
+    window.setTheme = function (t: string) {
+      if (!(THEMES as readonly string[]).includes(t)) t = 'light';
       root.setAttribute('data-theme', t);
       const btn = document.getElementById('theme-btn');
       if (btn) btn.innerHTML = `<i class="ph ${THEME_ICONS[t]}"></i>`;
@@ -63,19 +74,19 @@ export default function ClientBootstrap() {
 
     window.cycleTheme = function () {
       const cur = root.getAttribute('data-theme') || 'light';
-      const idx = THEMES.indexOf(cur);
+      const idx = (THEMES as readonly string[]).indexOf(cur);
       window.setTheme(THEMES[(idx + 1) % THEMES.length]);
     };
 
-    window.setSize = function (s) {
+    window.setSize = function (s: string) {
       root.setAttribute('data-text-size', s);
-      document.querySelectorAll('.ts-btn').forEach((b) => {
+      document.querySelectorAll<HTMLElement>('.ts-btn').forEach((b) => {
         b.classList.toggle('active', b.dataset.size === s);
       });
       try { localStorage.setItem('teww-size', s); } catch {}
     };
 
-    window.goto = function (page, sub) {
+    window.goto = function (page: string, sub?: string) {
       const path = PAGE_TO_PATH[page] || `/${page}`;
       const href = sub ? `${path}#${sub}` : path;
       try { localStorage.setItem('teww-page', page); } catch {}

@@ -2,6 +2,29 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+declare global {
+  interface Window {
+    startTeTour?: () => void;
+    startAudioTour?: () => void;
+    stopAudioTour?: () => void;
+    pauseAudioTour?: () => void;
+    resumeAudioTour?: () => void;
+    toggleAudioTour?: () => void;
+    getAudioTourState?: () => {
+      hasAudio: boolean;
+      src?: string;
+      paused?: boolean;
+      ended?: boolean;
+      currentTime?: number;
+      duration?: number | null;
+      readyState?: number;
+      error?: { code: number; message: string } | null;
+    };
+  }
+}
+
+type PlayerState = 'idle' | 'playing' | 'paused';
+
 /*
  * Launch-time tour overlay. Shows a big red modal in the centre of the
  * screen on first visit and, after an 8-second countdown (or on Start
@@ -19,7 +42,7 @@ const AUTO_DELAY_SECONDS = 8;
 // Pathname → pre-recorded audio fallback. Only used if window.startTeTour
 // is unavailable (e.g. VoiceAssistant didn't mount or browser lacks
 // SpeechSynthesis).
-const TOUR_TRACKS = {
+const TOUR_TRACKS: Record<string, string> = {
   '/':           '/audio/tour-home.wav',
   '/about':      '/audio/tour-about.wav',
   '/projects':   '/audio/tour-projects.wav',
@@ -29,7 +52,7 @@ const TOUR_TRACKS = {
   '/volunteers': '/audio/tour-volunteers.wav',
 };
 
-function fmtTime(secs) {
+function fmtTime(secs: number): string {
   if (!Number.isFinite(secs)) return '0:00';
   const s = Math.max(0, Math.floor(secs));
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
@@ -38,12 +61,12 @@ function fmtTime(secs) {
 export default function AudioTour() {
   const [visible, setVisible] = useState(false);
   const [countdown, setCountdown] = useState(AUTO_DELAY_SECONDS);
-  const [playerState, setPlayerState] = useState('idle'); // 'idle' | 'playing' | 'paused'
+  const [playerState, setPlayerState] = useState<PlayerState>('idle');
   const [position, setPosition] = useState(0);
   const [duration, setDuration] = useState(0);
-  const autoTimerRef = useRef(null);
-  const tickTimerRef = useRef(null);
-  const audioRef = useRef(null);
+  const autoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const tickTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const stoppingRef = useRef(false);
 
   function clearTimers() {
@@ -123,14 +146,14 @@ export default function AudioTour() {
     }
   }
 
-  function dismiss(choice) {
+  function dismiss(choice: string) {
     clearTimers();
     setVisible(false);
     try { sessionStorage.setItem(CHOICE_KEY, choice); } catch {}
   }
 
   useEffect(() => {
-    let existing = null;
+    let existing: string | null = null;
     try { existing = sessionStorage.getItem(CHOICE_KEY); } catch {}
 
     if (typeof window !== 'undefined') {
