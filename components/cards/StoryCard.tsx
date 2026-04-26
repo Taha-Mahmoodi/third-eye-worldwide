@@ -19,6 +19,8 @@ export interface StoryCardData {
   author?: string;
   meta?: string;
   readTime?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 interface StoryCardProps {

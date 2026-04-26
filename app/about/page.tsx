@@ -23,7 +23,8 @@ export async function generateMetadata() {
   });
 }
 
-function FaqTab({ faqs }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function FaqTab({ faqs }: { faqs: any[] }) {
   return (
     <section className="section">
       <div className="faq-wrap">
@@ -36,7 +37,8 @@ function FaqTab({ faqs }) {
         </div>
 
         {faqs.length > 0
-          ? faqs.map((f) => <FaqItem key={f.id || f.num} item={f} />)
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ? faqs.map((f: any) => <FaqItem key={f.id || f.num} item={f} />)
           : <p style={{ color: 'var(--fg-muted)' }}>No questions yet.</p>}
 
         <div className="faq-cta">
@@ -56,7 +58,8 @@ function FaqTab({ faqs }) {
   );
 }
 
-function MissionTab({ missionStats }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function MissionTab({ missionStats }: { missionStats: any[] }) {
   return (
     <>
       <section className="section">
@@ -83,7 +86,8 @@ function MissionTab({ missionStats }) {
               </div>
             </div>
             <div className="about-visual">
-              {missionStats.map((s, i) => <StatTile key={s.id || i} stat={s} />)}
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              {missionStats.map((s: any, i: number) => <StatTile key={s.id || i} stat={s} />)}
             </div>
           </div>
         </div>
@@ -121,7 +125,8 @@ function MissionTab({ missionStats }) {
   );
 }
 
-function TeamTab({ team, board }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function TeamTab({ team, board }: { team: any[]; board: any[] }) {
   return (
     <>
       <section className="section">
@@ -137,7 +142,8 @@ function TeamTab({ team, board }) {
 
           <div className="team-grid">
             {team.length > 0
-              ? team.map((m) => <TeamCard key={m.id || m.name} member={m} />)
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              ? team.map((m: any) => <TeamCard key={m.id || m.name} member={m} />)
               : <p style={{ color: 'var(--fg-muted)' }}>No team members yet.</p>}
           </div>
         </div>
@@ -154,7 +160,8 @@ function TeamTab({ team, board }) {
               </p>
             </div>
             <div className="board-card">
-              {board.map((m) => <BoardRow key={m.id || m.name} member={m} />)}
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              {board.map((m: any) => <BoardRow key={m.id || m.name} member={m} />)}
             </div>
           </div>
         </section>

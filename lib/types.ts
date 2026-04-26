@@ -3,16 +3,18 @@
  *
  * The document is stored as a JSON string in the SiteContent table so the CMS
  * can evolve the shape without migrations. These types describe the *known*
- * top-level structure but stay permissive (`unknown` / index signatures) for
- * sub-trees the CMS may extend.
+ * top-level structure but stay permissive (`any` index signatures) for
+ * sub-trees the CMS may extend — pages access nested fields freely.
  *
  * Items in arrays carry the visibility/ordering metadata that
  * `visibleSorted()` in lib/cms/db.ts uses to filter and sort.
  */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface CmsItemMeta {
   visible?: boolean;
   order?: number;
+  [key: string]: any;
 }
 
 export interface SeoPageOverride {
@@ -70,7 +72,7 @@ export interface CmsDocuments {
   blogs?: CmsBlogPost[];
   stories?: CmsStory[];
   featuredStory?: CmsFeaturedStory;
-  [key: string]: unknown;
+  [key: string]: any;
 }
 
 export interface CmsPageSection extends CmsItemMeta {
@@ -97,7 +99,7 @@ export interface SiteContent {
   pages?: CmsCustomPage[];
   seo?: SeoConfig;
   updatedAt?: string;
-  [key: string]: unknown;
+  [key: string]: any;
 }
 
 /** Auth-related types */

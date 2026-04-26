@@ -2,16 +2,22 @@ import HtmlContent from '@/components/HtmlContent';
 import { getContent, visibleSorted } from '@/lib/cms/db';
 import { renderBlogDetail } from '@/lib/pages/blog-detail';
 import { pageMetadata, readSeoOverrides } from '@/lib/seo';
+import type { SiteContent, CmsBlogPost } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
 
-function resolveBlog(content, slug) {
-  const blogs = visibleSorted(content?.documents?.blogs || []);
+interface PageProps {
+  searchParams: Promise<{ slug?: string | string[] }>;
+}
+
+function resolveBlog(content: SiteContent | null, slug?: string): CmsBlogPost {
+  const blogs = visibleSorted<CmsBlogPost>(content?.documents?.blogs || []);
   return (slug && blogs.find((b) => b.id === slug || b.slug === slug)) || blogs[0] || {};
 }
 
-export async function generateMetadata({ searchParams }) {
-  const slug = (await searchParams)?.slug;
+export async function generateMetadata({ searchParams }: PageProps) {
+  const sp = await searchParams;
+  const slug = typeof sp?.slug === 'string' ? sp.slug : undefined;
   const content = await getContent();
   const post = resolveBlog(content, slug);
   const o = readSeoOverrides(content, '/blog-detail');
@@ -27,8 +33,9 @@ export async function generateMetadata({ searchParams }) {
   });
 }
 
-export default async function BlogDetailPage({ searchParams }) {
-  const slug = (await searchParams)?.slug;
+export default async function BlogDetailPage({ searchParams }: PageProps) {
+  const sp = await searchParams;
+  const slug = typeof sp?.slug === 'string' ? sp.slug : undefined;
   const content = await getContent();
   return <HtmlContent html={renderBlogDetail(content, slug)} />;
 }

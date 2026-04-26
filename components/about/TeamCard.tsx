@@ -2,7 +2,8 @@
  * Team-member card. `member` shape (CMS):
  * { initials, bg, name, role, bio, img, visible, order }.
  */
-interface TeamMember { initials?: string; bg?: string; name?: string; role?: string; bio?: string; img?: string }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface TeamMember { initials?: string; bg?: string; name?: string; role?: string; bio?: string; img?: string; [key: string]: any }
 export default function TeamCard({ member }: { member?: TeamMember }) {
   const { initials = 'TE', bg = 'bg-1', name = '', role = '', bio = '', img = '' } = member || {};
   return (

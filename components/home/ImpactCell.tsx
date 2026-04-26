@@ -1,6 +1,7 @@
 import RichText from '@/components/RichText';
 
-interface Stat { number?: string; label?: string }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface Stat { number?: string; label?: string; [key: string]: any }
 export default function ImpactCell({ stat }: { stat?: Stat }) {
   const { number, label } = stat || {};
   return (

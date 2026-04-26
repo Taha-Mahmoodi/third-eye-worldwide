@@ -1,4 +1,5 @@
-interface Value { num?: string; icon?: string; title?: string; desc?: string; meta?: string; variant?: string }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface Value { num?: string; icon?: string; title?: string; desc?: string; meta?: string; variant?: string; [key: string]: any }
 export default function ValueCard({ value }: { value?: Value }) {
   const { num, icon, title, desc, meta, variant } = value || {};
   return (

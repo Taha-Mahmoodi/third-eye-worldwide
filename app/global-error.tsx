@@ -6,7 +6,12 @@
  * Keep it deliberately minimal and dependency-free — no CSS imports,
  * no Nav/Footer, no client bootstrap.
  */
-export default function GlobalError({ error, reset }) {
+interface GlobalErrorProps {
+  error: Error & { digest?: string };
+  reset: () => void;
+}
+
+export default function GlobalError({ error, reset }: GlobalErrorProps) {
   return (
     <html lang="en">
       <body style={{

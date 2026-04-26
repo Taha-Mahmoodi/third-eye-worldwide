@@ -5,7 +5,8 @@ import RichText from '@/components/RichText';
  * `item` shape: { num, question, body } — question and body may contain
  * trusted CMS-authored HTML.
  */
-interface FaqEntry { num?: string; question?: string; body?: string }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface FaqEntry { num?: string; question?: string; body?: string; [key: string]: any }
 export default function FaqItem({ item }: { item?: FaqEntry }) {
   const { num, question, body } = item || {};
   return (
