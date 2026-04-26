@@ -15,7 +15,10 @@ import TimelineRow from '@/components/cards/TimelineRow';
 import ProjectCard from '@/components/projects/ProjectCard';
 import { pageMetadata, readSeoOverrides, webPageJsonLd } from '@/lib/seo';
 
-export const dynamic = 'force-dynamic';
+// Home is CMS-driven and revalidatePath('/') fires from /api/cms/data
+// on every publish — the hourly fallback only runs if a publish was
+// missed for some reason. Per HIGH-3.
+export const revalidate = 3600;
 
 export async function generateMetadata() {
   const content = await getContent();

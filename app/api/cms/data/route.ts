@@ -19,7 +19,16 @@ const ALL_ROUTES = [
 export async function GET() {
   const data = await getContent();
   if (!data) return NextResponse.json({ error: 'No content' }, { status: 404 });
-  return NextResponse.json(data);
+  // Short browser/CDN cache so the public site can pull this endpoint
+  // cheaply. `private` keeps CDNs from caching admin-personalised
+  // responses; `max-age=60` is short enough that a publish-then-view
+  // cycle doesn't feel stale to editors. The SWR window lets stale
+  // responses serve instantly while a fresh fetch warms the cache.
+  return NextResponse.json(data, {
+    headers: {
+      'Cache-Control': 'private, max-age=60, stale-while-revalidate=300',
+    },
+  });
 }
 
 export async function PUT(req: NextRequest) {

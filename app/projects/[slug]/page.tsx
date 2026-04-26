@@ -5,7 +5,7 @@ import ProjectDetail, { type ProjectDetailData } from '@/components/projects/Pro
 import { pageMetadata, siteUrl, SITE } from '@/lib/seo';
 import type { SiteContent } from '@/lib/types';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 interface RouteProps {
   params: Promise<{ slug: string }>;

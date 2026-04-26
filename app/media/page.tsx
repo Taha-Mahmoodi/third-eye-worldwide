@@ -9,7 +9,7 @@ import FilterableVideoGrid from '@/components/media/FilterableVideoGrid';
 import PhotoLightbox from '@/components/media/PhotoLightbox';
 import { pageMetadata, readSeoOverrides } from '@/lib/seo';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 export async function generateMetadata() {
   const content = await getContent();

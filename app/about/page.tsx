@@ -8,7 +8,10 @@ import BoardRow from '@/components/about/BoardRow';
 import StatTile from '@/components/site/StatTile';
 import { pageMetadata, readSeoOverrides } from '@/lib/seo';
 
-export const dynamic = 'force-dynamic';
+// CMS-driven content. revalidatePath() in /api/cms/data covers
+// publish events; the hourly fallback re-pulls if a publish was
+// missed. Per HIGH-3.
+export const revalidate = 3600;
 
 export async function generateMetadata() {
   const content = await getContent();
