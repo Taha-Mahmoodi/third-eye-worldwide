@@ -81,7 +81,13 @@ export async function PUT(req: NextRequest) {
     : [];
   const seoRoutes = ['/sitemap.xml', '/robots.txt'];
   for (const path of [...ALL_ROUTES, ...slugRoutes, ...projectRoutes, ...seoRoutes]) {
-    try { revalidatePath(path); } catch {}
+    try {
+      revalidatePath(path);
+    } catch (err) {
+      // Don't fail the publish on a single bad route — but log so we
+      // notice when a path consistently can't be revalidated. Per LOW-3.
+      logger.warn({ event: 'revalidate_failed', path, err }, 'revalidatePath failed');
+    }
   }
 
   return NextResponse.json({ ok: true, revalidated: ALL_ROUTES.length + slugRoutes.length });
