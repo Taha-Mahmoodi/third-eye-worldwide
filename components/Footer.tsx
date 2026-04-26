@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import LogoAnimated from '@/components/LogoAnimated';
 
 export default function Footer() {
   return (
@@ -7,7 +8,7 @@ export default function Footer() {
         <div className="footer-top">
           <div className="footer-brand">
             <div className="footer-logo">
-              <img id="footer-logo" src="/assets/logo-light.svg" alt="Third Eye Worldwide" />
+              <LogoAnimated className="footer-logo-svg" ariaLabel="Third Eye Worldwide" />
             </div>
             <p>Technology that opens new worlds for people with visual impairment. Free, open-source, and built for everyone.</p>
             <div className="footer-social">

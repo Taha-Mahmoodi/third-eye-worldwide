@@ -7,6 +7,7 @@ import StatBlock from '@/components/home/StatBlock';
 import ValueCard from '@/components/home/ValueCard';
 import HeroGraphics from '@/components/home/HeroGraphics';
 import HeroActions from '@/components/home/HeroActions';
+import Reveal from '@/components/Reveal';
 import StoryCard from '@/components/cards/StoryCard';
 import TimelineRow from '@/components/cards/TimelineRow';
 import ProjectCard from '@/components/projects/ProjectCard';
@@ -51,7 +52,7 @@ export default async function HomePage() {
       <section className="hero">
         <div className="hero-photo" aria-hidden="true"></div>
         <HeroGraphics liveLabel={showLiveLabel ? h.liveLabel : null} />
-        <div className="hero-inner">
+        <Reveal as="div" className="hero-inner" stagger={0.1} delay={0.1} y={18}>
           {h.heroEyebrow ? <div className="hero-eyebrow">{h.heroEyebrow}</div> : null}
           <RichText as="h1" className="hero-title" html={h.heroTitle || ''} />
           {showImpact && h.impactEyebrow ? (
@@ -63,7 +64,7 @@ export default async function HomePage() {
             </div>
           ) : null}
           <HeroActions />
-        </div>
+        </Reveal>
       </section>
 
       {statsBand.length > 0 ? (

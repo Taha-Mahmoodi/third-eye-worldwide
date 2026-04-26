@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import LogoAnimated from '@/components/LogoAnimated';
 
 const NAV_MATCH: Record<string, (p: string) => boolean> = {
   home: (p) => p === '/',
@@ -25,7 +26,7 @@ export default function Nav() {
     <nav className="topnav" aria-label="Main navigation">
       <div className="nav-inner">
         <Link href="/" className="nav-logo" aria-label="Third Eye Worldwide — home">
-          <img id="brand-logo" src="/assets/logo.svg" alt="Third Eye Worldwide" />
+          <LogoAnimated className="brand-logo-svg" ariaLabel="Third Eye Worldwide" />
         </Link>
 
         <ul className="nav-links" id="primary-nav" role="menubar">
