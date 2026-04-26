@@ -4,7 +4,20 @@
  * legacy gradient placeholder — useful while editors are still
  * pasting IDs from the admin dashboard.
  */
-export default function VideoCard({ video }) {
+export interface VideoData {
+  id?: string;
+  bg?: string;
+  label?: string;
+  dur?: string;
+  title?: string;
+  desc?: string;
+  date?: string;
+  views?: string;
+  cat?: string;
+  youtubeId?: string;
+}
+
+export default function VideoCard({ video }: { video?: VideoData }) {
   const {
     bg = 'vid-bg-1', label = '', dur = '', title = '', desc = '',
     date = '', views = '', cat = '', youtubeId = '',

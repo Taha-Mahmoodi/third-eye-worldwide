@@ -4,7 +4,16 @@ import Link from 'next/link';
  * Featured-story pull-quote card at the top of /documents#stories.
  * `fs` shape: { eyebrow, pullQuote, title, desc, author, authorRole, initials }.
  */
-export default function FeaturedStory({ fs }) {
+interface FeaturedStoryData {
+  eyebrow?: string;
+  pullQuote?: string;
+  title?: string;
+  desc?: string;
+  author?: string;
+  authorRole?: string;
+  initials?: string;
+}
+export default function FeaturedStory({ fs }: { fs?: FeaturedStoryData }) {
   if (!fs?.title) return null;
   const { eyebrow = 'Featured Story', pullQuote = '', title, desc = '', author = '', authorRole = '', initials = 'TE' } = fs;
   return (

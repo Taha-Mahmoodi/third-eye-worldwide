@@ -5,7 +5,8 @@ import RichText from '@/components/RichText';
  * `item` shape: { num, question, body } — question and body may contain
  * trusted CMS-authored HTML.
  */
-export default function FaqItem({ item }) {
+interface FaqEntry { num?: string; question?: string; body?: string }
+export default function FaqItem({ item }: { item?: FaqEntry }) {
   const { num, question, body } = item || {};
   return (
     <details className="faq-item">

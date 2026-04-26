@@ -1,20 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 
 /*
  * "Be a guest on our first season" form. Submits to the existing
  * /api/cms/submissions/volunteer endpoint with role="Podcast guest"
  * so entries land in the admin inbox without a new table.
  */
-export default function PodcastGuestForm({ guestEmail = 'guest@teww.org' }) {
+export default function PodcastGuestForm({ guestEmail = 'guest@teww.org' }: { guestEmail?: string }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [pitch, setPitch] = useState('');
-  const [status, setStatus] = useState({ text: '', error: false });
+  const [status, setStatus] = useState<{ text: string; error: boolean }>({ text: '', error: false });
   const [submitting, setSubmitting] = useState(false);
 
-  async function submit(e) {
+  async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!name.trim()) {
       setStatus({ text: 'Please enter your name.', error: true });
@@ -46,7 +46,8 @@ export default function PodcastGuestForm({ guestEmail = 'guest@teww.org' }) {
       setStatus({ text: "Thank you — we'll be in touch before season one airs.", error: false });
       setName(''); setEmail(''); setPitch('');
     } catch (e) {
-      setStatus({ text: `Couldn't send: ${e.message}. Email us at ${guestEmail} instead.`, error: true });
+      const msg = e instanceof Error ? e.message : String(e);
+      setStatus({ text: `Couldn't send: ${msg}. Email us at ${guestEmail} instead.`, error: true });
     } finally {
       setSubmitting(false);
     }

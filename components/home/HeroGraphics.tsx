@@ -2,7 +2,7 @@
  * Decorative rings + eye SVG behind the home hero. Pure presentation;
  * carries aria-hidden so screen readers skip it.
  */
-export default function HeroGraphics({ liveLabel }) {
+export default function HeroGraphics({ liveLabel }: { liveLabel?: string }) {
   return (
     <div className="hero-graphics" aria-hidden="true">
       <svg className="hg-rings" viewBox="0 0 400 400" fill="none" stroke="currentColor" strokeWidth="1">

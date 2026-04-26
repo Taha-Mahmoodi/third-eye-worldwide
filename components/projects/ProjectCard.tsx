@@ -7,7 +7,16 @@ import Link from 'next/link';
  * When `slug` is present, the entire card becomes a link to
  * /projects/<slug>. Legacy items without a slug render as a plain div.
  */
-export default function ProjectCard({ project }) {
+export interface Project {
+  id?: string;
+  slug?: string;
+  icon?: string;
+  title?: string;
+  desc?: string;
+  tag?: string;
+  status?: string;
+}
+export default function ProjectCard({ project }: { project?: Project }) {
   const { icon, title, desc, tag, slug, status } = project || {};
   const statusClass = status ? ` prog-card-${status}` : '';
 

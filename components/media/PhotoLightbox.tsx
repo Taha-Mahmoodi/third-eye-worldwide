@@ -1,5 +1,7 @@
 'use client';
 
+import type * as React from 'react';
+
 /*
  * Lightbox DOM used by /media#photos. Its open/close/nav behavior is
  * wired up by lib/client-init.js (window.openPhotoLightbox,
@@ -7,7 +9,7 @@
  * — it just provides the DOM the globals expect.
  */
 export default function PhotoLightbox() {
-  function onBackdropClick(e) {
+  function onBackdropClick(e: React.MouseEvent<HTMLDivElement>) {
     if (e.target === e.currentTarget && typeof window !== 'undefined') {
       window.closePhotoLightbox?.();
     }

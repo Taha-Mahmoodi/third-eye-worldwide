@@ -4,7 +4,8 @@ import PodcastGuestForm from '@/components/media/PodcastGuestForm';
  * Shown on /media#podcasts while the show is in pre-production.
  * Reads { name, desc, guestCopy, guestEmail } from content.media.podcastShow.
  */
-export default function PodcastComingSoon({ show }) {
+interface ShowMeta { name?: string; desc?: string; guestCopy?: string; guestEmail?: string }
+export default function PodcastComingSoon({ show }: { show?: ShowMeta }) {
   const {
     name = 'The Third Eye Podcast',
     desc = 'Coming soon — stories of blind and low-vision innovators, in their own voices.',

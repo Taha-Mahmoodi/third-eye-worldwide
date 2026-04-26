@@ -8,21 +8,24 @@ const HOURS_OPTIONS = ['1–2 hours', '3–5 hours', '6–10 hours', '10+ hours'
  * Volunteer application form. Submits to /api/cms/submissions/volunteer.
  * `roles` is the CMS role list — checkbox labels come from role.title.
  */
-export default function VolunteerForm({ roles }) {
+interface RoleOpt { title?: string }
+interface VolunteerFormProps { roles: RoleOpt[] }
+
+export default function VolunteerForm({ roles }: VolunteerFormProps) {
   const [first, setFirst] = useState('');
   const [last, setLast] = useState('');
   const [email, setEmail] = useState('');
   const [country, setCountry] = useState('');
   const [hours, setHours] = useState(HOURS_OPTIONS[0]);
   const [message, setMessage] = useState('');
-  const [chosen, setChosen] = useState(() => new Set());
-  const [status, setStatus] = useState({
+  const [chosen, setChosen] = useState<Set<string>>(() => new Set<string>());
+  const [status, setStatus] = useState<{ text: string; error: boolean }>({
     text: 'We accept applications from anywhere. Reviewed in the order received.',
     error: false,
   });
   const [submitting, setSubmitting] = useState(false);
 
-  function toggleRole(title) {
+  function toggleRole(title: string) {
     setChosen((prev) => {
       const next = new Set(prev);
       if (next.has(title)) next.delete(title);
@@ -57,7 +60,8 @@ export default function VolunteerForm({ roles }) {
       if (!r.ok) throw new Error('HTTP ' + r.status);
       setStatus({ text: 'Thank you — we read every application within 48 hours.', error: false });
     } catch (e) {
-      setStatus({ text: `Could not submit: ${e.message}`, error: true });
+      const msg = e instanceof Error ? e.message : String(e);
+      setStatus({ text: `Could not submit: ${msg}`, error: true });
     } finally {
       setSubmitting(false);
     }
@@ -87,7 +91,7 @@ export default function VolunteerForm({ roles }) {
       <div className="pay-field">
         <label>Preferred roles (pick all that apply)</label>
         <div className="checkbox-grid" style={{ marginTop: 4 }}>
-          {roles.map((r) => (
+          {roles.map((r: RoleOpt) => (
             <label key={r.title} className="cb-pill">
               <input
                 type="checkbox"
