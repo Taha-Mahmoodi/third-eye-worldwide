@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { isValidEmail } from '@/lib/validators';
 
 const HOURS_OPTIONS = ['1–2 hours', '3–5 hours', '6–10 hours', '10+ hours'];
 
@@ -40,7 +41,7 @@ export default function VolunteerForm({ roles }: VolunteerFormProps) {
       setStatus({ text: 'Please enter your name.', error: true });
       return;
     }
-    if (!/\S+@\S+\.\S+/.test(email)) {
+    if (!isValidEmail(email)) {
       setStatus({ text: 'Please enter a valid email.', error: true });
       return;
     }

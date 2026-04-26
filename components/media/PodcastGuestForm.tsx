@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
+import { isValidEmail } from '@/lib/validators';
 
 /*
  * "Be a guest on our first season" form. Submits to the existing
@@ -20,7 +21,7 @@ export default function PodcastGuestForm({ guestEmail = 'guest@teww.org' }: { gu
       setStatus({ text: 'Please enter your name.', error: true });
       return;
     }
-    if (!/\S+@\S+\.\S+/.test(email)) {
+    if (!isValidEmail(email)) {
       setStatus({ text: 'Please enter a valid email.', error: true });
       return;
     }
