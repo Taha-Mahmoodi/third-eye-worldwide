@@ -8,6 +8,7 @@ import ValueCard from '@/components/home/ValueCard';
 import HeroGraphics from '@/components/home/HeroGraphics';
 import HeroActions from '@/components/home/HeroActions';
 import Reveal from '@/components/Reveal';
+import HeartPulseIcon from '@/components/animate-ui/icons/heart-pulse';
 import StoryCard from '@/components/cards/StoryCard';
 import TimelineRow from '@/components/cards/TimelineRow';
 import ProjectCard from '@/components/projects/ProjectCard';
@@ -210,7 +211,7 @@ export default async function HomePage() {
           </p>
           <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'center' }}>
             <Link href="/donate" className="btn-accent">
-              <i className="ph-fill ph-heart" aria-hidden="true"></i> Donate Monthly
+              <HeartPulseIcon /> Donate Monthly
             </Link>
             <Link href="/volunteers" className="btn-secondary">Become a Volunteer</Link>
           </div>
