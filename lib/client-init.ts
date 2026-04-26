@@ -1,6 +1,17 @@
 // Client-only one-time setup: lightbox, scrollspy for article TOC, reader progress bar.
 // Imported dynamically from components/ClientBootstrap.js so it runs only in the browser.
 
+declare global {
+  interface Window {
+    __photoLightboxWired?: boolean;
+    __articleTocWired?: boolean;
+    __storyProgressWired?: boolean;
+    openPhotoLightbox?: (tile: HTMLElement) => void;
+    closePhotoLightbox?: () => void;
+    navLightbox?: (dir: number) => void;
+  }
+}
+
 // ── Photo lightbox (media route) ──
 (function () {
   if (typeof window === 'undefined') return;
@@ -94,10 +105,10 @@
   document.head.appendChild(style);
 
   let currentIdx = -1;
-  let tiles = [];
+  let tiles: HTMLElement[] = [];
 
-  function visibleTiles() {
-    return Array.from(document.querySelectorAll('.photo-tile'))
+  function visibleTiles(): HTMLElement[] {
+    return Array.from(document.querySelectorAll<HTMLElement>('.photo-tile'))
       .filter((el) => el.offsetParent !== null);
   }
   function renderLightbox() {
@@ -113,12 +124,12 @@
     if (l) l.textContent = tile.dataset.loc || '';
     if (c) c.textContent = '· ' + (currentIdx + 1) + ' / ' + tiles.length;
   }
-  function lbKey(e) {
-    if (e.key === 'Escape') window.closePhotoLightbox();
-    else if (e.key === 'ArrowLeft') window.navLightbox(-1);
-    else if (e.key === 'ArrowRight') window.navLightbox(1);
+  function lbKey(e: KeyboardEvent) {
+    if (e.key === 'Escape') window.closePhotoLightbox?.();
+    else if (e.key === 'ArrowLeft') window.navLightbox?.(-1);
+    else if (e.key === 'ArrowRight') window.navLightbox?.(1);
   }
-  window.openPhotoLightbox = function (tile) {
+  window.openPhotoLightbox = function (tile: HTMLElement) {
     tiles = visibleTiles();
     currentIdx = tiles.indexOf(tile);
     if (currentIdx < 0) currentIdx = 0;
@@ -138,7 +149,7 @@
     document.body.style.overflow = '';
     document.removeEventListener('keydown', lbKey);
   };
-  window.navLightbox = function (dir) {
+  window.navLightbox = function (dir: number) {
     if (!tiles.length) return;
     currentIdx = (currentIdx + dir + tiles.length) % tiles.length;
     renderLightbox();
@@ -157,9 +168,11 @@
     const links = toc.querySelectorAll('a[href^="#"]');
     if (!links.length) return;
     const y = window.scrollY + 140;
-    let activeId = null;
+    let activeId: string | null = null;
     links.forEach((a) => {
-      const id = a.getAttribute('href').slice(1);
+      const href = a.getAttribute('href');
+      if (!href) return;
+      const id = href.slice(1);
       const t = document.getElementById(id);
       if (!t) return;
       if (t.offsetTop <= y) activeId = id;
@@ -181,7 +194,7 @@
   window.__storyProgressWired = true;
 
   function tick() {
-    const bar = document.querySelector('#storyProgress .bar');
+    const bar = document.querySelector<HTMLElement>('#storyProgress .bar');
     if (!bar) return;
     const body = document.querySelector('.story-body');
     if (!body) { bar.style.width = '0%'; return; }
@@ -199,3 +212,6 @@
     requestAnimationFrame(() => { raf = false; tick(); });
   });
 })();
+
+// Module marker so `declare global` above is treated as a module augmentation.
+export {};

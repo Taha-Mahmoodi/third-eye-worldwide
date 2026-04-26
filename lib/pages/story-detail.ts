@@ -1,18 +1,24 @@
 import { visibleSorted } from '@/lib/cms/db';
+import type { CmsStory, SiteContent } from '@/lib/types';
 
-function _esc(s) {
+// Legacy global helper, only defined in the standalone CMS preview iframe.
+// In the live app it's undefined and the `typeof doc === 'function'` guards skip these branches.
+declare const doc: ((...args: unknown[]) => string) | undefined;
+
+const HTML_ESCAPES: Record<string, string> = {
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+};
+function _esc(s: unknown): string {
   if (s == null) return '';
-  return String(s).replace(/[&<>"']/g, (c) =>
-    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])
-  );
+  return String(s).replace(/[&<>"']/g, (c) => HTML_ESCAPES[c] ?? c);
 }
-function _rich(s) { return s == null ? '' : String(s); }
+function _rich(s: unknown): string { return s == null ? '' : String(s); }
 
-export function renderStoryDetail(content, slug) {
+export function renderStoryDetail(content: SiteContent | null | undefined, slug?: string): string {
   const docs = content?.documents || {};
-  const stories = visibleSorted(docs.stories || []);
+  const stories = visibleSorted<CmsStory>(docs.stories || []);
   const fs = docs.featuredStory || {};
-  const story = (slug && stories.find((s) => s.id === slug || s.slug === slug))
+  const story: CmsStory = (slug && stories.find((s) => s.id === slug || s.slug === slug))
     || (fs.title ? { title: fs.title, desc: fs.desc, author: fs.author, initials: fs.initials, readTime: fs.eyebrow } : null)
     || stories[0]
     || {};

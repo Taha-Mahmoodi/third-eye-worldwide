@@ -3,22 +3,35 @@
 // - saveContent(data, author?, note?): persists new revision + updates current.
 
 import { PrismaClient } from '@prisma/client';
+import type { CmsItemMeta, SiteContent } from '@/lib/types';
 
-const globalForPrisma = globalThis;
-export const prisma = globalForPrisma.__prisma || new PrismaClient();
-if (process.env.NODE_ENV !== 'production') globalForPrisma.__prisma = prisma;
+declare global {
+  // eslint-disable-next-line no-var
+  var __prisma: PrismaClient | undefined;
+}
 
-export async function getContent() {
+export const prisma: PrismaClient = globalThis.__prisma || new PrismaClient();
+if (process.env.NODE_ENV !== 'production') globalThis.__prisma = prisma;
+
+export async function getContent(): Promise<SiteContent | null> {
   const row = await prisma.siteContent.findUnique({ where: { id: 1 } });
   if (!row) return null;
   try {
-    return JSON.parse(row.data);
+    return JSON.parse(row.data) as SiteContent;
   } catch {
     return null;
   }
 }
 
-export async function saveContent(data, { author, note } = {}) {
+export interface SaveContentOptions {
+  author?: string | null;
+  note?: string | null;
+}
+
+export async function saveContent(
+  data: SiteContent,
+  { author, note }: SaveContentOptions = {}
+): Promise<void> {
   const payload = JSON.stringify({
     ...data,
     updatedAt: new Date().toISOString(),
@@ -36,10 +49,10 @@ export async function saveContent(data, { author, note } = {}) {
 }
 
 // Utility to filter an array-of-items collection by visibility + sort by `order`.
-export function visibleSorted(items) {
+export function visibleSorted<T extends CmsItemMeta>(items: unknown): T[] {
   if (!Array.isArray(items)) return [];
-  return items
-    .filter((it) => it && it.visible !== false)
+  return (items as T[])
+    .filter((it): it is T => Boolean(it) && it.visible !== false)
     .slice()
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 }

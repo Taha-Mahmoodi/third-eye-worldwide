@@ -5,29 +5,42 @@
  * a single Node container, etc). Multi-instance deploys need a
  * shared store — swap this for an Upstash Redis / Cloudflare KV
  * implementation behind the same `check()` signature.
- *
- * Usage:
- *   import { check } from '@/lib/rate-limit';
- *   const { allowed, retryAfter } = check(`submit:${ip}`, {
- *     capacity: 20, refillIntervalMs: 15 * 60 * 1000,
- *   });
- *   if (!allowed) return 429 with Retry-After: retryAfter
  */
 
-const buckets = new Map();
+interface Bucket {
+  tokens: number;
+  lastRefill: number;
+}
+
+const buckets = new Map<string, Bucket>();
 
 // Evict stale entries periodically so the map can't grow unbounded.
 // Only runs in a Node runtime; skipped on the edge.
 if (typeof globalThis.setInterval === 'function') {
-  setInterval(() => {
+  const handle = setInterval(() => {
     const now = Date.now();
     for (const [key, b] of buckets) {
       if (now - b.lastRefill > 30 * 60 * 1000) buckets.delete(key);
     }
-  }, 5 * 60 * 1000).unref?.();
+  }, 5 * 60 * 1000);
+  (handle as { unref?: () => void }).unref?.();
 }
 
-export function check(key, { capacity = 20, refillIntervalMs = 15 * 60 * 1000 } = {}) {
+export interface CheckOptions {
+  capacity?: number;
+  refillIntervalMs?: number;
+}
+
+export interface CheckResult {
+  allowed: boolean;
+  remaining: number;
+  retryAfter: number;
+}
+
+export function check(
+  key: string,
+  { capacity = 20, refillIntervalMs = 15 * 60 * 1000 }: CheckOptions = {}
+): CheckResult {
   const now = Date.now();
   let b = buckets.get(key);
   if (!b) {
@@ -50,12 +63,18 @@ export function check(key, { capacity = 20, refillIntervalMs = 15 * 60 * 1000 } 
   return { allowed: false, remaining: 0, retryAfter };
 }
 
+interface IpRequest {
+  headers?: {
+    get?: (name: string) => string | null;
+  };
+}
+
 /**
  * Best-effort IP extraction. Respects standard proxy headers when present,
  * otherwise falls back to the direct connection. Tight enough for rate
  * limiting; do not use as a security identifier.
  */
-export function requestIp(req) {
+export function requestIp(req: IpRequest): string {
   const xff = req.headers?.get?.('x-forwarded-for');
   if (xff) return String(xff).split(',')[0].trim();
   const real = req.headers?.get?.('x-real-ip');

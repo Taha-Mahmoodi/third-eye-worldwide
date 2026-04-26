@@ -8,14 +8,20 @@
  *            contract — the CMS is the author of this content.
  */
 
-export function esc(s) {
+const HTML_ESCAPES: Record<string, string> = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+};
+
+export function esc(s: unknown): string {
   if (s == null) return '';
-  return String(s).replace(/[&<>"']/g, (c) =>
-    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])
-  );
+  return String(s).replace(/[&<>"']/g, (c) => HTML_ESCAPES[c] ?? c);
 }
 
 // Unescaped — for CMS-authored strings that may contain <em>, <br>, <strong>, etc.
-export function rich(s) {
+export function rich(s: unknown): string {
   return s == null ? '' : String(s);
 }

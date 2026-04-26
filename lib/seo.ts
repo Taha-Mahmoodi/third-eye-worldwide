@@ -14,6 +14,9 @@
  *   resolve correctly even if the env var is missing.
  */
 
+import type { Metadata } from 'next';
+import type { SiteContent } from '@/lib/types';
+
 export const SITE = {
   baseUrl: (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.thirdeyeworldwide.org').replace(/\/$/, ''),
   name: 'Third Eye Worldwide',
@@ -28,28 +31,46 @@ export const SITE = {
   orgLegalName: 'Third Eye Worldwide',
   orgType: 'NGO',
   founded: '2025',
-};
+} as const;
 
 /** Return an absolute URL for a path (or pass through absolute URLs). */
-export function siteUrl(path = '/') {
+export function siteUrl(path: string = '/'): string {
   if (!path) return SITE.baseUrl;
   if (/^https?:\/\//i.test(path)) return path;
   return SITE.baseUrl + (path.startsWith('/') ? path : '/' + path);
+}
+
+export interface SeoOverrides {
+  title: string;
+  description: string;
+  image: string;
+  noindex: boolean;
 }
 
 /**
  * Pluck the CMS-author's override for a given path, if any.
  * `content.seo.pages[path]` takes precedence over `content.seo` site defaults.
  */
-export function readSeoOverrides(content, path) {
+export function readSeoOverrides(content: SiteContent | null | undefined, path: string): SeoOverrides {
   const seo = content?.seo || {};
-  const pageOverride = seo?.pages?.[path] || {};
+  const pageOverride = seo.pages?.[path] || {};
   return {
     title: pageOverride.title ?? '',
     description: pageOverride.description ?? seo.defaultDescription ?? '',
     image: pageOverride.image ?? seo.defaultImage ?? '',
     noindex: Boolean(pageOverride.noindex),
   };
+}
+
+export interface PageMetadataInput {
+  title?: string;
+  description?: string;
+  path?: string;
+  image?: string;
+  type?: 'website' | 'article' | string;
+  publishedTime?: string;
+  modifiedTime?: string;
+  noindex?: boolean;
 }
 
 /**
@@ -65,7 +86,7 @@ export function pageMetadata({
   publishedTime,
   modifiedTime,
   noindex = false,
-} = {}) {
+}: PageMetadataInput = {}): Metadata {
   const finalTitle = title || SITE.defaultTitle;
   const finalDescription = description || SITE.description;
   const canonical = siteUrl(path);
@@ -80,7 +101,7 @@ export function pageMetadata({
       ? { index: false, follow: false }
       : { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
     openGraph: {
-      type,
+      type: type as 'website' | 'article',
       url: canonical,
       siteName: SITE.name,
       title: finalTitle,
@@ -104,7 +125,7 @@ export function pageMetadata({
 /**
  * Organization JSON-LD. Rendered once from the root layout.
  */
-export function organizationJsonLd() {
+export function organizationJsonLd(): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
     '@type': 'NGO',
@@ -122,10 +143,22 @@ export function organizationJsonLd() {
   };
 }
 
+export interface WebPageJsonLdInput {
+  title?: string;
+  description?: string;
+  path?: string;
+  type?: 'WebPage' | 'Article' | string;
+}
+
 /**
  * WebPage JSON-LD for an individual route.
  */
-export function webPageJsonLd({ title, description, path, type = 'WebPage' } = {}) {
+export function webPageJsonLd({
+  title,
+  description,
+  path,
+  type = 'WebPage',
+}: WebPageJsonLdInput = {}): Record<string, unknown> {
   const url = siteUrl(path);
   return {
     '@context': 'https://schema.org',
