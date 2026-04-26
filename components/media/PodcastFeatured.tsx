@@ -1,4 +1,6 @@
-export default function PodcastFeatured({ show, episodeCount }) {
+interface Show { name?: string; desc?: string }
+interface PodcastFeaturedProps { show?: Show; episodeCount?: number }
+export default function PodcastFeatured({ show, episodeCount }: PodcastFeaturedProps) {
   const { name = 'Our podcast', desc = '' } = show || {};
   return (
     <div className="pod-featured">

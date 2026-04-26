@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
-export default function FeatureCard({ feature }) {
+interface Feature { icon?: string; title?: string; desc?: string }
+export default function FeatureCard({ feature }: { feature?: Feature }) {
   const { icon, title, desc } = feature || {};
   return (
     <div className="feature-card">

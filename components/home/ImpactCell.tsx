@@ -1,6 +1,7 @@
 import RichText from '@/components/RichText';
 
-export default function ImpactCell({ stat }) {
+interface Stat { number?: string; label?: string }
+export default function ImpactCell({ stat }: { stat?: Stat }) {
   const { number, label } = stat || {};
   return (
     <div className="hi-cell">

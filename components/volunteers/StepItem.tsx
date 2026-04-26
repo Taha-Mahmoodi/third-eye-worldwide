@@ -1,4 +1,5 @@
-export default function StepItem({ step }) {
+interface Step { title?: string; desc?: string }
+export default function StepItem({ step }: { step?: Step }) {
   const { title = '', desc = '' } = step || {};
   return (
     <div className="vol-step">

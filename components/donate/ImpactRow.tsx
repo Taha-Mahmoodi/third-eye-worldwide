@@ -1,4 +1,5 @@
-export default function ImpactRow({ item }) {
+interface ImpactItem { icon?: string; title?: string; desc?: string }
+export default function ImpactRow({ item }: { item?: ImpactItem }) {
   const { icon = 'ph-circle', title = '', desc = '' } = item || {};
   return (
     <div className="impact-row">

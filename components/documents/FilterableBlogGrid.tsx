@@ -10,9 +10,15 @@ import DocCard from '@/components/documents/DocCard';
  * Uses a single .doc-grid with auto-fit tracks so cards reflow
  * cleanly as the list is filtered (no JS chunking into fixed rows).
  */
-export default function FilterableBlogGrid({ blogs, cats }) {
+interface Blog { id?: string; title?: string; cat?: string; [k: string]: unknown }
+interface FilterableBlogGridProps {
+  blogs: Blog[];
+  cats: string[];
+}
+
+export default function FilterableBlogGrid({ blogs, cats }: FilterableBlogGridProps) {
   const [filter, setFilter] = useState('all');
-  const visible = filter === 'all' ? blogs : blogs.filter((b) => b.cat === filter);
+  const visible = filter === 'all' ? blogs : blogs.filter((b: Blog) => b.cat === filter);
 
   return (
     <>
@@ -26,7 +32,7 @@ export default function FilterableBlogGrid({ blogs, cats }) {
           >
             All
           </button>
-          {cats.map((c) => (
+          {cats.map((c: string) => (
             <button
               key={c}
               type="button"
@@ -41,7 +47,7 @@ export default function FilterableBlogGrid({ blogs, cats }) {
 
       {visible.length > 0 ? (
         <div className="doc-grid">
-          {visible.map((b) => <DocCard key={b.id || b.title} doc={b} defaultKind="blog" />)}
+          {visible.map((b: Blog) => <DocCard key={b.id || b.title} doc={b} defaultKind="blog" />)}
         </div>
       ) : (
         <p style={{ color: 'var(--fg-muted)' }}>No posts match this filter.</p>

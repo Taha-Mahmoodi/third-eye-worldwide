@@ -1,17 +1,22 @@
 'use client';
 
 import { useState } from 'react';
-import VideoCard from '@/components/media/VideoCard';
+import PhotoTile, { type PhotoData } from '@/components/media/PhotoTile';
 
-export default function FilterableVideoGrid({ videos, cats }) {
+interface FilterablePhotoGridProps {
+  photos: PhotoData[];
+  cats: string[];
+}
+
+export default function FilterablePhotoGrid({ photos, cats }: FilterablePhotoGridProps) {
   const [filter, setFilter] = useState('all');
-  const visible = filter === 'all' ? videos : videos.filter((v) => v.cat === filter);
+  const visible = filter === 'all' ? photos : photos.filter((p: PhotoData) => p.cat === filter);
 
   return (
     <>
       {cats.length > 0 ? (
-        <div className="filter-bar" data-filter-group="videos">
-          <div className="filter-label">Category</div>
+        <div className="filter-bar" data-filter-group="photos">
+          <div className="filter-label">Filter</div>
           <button
             type="button"
             className={`filter-pill${filter === 'all' ? ' active' : ''}`}
@@ -19,7 +24,7 @@ export default function FilterableVideoGrid({ videos, cats }) {
           >
             All
           </button>
-          {cats.map((c) => (
+          {cats.map((c: string) => (
             <button
               key={c}
               type="button"
@@ -32,12 +37,12 @@ export default function FilterableVideoGrid({ videos, cats }) {
         </div>
       ) : null}
 
-      <div className="video-grid">
+      <div className="photo-grid">
         {visible.length > 0 ? (
-          visible.map((v) => <VideoCard key={v.id || v.title} video={v} />)
+          visible.map((p: PhotoData) => <PhotoTile key={p.id || p.caption} photo={p} />)
         ) : (
           <p style={{ gridColumn: '1 / -1', color: 'var(--fg-muted)' }}>
-            {videos.length === 0 ? 'No videos yet.' : 'No videos match this filter.'}
+            {photos.length === 0 ? 'No photos yet.' : 'No photos match this filter.'}
           </p>
         )}
       </div>

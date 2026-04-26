@@ -18,7 +18,21 @@ const SECTIONS = [
   { key: 'future', eyebrow: 'What\u2019s next', label: 'What\u2019s the future of it?' },
 ];
 
-export default function ProjectDetail({ project }) {
+export interface ProjectDetailData {
+  title?: string;
+  desc?: string;
+  icon?: string;
+  status?: string;
+  statusLabel?: string;
+  what?: string;
+  how?: string;
+  why?: string;
+  usage?: string;
+  future?: string;
+  [key: string]: unknown;
+}
+
+export default function ProjectDetail({ project }: { project: ProjectDetailData }) {
   const { title, desc, icon, status, statusLabel } = project || {};
 
   return (
@@ -51,7 +65,7 @@ export default function ProjectDetail({ project }) {
             <section key={key} className="pd-section" aria-labelledby={`pd-s-${key}`}>
               <div className="pd-section-eyebrow">{eyebrow}</div>
               <h2 id={`pd-s-${key}`} className="pd-section-title">{label}</h2>
-              <RichText as="div" className="pd-section-body" html={project[key]} />
+              <RichText as="div" className="pd-section-body" html={project[key] as string} />
             </section>
           ) : null
         ))}

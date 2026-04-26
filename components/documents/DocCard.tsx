@@ -7,7 +7,26 @@ import Link from 'next/link';
  *                author, initials, meta, readTime, extra }.
  * `defaultKind` decides the link target when tagClass isn't set.
  */
-export default function DocCard({ doc, defaultKind = 'blog' }) {
+interface Doc {
+  tagClass?: string;
+  heroType?: string;
+  tagLabel?: string;
+  extra?: string;
+  cat?: string;
+  title?: string;
+  desc?: string;
+  author?: string;
+  initials?: string;
+  meta?: string;
+  readTime?: string;
+  id?: string;
+}
+interface DocCardProps {
+  doc?: Doc;
+  defaultKind?: 'blog' | 'story';
+}
+
+export default function DocCard({ doc, defaultKind = 'blog' }: DocCardProps) {
   const {
     tagClass, heroType, tagLabel, extra, cat,
     title, desc, author, initials = 'TE', meta, readTime,

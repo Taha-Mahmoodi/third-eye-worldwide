@@ -2,9 +2,10 @@
  * Board-member row shown inside the Governance card on /about#team.
  * `member` shape (CMS): { name, title, visible, order }.
  */
-export default function BoardRow({ member }) {
+interface Member { name?: string; title?: string }
+export default function BoardRow({ member }: { member?: Member }) {
   const { name = '', title = '' } = member || {};
-  const initials = name.split(' ').map((w) => w[0] || '').slice(0, 2).join('');
+  const initials = name.split(' ').map((w: string) => w[0] || '').slice(0, 2).join('');
   return (
     <div className="board-row">
       <div className="board-row-left">

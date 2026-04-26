@@ -1,4 +1,5 @@
-export default function ValueCard({ value }) {
+interface Value { num?: string; icon?: string; title?: string; desc?: string; meta?: string; variant?: string }
+export default function ValueCard({ value }: { value?: Value }) {
   const { num, icon, title, desc, meta, variant } = value || {};
   return (
     <li className={`val-card ${variant || 'v-brand'}`}>

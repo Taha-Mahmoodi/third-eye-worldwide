@@ -1,4 +1,5 @@
-export default function RoleCard({ role }) {
+interface Role { icon?: string; title?: string; desc?: string; tag1?: string; tag2?: string }
+export default function RoleCard({ role }: { role?: Role }) {
   const { icon = 'ph-hand-heart', title = '', desc = '', tag1, tag2 } = role || {};
   return (
     <div className="role-card">

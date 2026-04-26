@@ -11,16 +11,25 @@ import { useState } from 'react';
  * - live status line
  */
 
-function parseAmount(str) {
+interface AmountItem { id?: string; amt?: string; imp?: string }
+type DonationMode = 'monthly' | 'once';
+
+function parseAmount(str: string | undefined): number {
   if (!str) return 0;
   const num = Number(String(str).replace(/[^0-9.]/g, ''));
   return Number.isNaN(num) ? 0 : num;
 }
 
-function AmountGrid({ items, selectedIdx, onPick }) {
+interface AmountGridProps {
+  items: AmountItem[];
+  selectedIdx: number;
+  onPick: (i: number) => void;
+}
+
+function AmountGrid({ items, selectedIdx, onPick }: AmountGridProps) {
   return (
     <div className="amount-grid">
-      {items.map((it, i) => (
+      {items.map((it: AmountItem, i: number) => (
         <button
           key={it.id || i}
           type="button"
@@ -36,8 +45,13 @@ function AmountGrid({ items, selectedIdx, onPick }) {
   );
 }
 
-export default function DonateWidget({ monthly, once }) {
-  const [mode, setMode] = useState('monthly');
+interface DonateWidgetProps {
+  monthly: AmountItem[];
+  once: AmountItem[];
+}
+
+export default function DonateWidget({ monthly, once }: DonateWidgetProps) {
+  const [mode, setMode] = useState<DonationMode>('monthly');
   const [monthlyIdx, setMonthlyIdx] = useState(1);
   const [onceIdx, setOnceIdx] = useState(1);
   const [monthlyCustom, setMonthlyCustom] = useState('');
@@ -46,13 +60,13 @@ export default function DonateWidget({ monthly, once }) {
   const [last, setLast] = useState('');
   const [email, setEmail] = useState('');
   const [note, setNote] = useState('');
-  const [status, setStatus] = useState({ text: '', error: false });
+  const [status, setStatus] = useState<{ text: string; error: boolean }>({ text: '', error: false });
   const [submitting, setSubmitting] = useState(false);
 
-  function pickMonthly(i) { setMonthlyIdx(i); setMonthlyCustom(''); }
-  function pickOnce(i)    { setOnceIdx(i);    setOnceCustom(''); }
+  function pickMonthly(i: number) { setMonthlyIdx(i); setMonthlyCustom(''); }
+  function pickOnce(i: number)    { setOnceIdx(i);    setOnceCustom(''); }
 
-  async function submit(submitMode) {
+  async function submit(submitMode: DonationMode) {
     const items = submitMode === 'monthly' ? monthly : once;
     const idx = submitMode === 'monthly' ? monthlyIdx : onceIdx;
     const custom = submitMode === 'monthly' ? monthlyCustom : onceCustom;
@@ -88,7 +102,8 @@ export default function DonateWidget({ monthly, once }) {
       if (!r.ok) throw new Error('HTTP ' + r.status);
       setStatus({ text: "Thank you — we'll be in touch shortly.", error: false });
     } catch (e) {
-      setStatus({ text: `Could not submit: ${e.message}`, error: true });
+      const msg = e instanceof Error ? e.message : String(e);
+      setStatus({ text: `Could not submit: ${msg}`, error: true });
     } finally {
       setSubmitting(false);
     }

@@ -1,4 +1,7 @@
-export default function PodcastRow({ episode }) {
+interface Episode {
+  num?: string; artV?: string; ep?: string; title?: string; desc?: string; len?: string; date?: string;
+}
+export default function PodcastRow({ episode }: { episode?: Episode }) {
   const { num = '', artV = '', ep = '', title = '', desc = '', len = '', date = '' } = episode || {};
   return (
     <div className="pod-row">

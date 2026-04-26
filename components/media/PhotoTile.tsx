@@ -1,13 +1,19 @@
 'use client';
 
-/*
- * Single photo tile in the /media#photos grid. Clicking it opens the
- * lightbox via the global exposed by lib/client-init.js. The data-*
- * attributes carry the image metadata so the lightbox can read them.
- *
- * `photo` shape: { cls, cat, loc, caption, grad1, grad2, img }.
- */
-export default function PhotoTile({ photo }) {
+import type { KeyboardEvent, MouseEvent } from 'react';
+
+export interface PhotoData {
+  id?: string;
+  cls?: string;
+  cat?: string;
+  loc?: string;
+  caption?: string;
+  grad1?: string;
+  grad2?: string;
+  img?: string;
+}
+
+export default function PhotoTile({ photo }: { photo?: PhotoData }) {
   const {
     cls = 'p-4-2', cat = '', loc = '', caption = '',
     grad1 = '#1f61ff', grad2 = '#1349d4', img = '',
@@ -15,13 +21,13 @@ export default function PhotoTile({ photo }) {
 
   const gradient = `linear-gradient(135deg, ${grad1} 0%, ${grad2} 100%)`;
 
-  function open(e) {
+  function open(e: MouseEvent<HTMLDivElement> | KeyboardEvent<HTMLDivElement>) {
     if (typeof window !== 'undefined' && typeof window.openPhotoLightbox === 'function') {
       window.openPhotoLightbox(e.currentTarget);
     }
   }
 
-  function onKey(e) {
+  function onKey(e: KeyboardEvent<HTMLDivElement>) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       open(e);

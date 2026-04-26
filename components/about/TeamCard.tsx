@@ -2,7 +2,8 @@
  * Team-member card. `member` shape (CMS):
  * { initials, bg, name, role, bio, img, visible, order }.
  */
-export default function TeamCard({ member }) {
+interface TeamMember { initials?: string; bg?: string; name?: string; role?: string; bio?: string; img?: string }
+export default function TeamCard({ member }: { member?: TeamMember }) {
   const { initials = 'TE', bg = 'bg-1', name = '', role = '', bio = '', img = '' } = member || {};
   return (
     <div className="team-card">

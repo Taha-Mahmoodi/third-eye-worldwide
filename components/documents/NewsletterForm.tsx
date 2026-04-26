@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 
 /*
  * Newsletter signup on /documents#blogs. Client-only because it
@@ -11,7 +11,7 @@ export default function NewsletterForm() {
   const [subscribed, setSubscribed] = useState(false);
   const [email, setEmail] = useState('');
 
-  function handleSubmit(e) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!email) return;
     // TODO: wire to /api/cms/submissions/newsletter once it exists.
