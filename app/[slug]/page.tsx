@@ -13,7 +13,11 @@ const RESERVED = new Set([
   'volunteers', 'blog-detail', 'story-detail', 'coming-soon', 'admin', 'api',
 ]);
 
-export async function generateMetadata({ params }) {
+interface SlugRouteProps {
+  params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: SlugRouteProps) {
   const { slug } = await params;
   if (RESERVED.has(slug)) return {};
   const content = await getContent();
@@ -29,7 +33,7 @@ export async function generateMetadata({ params }) {
   });
 }
 
-export default async function CustomPage({ params }) {
+export default async function CustomPage({ params }: SlugRouteProps) {
   const { slug } = await params;
   if (RESERVED.has(slug)) notFound();
   const content = await getContent();

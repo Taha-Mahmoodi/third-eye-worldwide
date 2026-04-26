@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
-interface Feature { icon?: string; title?: string; desc?: string }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface Feature { icon?: string; title?: string; desc?: string; [key: string]: any }
 export default function FeatureCard({ feature }: { feature?: Feature }) {
   const { icon, title, desc } = feature || {};
   return (

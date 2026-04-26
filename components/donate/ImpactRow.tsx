@@ -1,4 +1,5 @@
-interface ImpactItem { icon?: string; title?: string; desc?: string }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface ImpactItem { icon?: string; title?: string; desc?: string; [key: string]: any }
 export default function ImpactRow({ item }: { item?: ImpactItem }) {
   const { icon = 'ph-circle', title = '', desc = '' } = item || {};
   return (

@@ -1,17 +1,22 @@
 import { notFound } from 'next/navigation';
 import { getContent, visibleSorted } from '@/lib/cms/db';
 import JsonLd from '@/components/JsonLd';
-import ProjectDetail from '@/components/projects/ProjectDetail';
+import ProjectDetail, { type ProjectDetailData } from '@/components/projects/ProjectDetail';
 import { pageMetadata, siteUrl, SITE } from '@/lib/seo';
+import type { SiteContent } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
 
-function findProject(content, slug) {
-  const items = visibleSorted(content?.projects?.items || content?.programs?.items || []);
+interface RouteProps {
+  params: Promise<{ slug: string }>;
+}
+
+function findProject(content: SiteContent | null, slug: string): ProjectDetailData | null {
+  const items = visibleSorted<ProjectDetailData>(content?.projects?.items || content?.programs?.items || []);
   return items.find((p) => p?.slug === slug) || null;
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params }: RouteProps) {
   const { slug } = await params;
   const content = await getContent();
   const project = findProject(content, slug);
@@ -24,7 +29,7 @@ export async function generateMetadata({ params }) {
   });
 }
 
-export default async function ProjectDetailPage({ params }) {
+export default async function ProjectDetailPage({ params }: RouteProps) {
   const { slug } = await params;
   const content = await getContent();
   const project = findProject(content, slug);

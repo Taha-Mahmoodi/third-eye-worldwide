@@ -1,4 +1,5 @@
-interface Step { title?: string; desc?: string }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface Step { title?: string; desc?: string; [key: string]: any }
 export default function StepItem({ step }: { step?: Step }) {
   const { title = '', desc = '' } = step || {};
   return (

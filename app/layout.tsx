@@ -1,4 +1,6 @@
 import './globals.css';
+import type { ReactNode } from 'react';
+import type { Metadata, Viewport } from 'next';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import ClientBootstrap from '@/components/ClientBootstrap';
@@ -9,7 +11,7 @@ import { SITE, pageMetadata, organizationJsonLd } from '@/lib/seo';
 
 // Root metadata — every route inherits these and overrides via
 // its own generateMetadata() / pageMetadata() calls.
-export const metadata = {
+export const metadata: Metadata = {
   ...pageMetadata({
     title: SITE.defaultTitle,
     description: SITE.description,
@@ -30,7 +32,7 @@ export const metadata = {
   formatDetection: { email: false, address: false, telephone: false },
 };
 
-export const viewport = {
+export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   themeColor: [
@@ -39,7 +41,7 @@ export const viewport = {
   ],
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" data-theme="light" data-text-size="a" suppressHydrationWarning>
       <head>

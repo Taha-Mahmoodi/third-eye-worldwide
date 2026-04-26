@@ -7,6 +7,8 @@ import RichText from '@/components/RichText';
 export interface StatTileData {
   number?: string;
   label?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 export default function StatTile({ stat }: { stat?: StatTileData }) {

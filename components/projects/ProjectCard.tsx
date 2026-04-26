@@ -15,6 +15,8 @@ export interface Project {
   desc?: string;
   tag?: string;
   status?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 export default function ProjectCard({ project }: { project?: Project }) {
   const { icon, title, desc, tag, slug, status } = project || {};
