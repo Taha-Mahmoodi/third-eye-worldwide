@@ -2,6 +2,12 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/cms/db';
 import { isAdmin } from '@/lib/cms/auth-guard';
 import { check, requestIp } from '@/lib/rate-limit';
+import {
+  MIN_DONATION_AMOUNT,
+  MAX_DONATION_AMOUNT,
+  RATE_LIMIT_MAX_REQUESTS,
+  RATE_LIMIT_WINDOW_MS,
+} from '@/lib/constants';
 
 interface DonationBody {
   name?: unknown;
@@ -16,15 +22,12 @@ export const dynamic = 'force-dynamic';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-// Sanity bounds on donation amount. Values outside this window are almost
-// always typos or abuse. Real-money processing (Stripe etc.) would enforce
-// its own limits too.
-const MIN_AMOUNT = 1;
-const MAX_AMOUNT = 1_000_000;
-
 export async function POST(req: NextRequest) {
   const ip = requestIp(req);
-  const rl = check(`submit:donation:${ip}`, { capacity: 20, refillIntervalMs: 15 * 60 * 1000 });
+  const rl = check(`submit:donation:${ip}`, {
+    capacity: RATE_LIMIT_MAX_REQUESTS,
+    refillIntervalMs: RATE_LIMIT_WINDOW_MS,
+  });
   if (!rl.allowed) {
     return NextResponse.json(
       { error: 'Too many submissions — please try again later.' },
@@ -49,9 +52,9 @@ export async function POST(req: NextRequest) {
   if (!['monthly', 'once'].includes(mode)) {
     return NextResponse.json({ error: 'mode must be monthly or once' }, { status: 400 });
   }
-  if (amount < MIN_AMOUNT || amount > MAX_AMOUNT) {
+  if (amount < MIN_DONATION_AMOUNT || amount > MAX_DONATION_AMOUNT) {
     return NextResponse.json(
-      { error: `amount must be between ${MIN_AMOUNT} and ${MAX_AMOUNT}` },
+      { error: `amount must be between ${MIN_DONATION_AMOUNT} and ${MAX_DONATION_AMOUNT}` },
       { status: 400 }
     );
   }
