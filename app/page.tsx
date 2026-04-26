@@ -9,6 +9,7 @@ import HeroGraphics from '@/components/home/HeroGraphics';
 import HeroActions from '@/components/home/HeroActions';
 import Reveal from '@/components/Reveal';
 import HeartPulseIcon from '@/components/animate-ui/icons/heart-pulse';
+import { Button } from '@/components/ui/button';
 import StoryCard from '@/components/cards/StoryCard';
 import TimelineRow from '@/components/cards/TimelineRow';
 import ProjectCard from '@/components/projects/ProjectCard';
@@ -191,9 +192,11 @@ export default async function HomePage() {
             </ol>
 
             <div className="story-foot">
-              <Link href="/documents#stories" className="btn-ghost">
-                Browse the full archive <i className="ph ph-arrow-right" aria-hidden="true"></i>
-              </Link>
+              <Button asChild variant="pillGhost" size="pill">
+                <Link href="/documents#stories">
+                  Browse the full archive <i className="ph ph-arrow-right" aria-hidden="true"></i>
+                </Link>
+              </Button>
               <div className="story-foot-meta">
                 Updated weekly · {stories.length} stories in the archive
               </div>
@@ -210,10 +213,14 @@ export default async function HomePage() {
             free training, and free devices for those who need them most.
           </p>
           <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'center' }}>
-            <Link href="/donate" className="btn-accent">
-              <HeartPulseIcon /> Donate Monthly
-            </Link>
-            <Link href="/volunteers" className="btn-secondary">Become a Volunteer</Link>
+            <Button asChild variant="accent" size="pill">
+              <Link href="/donate">
+                <HeartPulseIcon /> Donate Monthly
+              </Link>
+            </Button>
+            <Button asChild variant="pillSecondary" size="pill">
+              <Link href="/volunteers">Become a Volunteer</Link>
+            </Button>
           </div>
         </div>
       </section>
