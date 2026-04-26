@@ -10,6 +10,7 @@ import {
 } from '@/lib/constants';
 import logger from '@/lib/logger';
 import { isValidEmail } from '@/lib/validators';
+import { isAllowedOrigin, tripsHoneypot } from '@/lib/csrf';
 
 interface DonationBody {
   name?: unknown;
@@ -23,6 +24,11 @@ interface DonationBody {
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
+  if (!isAllowedOrigin(req)) {
+    logger.warn({ event: 'csrf_blocked', ip: requestIp(req), origin: req.headers.get('origin') });
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
   const ip = requestIp(req);
   const rl = check(`submit:donation:${ip}`, {
     capacity: RATE_LIMIT_MAX_REQUESTS,
@@ -38,6 +44,11 @@ export async function POST(req: NextRequest) {
 
   let body: DonationBody;
   try { body = (await req.json()) as DonationBody; } catch { return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 }); }
+
+  if (tripsHoneypot(body)) {
+    logger.info({ event: 'honeypot_tripped', ip, endpoint: 'donation_submit' });
+    return NextResponse.json({ ok: true, id: 0 });
+  }
 
   const name = typeof body?.name === 'string' ? body.name.trim() : '';
   const email = typeof body?.email === 'string' ? body.email.trim() : '';

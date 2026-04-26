@@ -62,6 +62,11 @@ export default function DonateWidget({ monthly, once }: DonateWidgetProps) {
   const [last, setLast] = useState('');
   const [email, setEmail] = useState('');
   const [note, setNote] = useState('');
+  // MED-1 honeypot — humans never see this field (visually hidden,
+  // taken out of the tab order, off the a11y tree). Bots that fill
+  // every input blindly will fill this one too, and the API drops
+  // any submission where it's non-empty.
+  const [website, setWebsite] = useState('');
   const [status, setStatus] = useState<{ text: string; error: boolean }>({ text: '', error: false });
   const [submitting, setSubmitting] = useState(false);
 
@@ -99,6 +104,7 @@ export default function DonateWidget({ monthly, once }: DonateWidgetProps) {
           amount,
           mode: submitMode,
           note,
+          website,
         }),
       });
       if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -220,6 +226,25 @@ export default function DonateWidget({ monthly, once }: DonateWidgetProps) {
           <label htmlFor="donor-note">Note (optional)</label>
           <input id="donor-note" type="text" placeholder="Direct my gift to a specific program" value={note} onChange={(e) => setNote(e.target.value)} />
         </div>
+        {/* MED-1 honeypot. Hidden from humans (off-screen, out of tab
+            order, hidden from a11y tree). Bots fill every input. */}
+        <input
+          type="text"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          value={website}
+          onChange={(e) => setWebsite(e.target.value)}
+          style={{
+            position: 'absolute',
+            left: '-9999px',
+            width: 1,
+            height: 1,
+            opacity: 0,
+            pointerEvents: 'none',
+          }}
+        />
         <div
           id="donate-status"
           aria-live="polite"
