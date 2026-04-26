@@ -47,6 +47,9 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      - name: Test
+        run: npm run test:run
+
       # Lint is intentionally not run yet — `next lint` requires an
       # interactive setup that hasn't happened. Re-enable once
       # eslint config lands.

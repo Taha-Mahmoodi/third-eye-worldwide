@@ -41,7 +41,8 @@ function authReqIp(req: unknown): string {
   return '0.0.0.0';
 }
 
-function verifyPassword(password: string, stored: string | null | undefined): boolean {
+// Exported for test coverage (tests/unit/auth.test.ts).
+export function verifyPassword(password: string, stored: string | null | undefined): boolean {
   if (!stored || !password) return false;
   const [salt, hash] = String(stored).split(':');
   if (!salt || !hash) return false;
