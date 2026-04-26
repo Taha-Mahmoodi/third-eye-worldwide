@@ -12,7 +12,7 @@ import {
   LOGIN_RATE_LIMIT_MAX_REQUESTS,
   LOGIN_RATE_LIMIT_WINDOW_MS,
 } from '@/lib/constants';
-import { check } from '@/lib/rate-limit';
+import { checkAsync } from '@/lib/rate-limit';
 import logger from '@/lib/logger';
 
 /**
@@ -74,7 +74,7 @@ export const authOptions: NextAuthOptions = {
         // in. 5 attempts per 15 minutes is enough to recover from a
         // typo'd password without giving an attacker meaningful
         // brute-force throughput.
-        const rl = check(`login:${ip}:${email}`, {
+        const rl = await checkAsync(`login:${ip}:${email}`, {
           capacity: LOGIN_RATE_LIMIT_MAX_REQUESTS,
           refillIntervalMs: LOGIN_RATE_LIMIT_WINDOW_MS,
         });

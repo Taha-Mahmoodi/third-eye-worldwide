@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/cms/db';
 import { isAdmin } from '@/lib/cms/auth-guard';
-import { check, requestIp } from '@/lib/rate-limit';
+import { checkAsync, requestIp } from '@/lib/rate-limit';
 import {
   MIN_DONATION_AMOUNT,
   MAX_DONATION_AMOUNT,
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
   }
 
   const ip = requestIp(req);
-  const rl = check(`submit:donation:${ip}`, {
+  const rl = await checkAsync(`submit:donation:${ip}`, {
     capacity: RATE_LIMIT_MAX_REQUESTS,
     refillIntervalMs: RATE_LIMIT_WINDOW_MS,
   });
