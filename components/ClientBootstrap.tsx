@@ -2,6 +2,18 @@
 
 import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import {
+  applyTheme,
+  applyTextSize,
+  nextTheme,
+  readPersistedTheme,
+  readPersistedTextSize,
+  isTheme,
+  isTextSize,
+  type Theme,
+  type TextSize,
+} from '@/lib/client/theme';
+import { closeNav as closeNavDom, toggleNav as toggleNavDom } from '@/lib/client/nav';
 
 declare global {
   interface Window {
@@ -26,117 +38,66 @@ const PAGE_TO_PATH: Record<string, string> = {
   'story-detail': '/story-detail',
 };
 
-const THEMES = ['light', 'dark', 'high-contrast'] as const;
-const THEME_ICONS: Record<string, string> = { light: 'ph-sun', dark: 'ph-moon', 'high-contrast': 'ph-circle-half' };
-
 /*
- * Tiny global controller: binds a handful of `window.*` helpers that the
- * legacy HTML-string routes (blog-detail, story-detail, custom pages) still
- * call via inline `onclick`. Also restores saved theme/text-size on load.
+ * Legacy `window.*` controllers used by inline `onclick` handlers on
+ * the HTML-string routes (blog-detail, story-detail, custom pages).
+ * The React side of the app uses ThemeProvider + NavProvider — see
+ * lib/context/. Both paths route through the same underlying helpers
+ * in lib/client/, so React state and DOM state can't drift.
  *
- * Retired helpers (removed post Option B refactor):
- *   - setDonateMode / pickAmount   → DonateWidget (useState)
- *   - filterPills                  → FilterableBlogGrid / PhotoGrid / VideoGrid
- *   - activateSub                  → Subnav (useState + URL hash)
- *
- * When blog-detail / story-detail / custom migrate to JSX, this file can
- * be shrunk further — ultimately to just theme + text-size handling.
+ * Once the legacy HTML routes migrate to JSX, this file can shrink to
+ * just the client-init dynamic import (or be retired entirely).
  */
 export default function ClientBootstrap() {
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    const root = document.documentElement;
-
-    function applyLogoColors() {
-      const theme = root.getAttribute('data-theme') || 'light';
-      const brandLogo = document.getElementById('brand-logo') as HTMLImageElement | null;
-      const footerLogo = document.getElementById('footer-logo') as HTMLImageElement | null;
-      if (brandLogo) {
-        brandLogo.src = (theme === 'dark' || theme === 'high-contrast')
-          ? '/assets/logo-light.svg'
-          : '/assets/logo.svg';
-      }
-      if (footerLogo) {
-        footerLogo.src = '/assets/logo-light.svg';
-      }
-    }
-
-    window.setTheme = function (t: string) {
-      if (!(THEMES as readonly string[]).includes(t)) t = 'light';
-      root.setAttribute('data-theme', t);
-      const btn = document.getElementById('theme-btn');
-      if (btn) btn.innerHTML = `<i class="ph ${THEME_ICONS[t]}"></i>`;
-      applyLogoColors();
-      try { localStorage.setItem('teww-theme', t); } catch {}
+    window.setTheme = (t: string) => {
+      applyTheme(isTheme(t) ? t : 'light');
     };
 
-    window.cycleTheme = function () {
-      const cur = root.getAttribute('data-theme') || 'light';
-      const idx = (THEMES as readonly string[]).indexOf(cur);
-      window.setTheme(THEMES[(idx + 1) % THEMES.length]);
+    window.cycleTheme = () => {
+      const root = document.documentElement;
+      const cur = (root.getAttribute('data-theme') || 'light') as Theme;
+      applyTheme(nextTheme(isTheme(cur) ? cur : 'light'));
     };
 
-    window.setSize = function (s: string) {
-      root.setAttribute('data-text-size', s);
-      document.querySelectorAll<HTMLElement>('.ts-btn').forEach((b) => {
-        b.classList.toggle('active', b.dataset.size === s);
-      });
-      try { localStorage.setItem('teww-size', s); } catch {}
+    window.setSize = (s: string) => {
+      applyTextSize(isTextSize(s) ? s : 'a');
     };
 
-    window.goto = function (page: string, sub?: string) {
+    window.goto = (page: string, sub?: string) => {
       const path = PAGE_TO_PATH[page] || `/${page}`;
       const href = sub ? `${path}#${sub}` : path;
       try { localStorage.setItem('teww-page', page); } catch {}
       if (sub) try { localStorage.setItem('teww-sub-' + page, sub); } catch {}
       router.push(href);
-      window.closeNav && window.closeNav();
+      closeNavDom();
     };
 
-    window.toggleNav = function () {
-      const links = document.getElementById('primary-nav');
-      const burger = document.getElementById('nav-burger');
-      if (!links || !burger) return;
-      const open = !links.classList.contains('open');
-      links.classList.toggle('open', open);
-      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-      burger.innerHTML = open ? '<i class="ph ph-x"></i>' : '<i class="ph ph-list"></i>';
-      burger.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
-      document.body.classList.toggle('nav-open', open);
-    };
+    window.toggleNav = toggleNavDom;
+    window.closeNav = closeNavDom;
 
-    window.closeNav = function () {
-      const links = document.getElementById('primary-nav');
-      const burger = document.getElementById('nav-burger');
-      if (!links || !links.classList.contains('open')) return;
-      links.classList.remove('open');
-      if (burger) {
-        burger.setAttribute('aria-expanded', 'false');
-        burger.innerHTML = '<i class="ph ph-list"></i>';
-        burger.setAttribute('aria-label', 'Open navigation menu');
-      }
-      document.body.classList.remove('nav-open');
-    };
-
-    // Restore persisted state
-    try {
-      window.setTheme(localStorage.getItem('teww-theme') || 'light');
-      window.setSize(localStorage.getItem('teww-size') || 'a');
-    } catch {
-      window.setTheme('light');
-      window.setSize('a');
-    }
+    // Restore persisted state once on first mount. ThemeProvider also
+    // does this for the React tree; we run the same apply here so the
+    // legacy HTML routes (which don't see the Provider) get the user's
+    // saved theme/size on hard navigations.
+    const persistedTheme: Theme = readPersistedTheme();
+    const persistedSize: TextSize = readPersistedTextSize();
+    applyTheme(persistedTheme);
+    applyTextSize(persistedSize);
 
     // One-time client setup (photo lightbox, scrollspy, reader progress)
     import('@/lib/client-init').catch(() => {});
   }, [router]);
 
-  // On route change, close the mobile nav and scroll to top.
+  // On route change, scroll to top and close mobile nav. NavProvider
+  // already closes the React-rendered burger; this also handles legacy
+  // HTML routes where Provider state never mounts.
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    window.closeNav && window.closeNav();
+    closeNavDom();
     const t = setTimeout(() => window.scrollTo({ top: 0, behavior: 'instant' }), 0);
     return () => clearTimeout(t);
   }, [pathname]);
