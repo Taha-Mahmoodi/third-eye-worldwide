@@ -108,7 +108,14 @@ export default function DonateWidget({ monthly, once }: DonateWidgetProps) {
         }),
       });
       if (!r.ok) throw new Error('HTTP ' + r.status);
-      setStatus({ text: "Thank you — we'll be in touch shortly.", error: false });
+      // The form registers an INTENT to give. No card is charged on this
+      // page — payment processing happens in a later step run by the
+      // Third Eye team. Be explicit so donors don't think they're done.
+      setStatus({
+        text:
+          'Thank you for your interest! A member of our team will be in touch shortly to complete your donation. No payment has been taken yet.',
+        error: false,
+      });
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       setStatus({ text: `Could not submit: ${msg}`, error: true });
@@ -204,9 +211,11 @@ export default function DonateWidget({ monthly, once }: DonateWidgetProps) {
 
       <div style={{ marginTop: 36 }}>
         <h3 className="donate-details-heading">Your details</h3>
-        <div className="secure-note">
-          <i className="ph-fill ph-lock-simple" aria-hidden="true"></i>
-          {' '}Submissions land in the TEWW admin inbox for follow-up. Connect Stripe to charge cards directly.
+        <div className="donate-payment-notice" role="note">
+          <i className="ph-fill ph-info" aria-hidden="true"></i>
+          {' '}<strong>This form registers your donation interest.</strong>
+          {' '}No payment is taken on this page — a member of our team
+          will reach out to complete your gift through a secure checkout.
         </div>
         <div className="pay-row">
           <div className="pay-field">
