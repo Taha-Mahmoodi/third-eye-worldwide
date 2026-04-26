@@ -8,7 +8,8 @@ const HOURS_OPTIONS = ['1–2 hours', '3–5 hours', '6–10 hours', '10+ hours'
  * Volunteer application form. Submits to /api/cms/submissions/volunteer.
  * `roles` is the CMS role list — checkbox labels come from role.title.
  */
-interface RoleOpt { title?: string }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface RoleOpt { title?: string; [key: string]: any }
 interface VolunteerFormProps { roles: RoleOpt[] }
 
 export default function VolunteerForm({ roles }: VolunteerFormProps) {

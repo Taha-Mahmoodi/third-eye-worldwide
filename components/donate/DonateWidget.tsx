@@ -11,7 +11,8 @@ import { useState } from 'react';
  * - live status line
  */
 
-interface AmountItem { id?: string; amt?: string; imp?: string }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface AmountItem { id?: string; amt?: string; imp?: string; [key: string]: any }
 type DonationMode = 'monthly' | 'once';
 
 function parseAmount(str: string | undefined): number {

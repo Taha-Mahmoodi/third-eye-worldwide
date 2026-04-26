@@ -13,6 +13,8 @@ export interface TimelineRowData {
   initials?: string;
   author?: string;
   meta?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 export default function TimelineRow({ story }: { story?: TimelineRowData }) {

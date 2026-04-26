@@ -3,7 +3,12 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 
-export default function Error({ error, reset }) {
+interface ErrorProps {
+  error: Error & { digest?: string };
+  reset: () => void;
+}
+
+export default function ErrorBoundary({ error, reset }: ErrorProps) {
   useEffect(() => {
     // Surface the error in dev tools so it can be inspected.
     // In production, hook a real error reporter (Sentry, etc.) here.

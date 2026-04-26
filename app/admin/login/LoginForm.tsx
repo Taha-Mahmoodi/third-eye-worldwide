@@ -1,15 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { signIn } from 'next-auth/react';
 
-export default function LoginForm({ callbackUrl = '/admin', error }) {
+interface LoginFormProps {
+  callbackUrl?: string;
+  error?: string | null;
+}
+
+export default function LoginForm({ callbackUrl = '/admin', error }: LoginFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [pending, setPending] = useState(false);
   const [msg, setMsg] = useState(error === 'CredentialsSignin' ? 'Invalid email or password.' : error || '');
 
-  async function onSubmit(e) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!email || !password) { setMsg('Please enter email and password.'); return; }
     setPending(true);

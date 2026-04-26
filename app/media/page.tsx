@@ -24,7 +24,8 @@ export async function generateMetadata() {
   });
 }
 
-function PhotosTab({ photos, cats }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function PhotosTab({ photos, cats }: { photos: any[]; cats: string[] }) {
   return (
     <>
       <section className="section">
@@ -46,7 +47,8 @@ function PhotosTab({ photos, cats }) {
   );
 }
 
-function PodcastsTab({ show, pods }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function PodcastsTab({ show, pods }: { show: any; pods: any[] }) {
   const isComingSoon = (show?.status === 'coming-soon') || pods.length === 0;
 
   return (
@@ -59,7 +61,8 @@ function PodcastsTab({ show, pods }) {
             <PodcastFeatured show={show} episodeCount={pods.length} />
             <h3 className="pod-list-heading">Recent episodes</h3>
             <div className="pod-list">
-              {pods.map((ep) => <PodcastRow key={ep.id || ep.ep} episode={ep} />)}
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              {pods.map((ep: any) => <PodcastRow key={ep.id || ep.ep} episode={ep} />)}
             </div>
           </>
         )}
@@ -68,7 +71,8 @@ function PodcastsTab({ show, pods }) {
   );
 }
 
-function VideosTab({ videos, cats }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function VideosTab({ videos, cats }: { videos: any[]; cats: string[] }) {
   return (
     <section className="section">
       <div className="section-inner">
@@ -86,8 +90,8 @@ export default async function MediaPage() {
   const vids   = visibleSorted(m.videos || []);
   const show   = m.podcastShow || {};
 
-  const photoCats = Array.from(new Set(photos.map((p) => p.cat).filter(Boolean)));
-  const videoCats = Array.from(new Set(vids.map((v) => v.cat).filter(Boolean)));
+  const photoCats = Array.from(new Set(photos.map((p) => (p as { cat?: string }).cat).filter(Boolean))) as string[];
+  const videoCats = Array.from(new Set(vids.map((v) => (v as { cat?: string }).cat).filter(Boolean))) as string[];
 
   return (
     <>

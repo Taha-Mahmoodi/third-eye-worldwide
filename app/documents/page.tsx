@@ -22,13 +22,15 @@ export async function generateMetadata() {
   });
 }
 
-function chunk(arr, size) {
-  const out = [];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+function chunk<T>(arr: T[], size: number): T[][] {
+  const out: T[][] = [];
   for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
   return out;
 }
 
-function BlogsTab({ blogs, cats }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function BlogsTab({ blogs, cats }: { blogs: any[]; cats: string[] }) {
   return (
     <>
       <section className="section">
@@ -45,7 +47,8 @@ function BlogsTab({ blogs, cats }) {
   );
 }
 
-function StoriesTab({ stories, fs }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function StoriesTab({ stories, fs }: { stories: any[]; fs: any }) {
   return (
     <section className="section">
       <div className="section-inner">
@@ -62,7 +65,8 @@ function StoriesTab({ stories, fs }) {
         <h3 className="stories-list-heading">More stories</h3>
         {stories.length > 0 ? (
           <div className="doc-grid">
-            {stories.map((s) => <DocCard key={s.id || s.title} doc={s} defaultKind="story" />)}
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {stories.map((s: any) => <DocCard key={s.id || s.title} doc={s} defaultKind="story" />)}
           </div>
         ) : (
           <p style={{ color: 'var(--fg-muted)' }}>No stories yet.</p>
@@ -84,7 +88,7 @@ export default async function DocumentsPage() {
   const blogs = visibleSorted(d.blogs || []);
   const stories = visibleSorted(d.stories || []);
   const fs = d.featuredStory || {};
-  const cats = Array.from(new Set(blogs.map((b) => b.cat).filter(Boolean)));
+  const cats = Array.from(new Set(blogs.map((b) => (b as { cat?: string }).cat).filter(Boolean))) as string[];
 
   return (
     <>
