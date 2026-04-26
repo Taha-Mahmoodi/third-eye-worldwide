@@ -6,19 +6,28 @@ import { useRouter } from 'next/navigation';
 /*
  * TE — Third Eye voice assistant.
  *
- * How it works:
- *   - User clicks "Enable TE" once to grant mic access (browser requirement).
- *   - Component then runs continuous SpeechRecognition listening for "hey TE".
- *   - On wake, TE speaks "Yes?" then listens for the next command.
- *   - The command is matched against an intent map; TE confirms verbally
- *     and performs the action (navigate, scroll, pause audio, etc).
- *   - After the command, TE goes back to wake-word mode.
+ * On every page load TE arms herself and waits for the user's first
+ * gesture (a click, tap, or keypress — anything that satisfies the
+ * browser's "must follow user activation" rule for mic + speech). On
+ * that gesture she requests microphone permission, plays a short
+ * spoken intro, and starts listening continuously for the wake word
+ * "Hey TE" (plus a few common variants).
  *
- * Browser support: webkitSpeechRecognition (Chrome/Edge/Safari). If the
- * API is missing, the button is disabled with a tooltip.
+ * The launch-time toast (rendered by AudioTour.js) calls the global
+ * window.startTeTour() to hand control to TE explicitly.
  *
- * Testability: exposes window.__teSimulate(command) so QA can exercise
- * the intent router without an actual microphone.
+ * Sensitivity: SpeechRecognition runs continuous + interim, restarts
+ * with a 100 ms debounce after onend, and the wake-word regex matches
+ * "hey TE", "hi TE", "okay TE", "hey tee", "hey t e", "hey t.e."
+ * (plus a final-result-only fallback that fires on a bare "TE"
+ * uttered alone).
+ *
+ * Browser support: window.SpeechRecognition / webkitSpeechRecognition
+ * (Chrome, Edge, Safari). Without it, the panel shows a support note
+ * instead of the listening UI.
+ *
+ * Testability: window.__teSimulate(text) runs a phrase through the
+ * intent router without needing a real microphone.
  */
 
 const PAGE_ROUTES = {
@@ -34,11 +43,30 @@ const PAGE_ROUTES = {
 
 const HELP_TEXT = (
   'You can ask me to go to pages like home, about, projects, donate, media, documents, or volunteers. ' +
-  'Or say: scroll down, scroll up, top of page, bottom of page, read this page, pause audio, resume audio, stop audio, or stop listening.'
+  'Or say: scroll down, scroll up, top of page, bottom of page, read this page, dark mode, or stop listening.'
 );
 
+const INTRO_TEXT = (
+  "Hi, I'm TE — Third Eye Worldwide's voice guide. " +
+  'I can take you anywhere on this site by voice. ' +
+  'Just say "Hey TE" followed by where you want to go. ' +
+  'For example, "Hey TE, projects." Or "Hey TE, dark mode." ' +
+  'Say "Hey TE, help" to hear everything I can do. ' +
+  "I'm listening now."
+);
+
+// Wake-word regex. Tolerates the common dictation outputs Chrome/Edge
+// produce for "hey TE": "hey te", "hey tee", "hey t e", "hey t.e.",
+// and the synonyms "hi TE" / "okay TE". Also accepts "yo TE".
+const WAKE_RE = /\b(hey|hi|okay|ok|yo)\s+(te|tee|t\s*e|t\.\s*e\.?)\b/i;
+
+// Fallback wake: a final transcript that's *just* the syllable "te"
+// or "tee" by itself. Tighter than the prefix regex so we don't
+// false-fire on words like "tea", "tell", "team".
+const BARE_WAKE_RE = /^(te|tee)[\s.,!?]*$/i;
+
 function speak(text) {
-  if (typeof window === 'undefined' || !window.speechSynthesis || !window.SpeechSynthesisUtterance) return;
+  if (typeof window === 'undefined' || !window.speechSynthesis || !window.SpeechSynthesisUtterance) return null;
   try {
     window.speechSynthesis.cancel();
     const u = new window.SpeechSynthesisUtterance(text);
@@ -46,7 +74,10 @@ function speak(text) {
     u.pitch = 1;
     u.volume = 1;
     window.speechSynthesis.speak(u);
-  } catch {}
+    return u;
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -57,17 +88,13 @@ export function parseCommand(raw) {
   const text = String(raw || '').trim().toLowerCase();
   if (!text) return { intent: 'noop' };
 
-  // Stop listening
   if (/\b(stop listening|disable te|turn off|sleep|goodbye|bye)\b/.test(text)) {
     return { intent: 'disable', confirm: 'Goodbye. Tap the TE button to wake me again.' };
   }
-
-  // Help
   if (/\b(help|what can (i|you) (say|do)|commands?)\b/.test(text)) {
     return { intent: 'help', confirm: HELP_TEXT };
   }
 
-  // Audio tour controls
   if (/\bpause (the )?(audio|tour)\b/.test(text))  return { intent: 'audio-pause',  confirm: 'Pausing the audio tour.' };
   if (/\b(resume|play|continue) (the )?(audio|tour)\b/.test(text))
     return { intent: 'audio-resume', confirm: 'Resuming the audio tour.' };
@@ -75,7 +102,6 @@ export function parseCommand(raw) {
   if (/\b(start|play) (the )?(audio tour|tour)\b/.test(text))
     return { intent: 'audio-start', confirm: 'Starting the audio tour.' };
 
-  // Scrolling
   if (/\b(scroll (down|to the bottom)|go down|page down)\b/.test(text))
     return { intent: 'scroll', payload: 'down', confirm: 'Scrolling down.' };
   if (/\b(scroll (up|to the top)|go up|page up)\b/.test(text))
@@ -85,22 +111,19 @@ export function parseCommand(raw) {
   if (/\b(bottom of (the )?page|end of (the )?page|bottom)\b/.test(text))
     return { intent: 'scroll', payload: 'bottom', confirm: 'Going to the bottom.' };
 
-  // Read the page
   if (/\b(read|describe) (this|the) (page|thing)\b/.test(text) || /\bread it\b/.test(text))
     return { intent: 'read-page', confirm: 'Reading the page.' };
 
-  // Theme
   if (/\b(dark|night) (mode|theme)\b/.test(text))          return { intent: 'theme', payload: 'dark',          confirm: 'Switching to dark mode.' };
   if (/\b(light|day) (mode|theme)\b/.test(text))           return { intent: 'theme', payload: 'light',         confirm: 'Switching to light mode.' };
   if (/\bhigh[\s-]?contrast( mode| theme)?\b/.test(text))  return { intent: 'theme', payload: 'high-contrast', confirm: 'High contrast mode on.' };
 
-  // Navigation — "go to X", "open X", "take me to X", "navigate to X", or just "X" at end.
+  // Navigation — "go to X", "open X", "take me to X", etc., or just the page name.
   const navMatch = text.match(/\b(go to|open|take me to|navigate to|show me)\s+(.+)$/);
   const candidate = navMatch ? navMatch[2].trim() : text.trim();
   for (const [key, { path, aliases }] of Object.entries(PAGE_ROUTES)) {
     for (const a of aliases) {
-      // Must match as whole phrase (suffix, or the entire command after a nav verb).
-      if (candidate === a || candidate.endsWith(' ' + a) || candidate.startsWith(a + ' ') || candidate === a.replace(/\s+/g, '') ) {
+      if (candidate === a || candidate.endsWith(' ' + a) || candidate.startsWith(a + ' ') || candidate === a.replace(/\s+/g, '')) {
         return { intent: 'navigate', payload: path, confirm: `Going to ${key === 'comingSoon' ? 'coming soon' : key}.` };
       }
     }
@@ -120,16 +143,14 @@ export default function VoiceAssistant() {
   const awakeRef = useRef(false);
   const enabledRef = useRef(false);
   const restartTimerRef = useRef(null);
+  const armedRef = useRef(false);
 
-  // Mirror status to a ref so recognition handlers see current state.
   const statusRef = useRef(status);
   useEffect(() => { statusRef.current = status; }, [status]);
 
   function executeIntent(descriptor) {
     const { intent, payload, confirm } = descriptor || {};
-
     if (confirm) speak(confirm);
-
     switch (intent) {
       case 'navigate':
         if (payload) router.push(payload);
@@ -149,38 +170,20 @@ export default function VoiceAssistant() {
         else speak("I couldn't find readable content on this page.");
         break;
       }
-      case 'audio-start':
-        window.startAudioTour?.();
-        break;
-      case 'audio-pause':
-        window.pauseAudioTour?.();
-        break;
-      case 'audio-resume':
-        window.resumeAudioTour?.();
-        break;
-      case 'audio-stop':
-        window.stopAudioTour?.();
-        break;
-      case 'theme':
-        window.setTheme?.(payload);
-        break;
-      case 'disable':
-        disable();
-        break;
-      case 'help':
-        // HELP_TEXT already read aloud via confirm.
-        break;
-      case 'unknown':
-      default:
-        // speak() already handled
-        break;
+      case 'audio-start':  window.startAudioTour?.();  break;
+      case 'audio-pause':  window.pauseAudioTour?.();  break;
+      case 'audio-resume': window.resumeAudioTour?.(); break;
+      case 'audio-stop':   window.stopAudioTour?.();   break;
+      case 'theme':        window.setTheme?.(payload); break;
+      case 'disable':      disable();                  break;
+      case 'help': /* HELP_TEXT already spoken via confirm */ break;
+      default: /* unknown / noop */ break;
     }
   }
 
   function handleCommand(text) {
     setLastHeard(text);
-    const descriptor = parseCommand(text);
-    executeIntent(descriptor);
+    executeIntent(parseCommand(text));
     awakeRef.current = false;
     if (statusRef.current !== 'disabled') setStatus('listening');
   }
@@ -207,47 +210,54 @@ export default function VoiceAssistant() {
       const lower = transcript.trim().toLowerCase();
       if (!lower) return;
 
+      const lastFinal = event.results[event.results.length - 1].isFinal;
+
       if (!awakeRef.current) {
-        // Wake word detection — tolerate "hey te", "hey tee", "hey t e", "hey t.e."
-        if (/\bhey\s+(te|tee|t\s*e|t\.\s*e\.?)\b/.test(lower)) {
+        // Tier 1 — explicit prefix "hey/hi/okay/yo TE".
+        if (WAKE_RE.test(lower)) {
           awakeRef.current = true;
           setStatus('awake');
-          // Trim the wake phrase and see if a command followed in the same breath.
-          const rest = lower.replace(/.*\bhey\s+(te|tee|t\s*e|t\.\s*e\.?)\b/, '').trim();
-          if (rest && event.results[event.results.length - 1].isFinal) {
+          const rest = lower.replace(/.*?\b(hey|hi|okay|ok|yo)\s+(te|tee|t\s*e|t\.\s*e\.?)\b/i, '').trim();
+          if (rest && lastFinal) {
             handleCommand(rest);
             return;
           }
           speak('Yes?');
+          return;
         }
-      } else {
-        // In awake mode — the next final transcript is the command.
-        if (event.results[event.results.length - 1].isFinal) {
-          handleCommand(lower);
+        // Tier 2 — bare "TE" / "tee" alone, only when the recogniser
+        // says it's a final result, so we don't false-fire on partials.
+        if (lastFinal && BARE_WAKE_RE.test(lower)) {
+          awakeRef.current = true;
+          setStatus('awake');
+          speak('Yes?');
         }
+      } else if (lastFinal) {
+        handleCommand(lower);
       }
     };
-    rec.onerror = () => { /* swallow — will auto-restart via onend */ };
+    rec.onerror = () => { /* swallow — onend will restart */ };
     rec.onend = () => {
-      // Auto-restart while enabled; small debounce so "no-speech" doesn't
-      // hot-loop the API.
       if (!enabledRef.current) return;
       clearTimeout(restartTimerRef.current);
+      // Aggressive restart so the recogniser doesn't sit idle between
+      // utterances (was 300 ms — 100 ms feels noticeably snappier).
       restartTimerRef.current = setTimeout(() => {
-        if (enabledRef.current) {
-          try { rec.start(); } catch { startRecognition(); }
-        }
-      }, 300);
+        if (!enabledRef.current) return;
+        try { rec.start(); } catch { startRecognition(); }
+      }, 100);
     };
     recognitionRef.current = rec;
     try { rec.start(); setStatus('listening'); } catch {}
   }
 
-  function enable() {
+  function enable({ intro = false } = {}) {
     enabledRef.current = true;
+    armedRef.current = false;
     setStatus('listening');
     startRecognition();
-    speak('TE here. Say hey T E to give me a command.');
+    if (intro) speak(INTRO_TEXT);
+    else       speak('TE here. Say hey T E to give me a command.');
   }
 
   function disable() {
@@ -260,20 +270,52 @@ export default function VoiceAssistant() {
     try { window.speechSynthesis?.cancel(); } catch {}
   }
 
+  // Arm TE: the *next* user gesture (click/tap/key) auto-enables her.
+  // Browsers won't grant mic permission without an activation, so we
+  // can't truly auto-enable — but this means the user only has to do
+  // *one* thing (the next click anywhere) to start TE.
+  function armOnNextGesture(opts = {}) {
+    if (typeof window === 'undefined' || armedRef.current || enabledRef.current) return;
+    armedRef.current = true;
+    const onGesture = () => {
+      window.removeEventListener('pointerdown', onGesture, true);
+      window.removeEventListener('keydown', onGesture, true);
+      if (!enabledRef.current) enable(opts);
+    };
+    window.addEventListener('pointerdown', onGesture, true);
+    window.addEventListener('keydown', onGesture, true);
+  }
+
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     setSupported(!!SR);
 
-    // Expose a test / scripted helper. Usable from the console:
-    //   window.__teSimulate('go to projects')
-    // Works regardless of whether the mic is enabled.
     window.__teSimulate = (text) => {
       setLastHeard(text);
       const descriptor = parseCommand(text);
       executeIntent(descriptor);
       return descriptor;
     };
+
+    // Public hook that the launch toast (AudioTour) calls when its
+    // countdown runs out. TE introduces herself and starts listening
+    // — but only on the *next* user gesture, since browsers require
+    // activation for mic + speech.
+    window.startTeTour = () => {
+      if (!SR) return;
+      armOnNextGesture({ intro: true });
+    };
+
+    // Also arm on first mount in case the launch toast was already
+    // dismissed in this session (returning visitor) — TE still wakes
+    // up the next time the user clicks anywhere on the page.
+    let alreadyChose = null;
+    try { alreadyChose = sessionStorage.getItem('teww-tour-choice'); } catch {}
+    if (SR && alreadyChose !== 'no-audio' && !enabledRef.current) {
+      // Pre-arm without intro; toast will retrigger with intro:true.
+      armOnNextGesture({ intro: false });
+    }
 
     return () => {
       enabledRef.current = false;
@@ -337,7 +379,7 @@ export default function VoiceAssistant() {
 
               <div className="te-panel-actions">
                 {status === 'disabled' ? (
-                  <button type="button" className="btn-primary te-btn-enable" onClick={enable}>
+                  <button type="button" className="btn-primary te-btn-enable" onClick={() => enable({ intro: true })}>
                     <i className="ph-fill ph-microphone"></i> Enable TE
                   </button>
                 ) : (
