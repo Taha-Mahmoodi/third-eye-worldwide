@@ -1,0 +1,69 @@
+# /etc/caddy/Caddyfile (deploy/vps-only)
+#
+# Caddy serves as the TLS-terminating reverse proxy in front of the
+# Next.js standalone server on localhost:3000. Let's Encrypt certs
+# are auto-fetched and renewed (with no further config) the first
+# time the domain resolves to this VPS.
+#
+# Replace `your-domain.com` and the email below before deploying.
+
+{
+    # Used as the ACME contact for Let's Encrypt.
+    email admin@your-domain.com
+
+    # Caddy logs to journald via systemd.
+    log {
+        output stderr
+        format console
+        level INFO
+    }
+}
+
+www.your-domain.com, your-domain.com {
+    # HTTP/3 is enabled by default in modern Caddy.
+    encode zstd gzip
+
+    # Security headers — most are also set by lib/middleware.ts on
+    # the response, but Caddy lets us harden the static assets too.
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options    "nosniff"
+        X-Frame-Options           "SAMEORIGIN"
+        Referrer-Policy           "strict-origin-when-cross-origin"
+        Permissions-Policy        "camera=(), microphone=(self), geolocation=(), payment=(), usb=()"
+        # Remove the default `Server: Caddy` banner.
+        -Server
+    }
+
+    # Static assets get a long cache; HTML stays uncached so the SSR
+    # responses can change instantly when the CMS publishes.
+    @assets {
+        path /_next/static/* /assets/* /fonts/* /favicon.ico /robots.txt /sitemap.xml
+    }
+    header @assets Cache-Control "public, max-age=31536000, immutable"
+
+    # User-uploaded media. The local-disk media adapter writes here.
+    # Served by Caddy directly so Next.js never sees the request,
+    # which keeps the Node process free for SSR work.
+    handle /uploads/* {
+        root * /srv/teww/app/public
+        file_server {
+            precompressed gzip br
+        }
+        header Cache-Control "public, max-age=604800"
+    }
+
+    # Everything else proxies to the Next.js standalone server.
+    reverse_proxy localhost:3000 {
+        # Forward the real client IP so the rate-limiter and audit
+        # log capture the correct address.
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+    }
+}
+
+# Apex → www redirect (uncomment if you prefer canonical www).
+# your-domain.com {
+#     redir https://www.your-domain.com{uri} permanent
+# }

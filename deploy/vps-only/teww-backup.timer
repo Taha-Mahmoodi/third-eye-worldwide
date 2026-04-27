@@ -1,0 +1,13 @@
+; /etc/systemd/system/teww-backup.timer
+
+[Unit]
+Description=Run nightly TEWW backup
+
+[Timer]
+OnCalendar=*-*-* 02:00:00
+RandomizedDelaySec=30m
+Persistent=true
+Unit=teww-backup.service
+
+[Install]
+WantedBy=timers.target

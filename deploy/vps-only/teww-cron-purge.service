@@ -1,0 +1,22 @@
+; /etc/systemd/system/teww-cron-purge.service
+;
+; Triggers the existing /api/cron/purge-pii endpoint with the
+; CRON_SECRET bearer the route expects. Replaces the Vercel Cron
+; entry from the original vercel.json.
+;
+; Drives via curl so the route's auth + audit logic runs unchanged.
+
+[Unit]
+Description=Third Eye Worldwide — monthly PII purge
+After=network-online.target teww.service
+Wants=network-online.target
+Requires=teww.service
+
+[Service]
+Type=oneshot
+User=teww
+EnvironmentFile=/srv/teww/app/.env
+ExecStart=/usr/bin/curl --fail-with-body --silent --show-error \
+    --max-time 60 \
+    -H "Authorization: Bearer ${CRON_SECRET}" \
+    https://www.your-domain.com/api/cron/purge-pii
