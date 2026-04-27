@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import DocCard from '@/components/documents/DocCard';
+import { cn } from '@/lib/utils';
 
 /*
  * Filter pills + card grid for the blogs subpage.
@@ -10,8 +11,14 @@ import DocCard from '@/components/documents/DocCard';
  * Uses a single .doc-grid with auto-fit tracks so cards reflow
  * cleanly as the list is filtered (no JS chunking into fixed rows).
  */
-interface Blog { id?: string; title?: string; cat?: string; [k: string]: unknown }
-interface FilterableBlogGridProps {
+export interface Blog {
+  id?: string;
+  title?: string;
+  cat?: string;
+  excerpt?: string;
+  [k: string]: unknown;
+}
+export interface FilterableBlogGridProps {
   blogs: Blog[];
   cats: string[];
 }
@@ -27,7 +34,7 @@ export default function FilterableBlogGrid({ blogs, cats }: FilterableBlogGridPr
           <div className="filter-label">Topic</div>
           <button
             type="button"
-            className={`filter-pill${filter === 'all' ? ' active' : ''}`}
+            className={cn('filter-pill', { active: filter === 'all' })}
             onClick={() => setFilter('all')}
           >
             All
@@ -36,7 +43,7 @@ export default function FilterableBlogGrid({ blogs, cats }: FilterableBlogGridPr
             <button
               key={c}
               type="button"
-              className={`filter-pill${filter === c ? ' active' : ''}`}
+              className={cn('filter-pill', { active: filter === c })}
               onClick={() => setFilter(c)}
             >
               {c.charAt(0).toUpperCase() + c.slice(1)}
@@ -45,19 +52,15 @@ export default function FilterableBlogGrid({ blogs, cats }: FilterableBlogGridPr
         </div>
       ) : null}
 
-      {visible.length > 0 ? (
+      {blogs.length === 0 ? (
+        <p className="grid-empty">No posts published yet. Check back soon.</p>
+      ) : visible.length === 0 ? (
+        <p className="grid-empty">No posts match this filter.</p>
+      ) : (
         <div className="doc-grid">
           {visible.map((b: Blog) => <DocCard key={b.id || b.title} doc={b} defaultKind="blog" />)}
         </div>
-      ) : (
-        <p style={{ color: 'var(--fg-muted)' }}>No posts match this filter.</p>
       )}
-
-      {blogs.length > 9 ? (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 48 }}>
-          <button type="button" className="btn-secondary">Load more posts</button>
-        </div>
-      ) : null}
     </>
   );
 }

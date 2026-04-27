@@ -1,12 +1,11 @@
 'use client';
 
-// `@phosphor-icons/react` uses React Context for weight inheritance,
-// which is client-only. Footer was previously a server component but
-// has no server-side logic, so flipping it client-side has no cost.
+// Phosphor icon imports were removed with the placeholder social row.
+// If real social URLs are added later, re-import from the central
+// `@/components/icons` re-export so we stay client-safe in one place.
 
 import Link from 'next/link';
 import LogoAnimated from '@/components/LogoAnimated';
-import { GithubLogo, LinkedinLogo, YoutubeLogo, XLogo } from '@phosphor-icons/react';
 
 export default function Footer() {
   return (
@@ -18,12 +17,8 @@ export default function Footer() {
               <LogoAnimated className="footer-logo-svg" ariaLabel="Third Eye Worldwide" />
             </div>
             <p>Free, open-source technology for blind and low-vision people. Built from inside the experience.</p>
-            <div className="footer-social">
-              <a href="#" aria-label="GitHub"><GithubLogo size="1em" aria-hidden="true" /></a>
-              <a href="#" aria-label="LinkedIn"><LinkedinLogo size="1em" aria-hidden="true" /></a>
-              <a href="#" aria-label="YouTube"><YoutubeLogo size="1em" aria-hidden="true" /></a>
-              <a href="#" aria-label="Twitter"><XLogo size="1em" aria-hidden="true" /></a>
-            </div>
+            {/* Social icons removed until real account URLs are available
+                — better empty than broken. Re-add when accounts launch. */}
           </div>
           <div className="footer-col">
             <h4>Explore</h4>
@@ -48,8 +43,8 @@ export default function Footer() {
             <ul>
               <li><Link href="/donate">Donate</Link></li>
               <li><Link href="/volunteers">Volunteer</Link></li>
-              <li><a href="#">Partner with us</a></li>
-              <li><a href="#">Open Source</a></li>
+              <li><a href="mailto:hello@thirdeyeworldwide.org?subject=Partnership">Partner with us</a></li>
+              <li><a href="mailto:hello@thirdeyeworldwide.org?subject=Open%20source%20contribution">Open Source</a></li>
             </ul>
           </div>
           <div className="footer-col">

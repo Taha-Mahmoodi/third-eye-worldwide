@@ -71,9 +71,15 @@ export default async function DonatePage() {
               <div className="donate-other">
                 <div className="donate-other-eyebrow">Other Ways to Give</div>
                 <div className="donate-other-links">
-                  <a href="#"><Bank size="1em" aria-hidden="true" /> Bank transfer / wire</a>
-                  <a href="#"><ChartLineUp size="1em" aria-hidden="true" /> Donate stock or crypto</a>
-                  <a href="#"><Briefcase size="1em" aria-hidden="true" /> Employer matching</a>
+                  <a href="mailto:hello@thirdeyeworldwide.org?subject=Bank%20transfer">
+                    <Bank size="1em" aria-hidden="true" /> Bank transfer / wire
+                  </a>
+                  <a href="mailto:hello@thirdeyeworldwide.org?subject=Stock%20or%20crypto%20donation">
+                    <ChartLineUp size="1em" aria-hidden="true" /> Donate stock or crypto
+                  </a>
+                  <a href="mailto:hello@thirdeyeworldwide.org?subject=Employer%20matching">
+                    <Briefcase size="1em" aria-hidden="true" /> Employer matching
+                  </a>
                 </div>
               </div>
             </div>

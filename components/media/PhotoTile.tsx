@@ -14,6 +14,10 @@ export interface PhotoData {
   img?: string;
 }
 
+export interface PhotoTileProps {
+  photo?: PhotoData;
+}
+
 /*
  * Photo tile that opens the lightbox on click. Uses a native
  * <button> rather than role="button" on a div — the browser handles
@@ -21,7 +25,7 @@ export interface PhotoData {
  * automatically. Default button chrome is stripped via `all: unset`
  * in globals.css with the photo-tile base styles re-applied.
  */
-export default function PhotoTile({ photo }: { photo?: PhotoData }) {
+export default function PhotoTile({ photo }: PhotoTileProps) {
   const {
     cls = 'p-4-2', cat = '', loc = '', caption = '',
     grad1 = '#1f61ff', grad2 = '#1349d4', img = '',
