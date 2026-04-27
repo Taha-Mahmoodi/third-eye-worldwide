@@ -47,6 +47,20 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" data-theme="light" data-text-size="a" suppressHydrationWarning>
       <head>
+        {/*
+          Tiny blocking inline script — restores the user's saved
+          theme + text-size BEFORE the first paint, so dark / high-
+          contrast users don't see a white flash while ClientBootstrap
+          hydrates. The keys match lib/client/theme.ts exactly.
+          dangerouslySetInnerHTML is safe — string literal, no user
+          input. ALLOWED list prevents injection of bogus theme values.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var T=['light','dark','high-contrast'];var S=['a','a-plus','a-plus-plus'];var t=localStorage.getItem('teww-theme');var s=localStorage.getItem('teww-size');if(!T.indexOf||T.indexOf(t)<0)t='light';if(S.indexOf(s)<0)s='a';var r=document.documentElement;r.setAttribute('data-theme',t);r.setAttribute('data-text-size',s);}catch(_){}})();",
+          }}
+        />
         <JsonLd data={organizationJsonLd()} />
       </head>
       <body>
