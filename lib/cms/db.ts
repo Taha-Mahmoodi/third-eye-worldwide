@@ -9,10 +9,34 @@ import { CONTENT_REVISION_KEEP_COUNT } from '@/lib/constants';
 declare global {
   // eslint-disable-next-line no-var
   var __prisma: PrismaClient | undefined;
+  // eslint-disable-next-line no-var
+  var __sqliteConfigured: boolean | undefined;
 }
 
 export const prisma: PrismaClient = globalThis.__prisma || new PrismaClient();
 if (process.env.NODE_ENV !== 'production') globalThis.__prisma = prisma;
+
+// SQLite-specific pragmas applied once per process. WAL allows concurrent
+// readers alongside a writer (the default DELETE journal grabs an
+// exclusive lock per write, so concurrent requests fail with
+// SQLITE_BUSY). busy_timeout makes a queued write wait up to 5 s for
+// the lock instead of failing instantly. synchronous=NORMAL is safe in
+// WAL mode and halves fsync calls — switch to FULL if your hosting
+// requires the extra durability guarantee.
+//
+// All three are no-ops when DATABASE_URL points at PostgreSQL (Prisma
+// returns "unknown pragma" which we silently swallow), so this stays
+// safe to run unconditionally.
+if (!globalThis.__sqliteConfigured) {
+  globalThis.__sqliteConfigured = true;
+  void Promise.all([
+    prisma.$executeRawUnsafe('PRAGMA journal_mode=WAL'),
+    prisma.$executeRawUnsafe('PRAGMA busy_timeout=5000'),
+    prisma.$executeRawUnsafe('PRAGMA synchronous=NORMAL'),
+  ]).catch(() => {
+    // Swallow — Postgres rejects PRAGMA, that's fine.
+  });
+}
 
 export async function getContent(): Promise<SiteContent | null> {
   const row = await prisma.siteContent.findUnique({ where: { id: 1 } });
@@ -59,20 +83,24 @@ export async function saveContent(
 
 /**
  * Drop all but the `keep` most-recent ContentRevision rows. Errors are
- * logged at the call site, never thrown — pruning failure must never
- * fail a publish.
+ * swallowed — pruning failure must never fail a publish.
+ *
+ * Single atomic statement: deletes everything not in the top-N by
+ * createdAt. The previous read-then-delete had a TOCTOU window — a
+ * concurrent publish between the SELECT and DELETE could shift the
+ * "freshest N" set so the wrong rows got deleted. The subquery here
+ * runs in one statement so SQLite/Postgres see a consistent snapshot.
  */
 async function pruneRevisions(keep: number): Promise<void> {
   try {
-    const stale = await prisma.contentRevision.findMany({
-      orderBy: { createdAt: 'desc' },
-      skip: keep,
-      select: { id: true },
-    });
-    if (stale.length === 0) return;
-    await prisma.contentRevision.deleteMany({
-      where: { id: { in: stale.map((r) => r.id) } },
-    });
+    await prisma.$executeRaw`
+      DELETE FROM "ContentRevision"
+      WHERE id NOT IN (
+        SELECT id FROM "ContentRevision"
+        ORDER BY "createdAt" DESC
+        LIMIT ${keep}
+      )
+    `;
   } catch {
     // Swallow — pruning is best-effort. The publish succeeded already.
   }
