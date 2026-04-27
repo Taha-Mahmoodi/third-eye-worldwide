@@ -11,6 +11,9 @@ import {
 import logger from '@/lib/logger';
 import { isValidEmail } from '@/lib/validators';
 import { isAllowedOrigin, tripsHoneypot } from '@/lib/csrf';
+import { sendEmail } from '@/lib/email/send';
+import { donationConfirmationEmail } from '@/lib/email/templates/confirm-donation';
+import { siteUrl } from '@/lib/seo';
 
 interface DonationBody {
   name?: unknown;
@@ -90,6 +93,21 @@ export async function POST(req: NextRequest) {
       mode,
       currency: row.currency,
     });
+
+    // MED-8: send the confirmation email. Fail-open — admin sees the
+    // row as `confirmed: false` rather than rejecting the submitter.
+    const email_ = donationConfirmationEmail({
+      id: row.id,
+      name: row.name,
+      amount: row.amount,
+      mode: row.mode,
+      currency: row.currency,
+      createdAt: row.createdAt,
+      siteUrl: siteUrl(''),
+    });
+    sendEmail({ to: row.email, subject: email_.subject, text: email_.text, html: email_.html })
+      .catch((err) => logger.error({ err, event: 'email_send_threw', id: row.id }));
+
     return NextResponse.json({ ok: true, id: row.id });
   } catch (err) {
     logger.error({ err, event: 'donation_submit_failed', ip }, 'donation create failed');
@@ -101,6 +119,16 @@ export async function GET(req: NextRequest) {
   if (!(await isAdmin(req))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  const rows = await prisma.donationSubmission.findMany({ orderBy: { createdAt: 'desc' }, take: 200 });
+  // MED-8: by default only return rows the user confirmed via email.
+  // Admin can pass `?all=true` to see unconfirmed (e.g., to debug a
+  // delivery issue or view spam).
+  const url = new URL(req.url);
+  const includeAll = url.searchParams.get('all') === 'true';
+  const where = includeAll ? {} : { confirmed: true };
+  const rows = await prisma.donationSubmission.findMany({
+    where,
+    orderBy: { createdAt: 'desc' },
+    take: 200,
+  });
   return NextResponse.json(rows);
 }
