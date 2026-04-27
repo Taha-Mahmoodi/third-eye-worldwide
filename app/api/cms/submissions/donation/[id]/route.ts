@@ -17,10 +17,8 @@ export const dynamic = 'force-dynamic';
  *   401 { error: 'Unauthorized' }   — not signed in / not admin
  *   404 { error: 'Not found' }      — no row with that id
  */
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } },
-) {
+export async function DELETE(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const admin = await isAdmin(req);
   if (!admin) {
     return NextResponse.json(

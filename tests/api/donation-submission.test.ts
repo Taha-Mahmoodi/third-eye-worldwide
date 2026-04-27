@@ -154,7 +154,10 @@ describe('POST /api/cms/submissions/donation', () => {
     // sendEmail is fire-and-forget — give it a microtask tick.
     await new Promise((r) => setTimeout(r, 0));
     expect(sendEmailMock).toHaveBeenCalledOnce();
-    const arg = sendEmailMock.mock.calls[0][0] as { to: string; subject: string };
+    const calls = sendEmailMock.mock.calls as unknown as Array<
+      [{ to: string; subject: string }]
+    >;
+    const arg = calls[0][0];
     expect(arg.to).toBe('jane@example.com');
     expect(arg.subject).toMatch(/confirm/i);
   });
