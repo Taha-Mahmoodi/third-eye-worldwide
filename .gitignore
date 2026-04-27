@@ -24,3 +24,8 @@ prisma/dev.db-journal
 # SQLite WAL mode (DB-4) creates these transient files alongside the DB.
 prisma/dev.db-shm
 prisma/dev.db-wal
+
+# Media library uploads — the local-disk storage adapter
+# (CMS_ROADMAP PR #1) writes here. Production deploys should switch
+# to Vercel Blob via BLOB_READ_WRITE_TOKEN; this dir is dev-only.
+public/uploads/

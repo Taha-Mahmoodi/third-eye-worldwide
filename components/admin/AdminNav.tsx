@@ -7,6 +7,7 @@ import {
   Database,
   FileText,
   HandHeart,
+  ImageSquare,
   UserCircle,
   Users,
 } from '@/components/icons';
@@ -32,6 +33,7 @@ const NAV: NavItem[] = [
   { href: '/admin/volunteers', label: 'Volunteers', icon: Users },
   { href: '/admin/donations', label: 'Donations', icon: HandHeart },
   { href: '/admin/content', label: 'Content', icon: Database },
+  { href: '/admin/media', label: 'Media', icon: ImageSquare },
   { href: '/admin/users', label: 'Users', icon: UserCircle, adminOnly: true },
   { href: '/admin/audit-log', label: 'Audit log', icon: FileText, adminOnly: true },
 ];
