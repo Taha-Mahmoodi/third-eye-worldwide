@@ -1,6 +1,7 @@
 import './globals.css';
 import type { ReactNode } from 'react';
 import type { Metadata, Viewport } from 'next';
+import { headers } from 'next/headers';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import ClientBootstrap from '@/components/ClientBootstrap';
@@ -44,6 +45,10 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  // Per-request nonce minted by middleware.ts. Threaded into the
+  // theme-bootstrap <script> below so the strict CSP allows it.
+  const nonce = headers().get('x-nonce') ?? undefined;
+
   return (
     <html lang="en" data-theme="light" data-text-size="a" suppressHydrationWarning>
       <head>
@@ -54,8 +59,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           hydrates. The keys match lib/client/theme.ts exactly.
           dangerouslySetInnerHTML is safe — string literal, no user
           input. ALLOWED list prevents injection of bogus theme values.
+          The nonce is required by our strict CSP (no 'unsafe-inline').
         */}
         <script
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html:
               "(function(){try{var T=['light','dark','high-contrast'];var S=['a','a-plus','a-plus-plus'];var t=localStorage.getItem('teww-theme');var s=localStorage.getItem('teww-size');if(!T.indexOf||T.indexOf(t)<0)t='light';if(S.indexOf(s)<0)s='a';var r=document.documentElement;r.setAttribute('data-theme',t);r.setAttribute('data-text-size',s);}catch(_){}})();",
