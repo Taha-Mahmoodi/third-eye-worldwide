@@ -80,7 +80,7 @@ Any Node-compatible host that supports Next.js 14 will work.
   - `PUT /api/cms/data` — requires `x-cms-token` header; writes a new revision, updates current, and calls `revalidatePath()` on every route.
   - `POST /api/cms/submissions/volunteer` and `/donation` — public writes (for forms).
   - `GET` on submission routes — requires token, returns the last 200 rows.
-- **Admin dashboard**: `/admin` (served from `public/admin/`). Loads from `GET /api/cms/data`; **Publish** button does `PUT /api/cms/data`. Show/hide an item via its `visible` flag; reorder via `order`.
+- **Admin dashboard**: `/admin` (Next.js App Router dashboard at `app/admin/(dashboard)/`). Sign-in at `/admin/login`. Sub-routes: `/admin` (Overview), `/admin/volunteers`, `/admin/donations`, `/admin/content`. The Content tab loads from `GET /api/cms/data` and **Publish** does `PUT /api/cms/data`; show/hide an item via its `visible` flag, reorder via `order`. The earlier static SPA at `public/admin/` has been removed (CMS_ROADMAP CMS-9).
 
 ### Phases 1, 2 & 3 (done)
 - **All 9 content routes fully CMS-driven**: `/`, `/about`, `/projects`, `/donate`, `/media`, `/documents`, `/volunteers`, `/blog-detail`, `/story-detail`. Every item honours `visible` + `order`.
