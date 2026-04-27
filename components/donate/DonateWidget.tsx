@@ -2,6 +2,14 @@
 
 import { useState } from 'react';
 import { isValidEmail } from '@/lib/validators';
+import {
+  CurrencyDollar,
+  Gift,
+  Heart,
+  Info,
+  Repeat,
+  SealCheck,
+} from '@/components/icons';
 
 /*
  * Donation widget. Owns every interactive piece of the /donate page:
@@ -135,7 +143,7 @@ export default function DonateWidget({ monthly, once }: DonateWidgetProps) {
           data-mode="monthly"
           onClick={() => setMode('monthly')}
         >
-          <i className="ph ph-repeat" aria-hidden="true"></i>{' '}
+          <Repeat size="1em" aria-hidden="true" />{' '}
           <span className="t-label">Monthly</span>
         </button>
         <button
@@ -146,7 +154,7 @@ export default function DonateWidget({ monthly, once }: DonateWidgetProps) {
           data-mode="once"
           onClick={() => setMode('once')}
         >
-          <i className="ph ph-currency-dollar" aria-hidden="true"></i>{' '}
+          <CurrencyDollar size="1em" aria-hidden="true" />{' '}
           <span className="t-label">One-time</span>
         </button>
       </div>
@@ -166,7 +174,7 @@ export default function DonateWidget({ monthly, once }: DonateWidgetProps) {
             <span className="custom-amount-suffix">/ month</span>
           </div>
           <p className="donate-note">
-            <i className="ph-fill ph-seal-check" style={{ color: 'var(--brand)' }} aria-hidden="true"></i>
+            <SealCheck weight="fill" size="1em" style={{ color: 'var(--brand)' }} aria-hidden="true" />
             {' '}Monthly donors join the <strong>Circle of Access</strong> — quarterly impact
             reports, early product access, and two community events per year.
           </p>
@@ -176,7 +184,7 @@ export default function DonateWidget({ monthly, once }: DonateWidgetProps) {
             onClick={() => submit('monthly')}
             disabled={submitting}
           >
-            <i className="ph-fill ph-heart" aria-hidden="true"></i> Donate Monthly
+            <Heart weight="fill" size="1em" aria-hidden="true" /> Donate Monthly
           </button>
         </div>
       ) : (
@@ -194,7 +202,7 @@ export default function DonateWidget({ monthly, once }: DonateWidgetProps) {
             <span className="custom-amount-suffix">once</span>
           </div>
           <p className="donate-note">
-            <i className="ph-fill ph-gift" style={{ color: 'var(--accent)' }} aria-hidden="true"></i>
+            <Gift weight="fill" size="1em" style={{ color: 'var(--accent)' }} aria-hidden="true" />
             {' '}One-time gifts of $500+ can be directed to a specific program. Your gift is
             tax-deductible in the US, UK, Canada, and India.
           </p>
@@ -204,7 +212,7 @@ export default function DonateWidget({ monthly, once }: DonateWidgetProps) {
             onClick={() => submit('once')}
             disabled={submitting}
           >
-            <i className="ph ph-currency-dollar" aria-hidden="true"></i> Give Once
+            <CurrencyDollar size="1em" aria-hidden="true" /> Give Once
           </button>
         </div>
       )}
@@ -212,7 +220,7 @@ export default function DonateWidget({ monthly, once }: DonateWidgetProps) {
       <div style={{ marginTop: 36 }}>
         <h3 className="donate-details-heading">Your details</h3>
         <div className="donate-payment-notice" role="note">
-          <i className="ph-fill ph-info" aria-hidden="true"></i>
+          <Info weight="fill" size="1em" aria-hidden="true" />
           {' '}<strong>This form registers your donation interest.</strong>
           {' '}No payment is taken on this page — a member of our team
           will reach out to complete your gift through a secure checkout.

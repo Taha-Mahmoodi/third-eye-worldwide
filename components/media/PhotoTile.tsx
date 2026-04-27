@@ -1,6 +1,7 @@
 'use client';
 
 import type { KeyboardEvent, MouseEvent } from 'react';
+import { ArrowsOut, ImageSquare } from '@/components/icons';
 
 export interface PhotoData {
   id?: string;
@@ -53,14 +54,14 @@ export default function PhotoTile({ photo }: { photo?: PhotoData }) {
       {img ? (
         <div className="ph-img-bg" style={{ backgroundImage: `url('${img}')` }}></div>
       ) : (
-        <div className="ph-placeholder"><i className="ph ph-image-square" aria-hidden="true"></i></div>
+        <div className="ph-placeholder"><ImageSquare size="1em" aria-hidden="true" /></div>
       )}
       <div className="overlay">
         <div className="ph-title">{caption}</div>
         <div className="ph-meta">{loc}</div>
       </div>
       <div className="photo-zoom-hint" aria-hidden="true">
-        <i className="ph-bold ph-arrows-out"></i>
+        <ArrowsOut weight="bold" size="1em" aria-hidden="true" />
       </div>
     </div>
   );

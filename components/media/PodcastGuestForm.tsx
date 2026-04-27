@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from 'react';
 import { isValidEmail } from '@/lib/validators';
+import { PaperPlaneTilt } from '@/components/icons';
 
 /*
  * "Be a guest on our first season" form. Submits to the existing
@@ -81,7 +82,7 @@ export default function PodcastGuestForm({ guestEmail = 'guest@teww.org' }: { gu
         style={{ width: '100%', justifyContent: 'center' }}
         disabled={submitting}
       >
-        <i className="ph ph-paper-plane-tilt" aria-hidden="true"></i>{' '}
+        <PaperPlaneTilt size="1em" aria-hidden="true" />{' '}
         {submitting ? 'Sending…' : 'Send my pitch'}
       </button>
       <p

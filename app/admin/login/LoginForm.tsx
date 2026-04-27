@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from 'react';
 import { signIn } from 'next-auth/react';
+import { SignIn } from '@/components/icons';
 
 interface LoginFormProps {
   callbackUrl?: string;
@@ -74,7 +75,7 @@ export default function LoginForm({ callbackUrl = '/admin', error }: LoginFormPr
           disabled={pending}
           style={{ justifyContent: 'center', marginTop: 8 }}
         >
-          <i className="ph ph-sign-in"></i> {pending ? 'Signing in…' : 'Sign in'}
+          <SignIn size="1em" aria-hidden="true" /> {pending ? 'Signing in…' : 'Sign in'}
         </button>
 
         {msg ? (

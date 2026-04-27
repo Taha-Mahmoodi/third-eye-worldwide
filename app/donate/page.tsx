@@ -3,6 +3,15 @@ import RichText from '@/components/RichText';
 import DonateWidget from '@/components/donate/DonateWidget';
 import ImpactRow from '@/components/donate/ImpactRow';
 import { pageMetadata, readSeoOverrides } from '@/lib/seo';
+import {
+  ArrowRight,
+  Bank,
+  Briefcase,
+  ChartLineUp,
+  CheckCircle,
+  FileText,
+  ShieldCheck,
+} from '@/components/icons';
 
 export const dynamic = 'force-dynamic';
 
@@ -55,9 +64,9 @@ export default async function DonatePage() {
               <div className="donate-other">
                 <div className="donate-other-eyebrow">Other Ways to Give</div>
                 <div className="donate-other-links">
-                  <a href="#"><i className="ph ph-bank" aria-hidden="true"></i> Bank transfer / wire</a>
-                  <a href="#"><i className="ph ph-chart-line-up" aria-hidden="true"></i> Donate stock or crypto</a>
-                  <a href="#"><i className="ph ph-briefcase" aria-hidden="true"></i> Employer matching</a>
+                  <a href="#"><Bank size="1em" aria-hidden="true" /> Bank transfer / wire</a>
+                  <a href="#"><ChartLineUp size="1em" aria-hidden="true" /> Donate stock or crypto</a>
+                  <a href="#"><Briefcase size="1em" aria-hidden="true" /> Employer matching</a>
                 </div>
               </div>
             </div>
@@ -76,22 +85,22 @@ export default async function DonatePage() {
           </div>
           <div className="feature-grid">
             <div className="feature-card">
-              <div className="feature-icon"><i className="ph ph-file-text" aria-hidden="true"></i></div>
+              <div className="feature-icon"><FileText size="1em" aria-hidden="true" /></div>
               <h3>Annual reports</h3>
               <p>Detailed financial and program reports published every March — available since our founding in 2025.</p>
-              <a className="card-link" href="#">View reports <i className="ph ph-arrow-right" aria-hidden="true"></i></a>
+              <a className="card-link" href="#">View reports <ArrowRight size="1em" aria-hidden="true" /></a>
             </div>
             <div className="feature-card">
-              <div className="feature-icon"><i className="ph ph-check-circle" aria-hidden="true"></i></div>
+              <div className="feature-icon"><CheckCircle size="1em" aria-hidden="true" /></div>
               <h3>Third-party audited</h3>
               <p>Independently audited by Baker Tilly. Charity Navigator 4-star. GuideStar Platinum Seal 2025-2026.</p>
-              <a className="card-link" href="#">See audits <i className="ph ph-arrow-right" aria-hidden="true"></i></a>
+              <a className="card-link" href="#">See audits <ArrowRight size="1em" aria-hidden="true" /></a>
             </div>
             <div className="feature-card">
-              <div className="feature-icon"><i className="ph ph-shield-check" aria-hidden="true"></i></div>
+              <div className="feature-icon"><ShieldCheck size="1em" aria-hidden="true" /></div>
               <h3>Donor privacy</h3>
               <p>We never sell, rent, or share donor information. Full anonymity available on request.</p>
-              <a className="card-link" href="#">Privacy policy <i className="ph ph-arrow-right" aria-hidden="true"></i></a>
+              <a className="card-link" href="#">Privacy policy <ArrowRight size="1em" aria-hidden="true" /></a>
             </div>
           </div>
         </div>

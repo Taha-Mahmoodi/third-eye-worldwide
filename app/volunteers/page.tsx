@@ -6,6 +6,7 @@ import RoleCard from '@/components/volunteers/RoleCard';
 import StepItem from '@/components/volunteers/StepItem';
 import VolunteerForm from '@/components/volunteers/VolunteerForm';
 import { pageMetadata, readSeoOverrides } from '@/lib/seo';
+import { CalendarPlus } from '@/components/icons';
 
 export const revalidate = 3600;
 
@@ -84,7 +85,7 @@ export default async function VolunteersPage() {
           <p>Join one of our monthly drop-in calls. Meet existing volunteers, ask questions, no commitment.</p>
           <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'center' }}>
             <button type="button" className="btn-accent">
-              <i className="ph ph-calendar-plus" aria-hidden="true"></i> Book a Drop-in
+              <CalendarPlus size="1em" aria-hidden="true" /> Book a Drop-in
             </button>
             <Link href="/donate" className="btn-secondary">Donate Instead</Link>
           </div>

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ArrowRight, House } from '@/components/icons';
 
 export const metadata = {
   title: 'Page not found — Third Eye Worldwide',
@@ -20,12 +21,12 @@ export default function NotFound() {
 
         <div className="error-actions">
           <Link href="/" className="btn-primary">
-            <i className="ph ph-house"></i>
+            <House size="1em" aria-hidden="true" />
             Back to home
           </Link>
           <Link href="/projects" className="btn-secondary">
             See our projects
-            <i className="ph ph-arrow-right"></i>
+            <ArrowRight size="1em" aria-hidden="true" />
           </Link>
         </div>
 

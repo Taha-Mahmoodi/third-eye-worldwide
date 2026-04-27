@@ -1,3 +1,5 @@
+import { Play, RssSimple } from '@/components/icons';
+
 interface Show { name?: string; desc?: string }
 interface PodcastFeaturedProps { show?: Show; episodeCount?: number }
 export default function PodcastFeatured({ show, episodeCount }: PodcastFeaturedProps) {
@@ -10,10 +12,10 @@ export default function PodcastFeatured({ show, episodeCount }: PodcastFeaturedP
         <p className="pod-featured-desc">{desc}</p>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
           <button type="button" className="btn-primary">
-            <i className="ph-fill ph-play" aria-hidden="true"></i> Play Latest
+            <Play weight="fill" size="1em" aria-hidden="true" /> Play Latest
           </button>
           <button type="button" className="btn-secondary">
-            <i className="ph ph-rss-simple" aria-hidden="true"></i> Subscribe
+            <RssSimple size="1em" aria-hidden="true" /> Subscribe
           </button>
         </div>
       </div>

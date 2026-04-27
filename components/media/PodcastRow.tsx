@@ -1,3 +1,5 @@
+import { CalendarBlank, Clock, FileText, Play } from '@/components/icons';
+
 interface Episode {
   num?: string; artV?: string; ep?: string; title?: string; desc?: string; len?: string; date?: string;
 }
@@ -11,13 +13,13 @@ export default function PodcastRow({ episode }: { episode?: Episode }) {
         <h4>{title}</h4>
         <p>{desc}</p>
         <div className="pod-meta">
-          <span><i className="ph ph-clock" aria-hidden="true"></i> {len}</span>
-          <span><i className="ph ph-calendar-blank" aria-hidden="true"></i> {date}</span>
-          <span><i className="ph ph-file-text" aria-hidden="true"></i> Transcript</span>
+          <span><Clock size="1em" aria-hidden="true" /> {len}</span>
+          <span><CalendarBlank size="1em" aria-hidden="true" /> {date}</span>
+          <span><FileText size="1em" aria-hidden="true" /> Transcript</span>
         </div>
       </div>
       <button type="button" className="pod-play" aria-label={`Play ${ep}`}>
-        <i className="ph-fill ph-play" aria-hidden="true"></i>
+        <Play weight="fill" size="1em" aria-hidden="true" />
       </button>
     </div>
   );

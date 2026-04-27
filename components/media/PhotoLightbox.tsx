@@ -1,6 +1,7 @@
 'use client';
 
 import type * as React from 'react';
+import { CaretLeft, CaretRight, ImageSquare, X } from '@/components/icons';
 
 /*
  * Lightbox DOM used by /media#photos. Its open/close/nav behavior is
@@ -31,7 +32,7 @@ export default function PhotoLightbox() {
         aria-label="Close photo"
         onClick={() => window.closePhotoLightbox?.()}
       >
-        <i className="ph-bold ph-x" aria-hidden="true"></i>
+        <X weight="bold" size="1em" aria-hidden="true" />
       </button>
       <button
         type="button"
@@ -39,7 +40,7 @@ export default function PhotoLightbox() {
         aria-label="Previous photo"
         onClick={() => window.navLightbox?.(-1)}
       >
-        <i className="ph-bold ph-caret-left" aria-hidden="true"></i>
+        <CaretLeft weight="bold" size="1em" aria-hidden="true" />
       </button>
       <button
         type="button"
@@ -47,11 +48,11 @@ export default function PhotoLightbox() {
         aria-label="Next photo"
         onClick={() => window.navLightbox?.(1)}
       >
-        <i className="ph-bold ph-caret-right" aria-hidden="true"></i>
+        <CaretRight weight="bold" size="1em" aria-hidden="true" />
       </button>
       <figure className="lb-stage">
         <div className="lb-image" id="lbImage">
-          <div className="lb-placeholder"><i className="ph ph-image-square" aria-hidden="true"></i></div>
+          <div className="lb-placeholder"><ImageSquare size="1em" aria-hidden="true" /></div>
         </div>
         <figcaption className="lb-caption">
           <div className="lb-meta">

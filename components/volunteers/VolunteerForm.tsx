@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { isValidEmail } from '@/lib/validators';
+import { PaperPlaneTilt } from '@/components/icons';
 
 const HOURS_OPTIONS = ['1–2 hours', '3–5 hours', '6–10 hours', '10+ hours'];
 
@@ -151,7 +152,7 @@ export default function VolunteerForm({ roles }: VolunteerFormProps) {
         onClick={submit}
         disabled={submitting}
       >
-        <i className="ph ph-paper-plane-tilt" aria-hidden="true"></i> Submit Application
+        <PaperPlaneTilt size="1em" aria-hidden="true" /> Submit Application
       </button>
       <p
         aria-live="polite"
