@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
+import { Check, PaperPlaneTilt } from '@/components/icons';
 
 /*
  * Newsletter signup on /documents#blogs. Client-only because it
@@ -46,9 +47,9 @@ export default function NewsletterForm() {
           disabled={subscribed}
         >
           {subscribed ? (
-            <><i className="ph ph-check" aria-hidden="true"></i> Subscribed</>
+            <><Check size="1em" aria-hidden="true" /> Subscribed</>
           ) : (
-            <><i className="ph ph-paper-plane-tilt" aria-hidden="true"></i> Subscribe</>
+            <><PaperPlaneTilt size="1em" aria-hidden="true" /> Subscribe</>
           )}
         </button>
       </form>

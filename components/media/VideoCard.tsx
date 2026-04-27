@@ -1,3 +1,5 @@
+import { Play } from '@/components/icons';
+
 /*
  * Video card. When `youtubeId` is set, renders a lazy-loaded YouTube
  * iframe (nocookie domain) sized to 16:9. Without an ID, shows the
@@ -39,7 +41,7 @@ export default function VideoCard({ video }: { video?: VideoData }) {
       ) : (
         <div className={`video-thumb ${bg}`}>
           <div className="vid-inner-label">{label || 'Coming soon'}</div>
-          <div className="play-btn"><i className="ph-fill ph-play" aria-hidden="true"></i></div>
+          <div className="play-btn"><Play weight="fill" size="1em" aria-hidden="true" /></div>
           {dur ? <div className="dur">{dur}</div> : null}
           <div className="video-pending" aria-hidden="true">Awaiting YouTube link</div>
         </div>

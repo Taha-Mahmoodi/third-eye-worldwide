@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Countdown from '@/components/Countdown';
 import { pageMetadata } from '@/lib/seo';
+import { CalendarCheck, HandHeart, House } from '@/components/icons';
 
 // Target launch time — 2 days from the initial deploy (2026-04-23).
 // Edit this ISO string to shift the launch date without touching anything else.
@@ -49,17 +50,17 @@ export default function ComingSoonPage() {
         <Countdown targetIso={LAUNCH_ISO} />
 
         <div className="cs-launch-date">
-          <i className="ph ph-calendar-check" aria-hidden="true"></i>
+          <CalendarCheck size="1em" aria-hidden="true" />
           Launching {launchHuman}
         </div>
 
         <div className="cs-actions">
           <Link href="/volunteers" className="btn-primary">
-            <i className="ph-fill ph-hand-heart"></i>
+            <HandHeart weight="fill" size="1em" aria-hidden="true" />
             Get involved
           </Link>
           <Link href="/" className="btn-secondary">
-            <i className="ph ph-house"></i>
+            <House size="1em" aria-hidden="true" />
             Back to site
           </Link>
         </div>

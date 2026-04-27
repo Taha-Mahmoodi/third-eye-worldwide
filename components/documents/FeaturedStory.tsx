@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ArrowRight } from '@/components/icons';
 
 /*
  * Featured-story pull-quote card at the top of /documents#stories.
@@ -39,7 +40,7 @@ export default function FeaturedStory({ fs }: { fs?: FeaturedStoryData }) {
             href="/story-detail"
             className="btn-primary fs-read-btn"
           >
-            Read <i className="ph ph-arrow-right" aria-hidden="true"></i>
+            Read <ArrowRight size="1em" aria-hidden="true" />
           </Link>
         </div>
       </div>

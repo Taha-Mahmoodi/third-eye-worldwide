@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
+import { ArrowClockwise, House } from '@/components/icons';
 
 interface ErrorProps {
   error: Error & { digest?: string };
@@ -37,11 +38,11 @@ export default function ErrorBoundary({ error, reset }: ErrorProps) {
 
         <div className="error-actions">
           <button type="button" className="btn-primary" onClick={() => reset()}>
-            <i className="ph ph-arrow-clockwise"></i>
+            <ArrowClockwise size="1em" aria-hidden="true" />
             Try again
           </button>
           <Link href="/" className="btn-secondary">
-            <i className="ph ph-house"></i>
+            <House size="1em" aria-hidden="true" />
             Back to home
           </Link>
         </div>
