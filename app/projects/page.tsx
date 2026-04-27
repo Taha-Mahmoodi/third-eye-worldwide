@@ -1,6 +1,8 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { getContent, visibleSorted } from '@/lib/cms/db';
 import RichText from '@/components/RichText';
+import { SkeletonHero } from '@/components/Skeleton';
 import ProjectCard from '@/components/projects/ProjectCard';
 import { pageMetadata, readSeoOverrides } from '@/lib/seo';
 import { Heart } from '@/components/icons';
@@ -20,7 +22,15 @@ export async function generateMetadata() {
   });
 }
 
-export default async function ProjectsPage() {
+export default function ProjectsPage() {
+  return (
+    <Suspense fallback={<SkeletonHero />}>
+      <ProjectsPageContent />
+    </Suspense>
+  );
+}
+
+async function ProjectsPageContent() {
   const content = await getContent();
   // Backward-compat with CMS data seeded before the Programs → Projects rename.
   const p = content?.projects || content?.programs || {};

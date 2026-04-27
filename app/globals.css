@@ -2939,6 +2939,20 @@ details.faq-item[open] .faq-chev { transform: rotate(45deg); background: var(--b
   0%, 100% { opacity: 1; }
   50%      { opacity: .4; }
 }
+.skeleton-block {
+  width: 100%;
+  border-radius: var(--radius-md);
+  background: var(--bg-subtle);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+.skeleton-hero {
+  max-width: var(--width);
+  margin: 0 auto;
+  padding: var(--space-12) var(--space-6);
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-block { animation: none; opacity: .6; }
+}
 
 /* Tier-grid checkmark — reserved for future re-introduction of the
    amount tier grid. The current donate page uses a single input. */

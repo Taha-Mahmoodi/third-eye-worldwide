@@ -1,6 +1,8 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { getContent, visibleSorted } from '@/lib/cms/db';
 import RichText from '@/components/RichText';
+import { SkeletonHero } from '@/components/Skeleton';
 import StatTile from '@/components/site/StatTile';
 import RoleCard from '@/components/volunteers/RoleCard';
 import StepItem from '@/components/volunteers/StepItem';
@@ -23,7 +25,15 @@ export async function generateMetadata() {
   });
 }
 
-export default async function VolunteersPage() {
+export default function VolunteersPage() {
+  return (
+    <Suspense fallback={<SkeletonHero />}>
+      <VolunteersPageContent />
+    </Suspense>
+  );
+}
+
+async function VolunteersPageContent() {
   const content = await getContent();
   const v = content?.volunteers || {};
   const stats = visibleSorted(v.stats || []);

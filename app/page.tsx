@@ -1,5 +1,7 @@
 import type { CSSProperties } from 'react';
+import { Suspense } from 'react';
 import Link from 'next/link';
+import { SkeletonHero } from '@/components/Skeleton';
 import { getContent, visibleSorted } from '@/lib/cms/db';
 import RichText from '@/components/RichText';
 import JsonLd from '@/components/JsonLd';
@@ -34,7 +36,15 @@ export async function generateMetadata() {
   });
 }
 
-export default async function HomePage() {
+export default function HomePage() {
+  return (
+    <Suspense fallback={<SkeletonHero />}>
+      <HomePageContent />
+    </Suspense>
+  );
+}
+
+async function HomePageContent() {
   const content = await getContent();
   const h = content?.home || {};
   const docs = content?.documents || {};

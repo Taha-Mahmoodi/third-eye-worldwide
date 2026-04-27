@@ -1,5 +1,7 @@
+import { Suspense } from 'react';
 import { getContent, visibleSorted } from '@/lib/cms/db';
 import RichText from '@/components/RichText';
+import { SkeletonHero } from '@/components/Skeleton';
 import Subnav from '@/components/site/Subnav';
 import FilterablePhotoGrid from '@/components/media/FilterablePhotoGrid';
 import PodcastFeatured from '@/components/media/PodcastFeatured';
@@ -128,7 +130,15 @@ function VideosTab({ videos, cats }: { videos: any[]; cats: string[] }) {
   );
 }
 
-export default async function MediaPage() {
+export default function MediaPage() {
+  return (
+    <Suspense fallback={<SkeletonHero />}>
+      <MediaPageContent />
+    </Suspense>
+  );
+}
+
+async function MediaPageContent() {
   const content = await getContent();
   const m = content?.media || {};
   const photos = visibleSorted(m.photos || []);

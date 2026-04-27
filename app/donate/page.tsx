@@ -1,5 +1,7 @@
+import { Suspense } from 'react';
 import { getContent, visibleSorted } from '@/lib/cms/db';
 import RichText from '@/components/RichText';
+import { SkeletonHero } from '@/components/Skeleton';
 import DonateWidget from '@/components/donate/DonateWidget';
 import ImpactRow from '@/components/donate/ImpactRow';
 import { pageMetadata, readSeoOverrides } from '@/lib/seo';
@@ -28,7 +30,15 @@ export async function generateMetadata() {
   });
 }
 
-export default async function DonatePage() {
+export default function DonatePage() {
+  return (
+    <Suspense fallback={<SkeletonHero />}>
+      <DonatePageContent />
+    </Suspense>
+  );
+}
+
+async function DonatePageContent() {
   const content = await getContent();
   const d = content?.donate || {};
   const impact = visibleSorted(d.impactBreakdown || []);
