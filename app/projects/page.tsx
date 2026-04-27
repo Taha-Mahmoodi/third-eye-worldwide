@@ -34,6 +34,11 @@ export default async function ProjectsPage() {
   const ctaSub     = p.ctaSub     ||
     "Every project is funded by people like you. Pick one to sponsor, or let us direct your gift to where it's needed most.";
 
+  // Optional CMS-driven "other work" block — three additional ecosystem
+  // pieces (career service, news channel, story portal) that aren't yet
+  // standalone project tiles. Per teww-cms-content-update-v2.md.
+  const other = (p.otherWork || {}) as { title?: string; body?: string };
+
   return (
     <>
       <div className="page-hero">
@@ -55,6 +60,15 @@ export default async function ProjectsPage() {
           </div>
         </div>
       </section>
+
+      {(other.title || other.body) ? (
+        <section className="section section-alt">
+          <div className="section-inner" style={{ maxWidth: 820 }}>
+            {other.title ? <h2 className="section-title" style={{ marginBottom: 16 }}>{other.title}</h2> : null}
+            {other.body ? <RichText as="p" className="section-subtitle" style={{ maxWidth: 'none' }} html={other.body} /> : null}
+          </div>
+        </section>
+      ) : null}
 
       <section className="cta-band">
         <div className="cta-inner">
