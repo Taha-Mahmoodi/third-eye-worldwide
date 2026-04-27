@@ -54,18 +54,28 @@ export default function LoginForm({ callbackUrl = '/admin', error }: LoginFormPr
           <p style={{ fontSize: '.92rem', color: 'var(--fg-muted)' }}>Access the content dashboard.</p>
         </div>
 
+        <p className="form-required-note">
+          Fields marked <span aria-hidden="true" className="required-star">*</span>
+          <span className="sr-only">with an asterisk</span> are required.
+        </p>
         <div className="pay-field">
-          <label>Email</label>
+          <label htmlFor="login-email">
+            Email <span aria-hidden="true" className="required-star">*</span>
+          </label>
           <input
-            type="email" autoComplete="email" required autoFocus
+            id="login-email" type="email" autoComplete="email"
+            required aria-required="true" autoFocus
             value={email} onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
           />
         </div>
         <div className="pay-field">
-          <label>Password</label>
+          <label htmlFor="login-password">
+            Password <span aria-hidden="true" className="required-star">*</span>
+          </label>
           <input
-            type="password" autoComplete="current-password" required
+            id="login-password" type="password" autoComplete="current-password"
+            required aria-required="true"
             value={password} onChange={(e) => setPassword(e.target.value)}
           />
         </div>

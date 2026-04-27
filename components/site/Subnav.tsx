@@ -52,11 +52,16 @@ export default function Subnav({ page, tabs, defaultTab, ariaLabel }: SubnavProp
   return (
     <>
       <nav className="subnav" aria-label={ariaLabel || `${page} sections`}>
-        <div className="subnav-inner">
+        <div className="subnav-inner" role="tablist">
           {tabs.map((t) => (
             <button
               key={t.id}
+              id={`subnav-tab-${t.id}`}
               type="button"
+              role="tab"
+              aria-selected={active === t.id}
+              aria-controls={`subnav-panel-${t.id}`}
+              tabIndex={active === t.id ? 0 : -1}
               data-sub={t.id}
               className={active === t.id ? 'active' : ''}
               onClick={() => activate(t.id)}
@@ -70,6 +75,10 @@ export default function Subnav({ page, tabs, defaultTab, ariaLabel }: SubnavProp
       {tabs.map((t) => (
         <div
           key={t.id}
+          id={`subnav-panel-${t.id}`}
+          role="tabpanel"
+          aria-labelledby={`subnav-tab-${t.id}`}
+          hidden={active !== t.id}
           data-sub={t.id}
           className={`subpage${active === t.id ? ' active' : ''}`}
         >
