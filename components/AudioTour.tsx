@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { Microphone, Pause, Play, X } from '@phosphor-icons/react';
 
 declare global {
   interface Window {
@@ -218,10 +219,10 @@ export default function AudioTour() {
               onClick={() => dismiss('no-audio')}
               aria-label="Skip — browse without TE"
             >
-              <i className="ph-bold ph-x" aria-hidden="true"></i>
+              <X weight="bold" size="1em" aria-hidden="true" />
             </button>
             <div className="tour-icon" aria-hidden="true">
-              <i className="ph-fill ph-microphone"></i>
+              <Microphone weight="fill" size="1em" />
             </div>
             <div className="tour-eyebrow">Voice tour</div>
             <h2 id="tour-title" className="tour-title">Meet <em>TE</em> — your voice guide</h2>
@@ -235,7 +236,7 @@ export default function AudioTour() {
             </div>
             <div className="tour-actions">
               <button type="button" className="tour-btn tour-btn-primary" onClick={startTour}>
-                <i className="ph-fill ph-microphone" aria-hidden="true"></i> Start tour now
+                <Microphone weight="fill" size="1em" aria-hidden="true" /> Start tour now
               </button>
               <button type="button" className="tour-btn tour-btn-ghost" onClick={() => dismiss('no-audio')}>
                 Browse without TE
@@ -254,7 +255,9 @@ export default function AudioTour() {
             aria-label={playerState === 'playing' ? 'Pause audio tour' : 'Resume audio tour'}
             aria-pressed={playerState === 'playing'}
           >
-            <i className={`ph-fill ${playerState === 'playing' ? 'ph-pause' : 'ph-play'}`}></i>
+            {playerState === 'playing'
+              ? <Pause weight="fill" size="1em" aria-hidden="true" />
+              : <Play weight="fill" size="1em" aria-hidden="true" />}
           </button>
           <div className="atp-info" aria-hidden="true">
             <div className="atp-label">Audio tour</div>
@@ -271,7 +274,7 @@ export default function AudioTour() {
             onClick={stopAudio}
             aria-label="Stop audio tour"
           >
-            <i className="ph ph-x"></i>
+            <X size="1em" aria-hidden="true" />
           </button>
         </div>
       ) : null}

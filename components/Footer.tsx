@@ -1,5 +1,12 @@
+'use client';
+
+// `@phosphor-icons/react` uses React Context for weight inheritance,
+// which is client-only. Footer was previously a server component but
+// has no server-side logic, so flipping it client-side has no cost.
+
 import Link from 'next/link';
 import LogoAnimated from '@/components/LogoAnimated';
+import { GithubLogo, LinkedinLogo, YoutubeLogo, XLogo } from '@phosphor-icons/react';
 
 export default function Footer() {
   return (
@@ -12,10 +19,10 @@ export default function Footer() {
             </div>
             <p>Technology that opens new worlds for people with visual impairment. Free, open-source, and built for everyone.</p>
             <div className="footer-social">
-              <a href="#" aria-label="GitHub"><i className="ph ph-github-logo"></i></a>
-              <a href="#" aria-label="LinkedIn"><i className="ph ph-linkedin-logo"></i></a>
-              <a href="#" aria-label="YouTube"><i className="ph ph-youtube-logo"></i></a>
-              <a href="#" aria-label="Twitter"><i className="ph ph-x-logo"></i></a>
+              <a href="#" aria-label="GitHub"><GithubLogo size="1em" aria-hidden="true" /></a>
+              <a href="#" aria-label="LinkedIn"><LinkedinLogo size="1em" aria-hidden="true" /></a>
+              <a href="#" aria-label="YouTube"><YoutubeLogo size="1em" aria-hidden="true" /></a>
+              <a href="#" aria-label="Twitter"><XLogo size="1em" aria-hidden="true" /></a>
             </div>
           </div>
           <div className="footer-col">

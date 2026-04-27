@@ -13,12 +13,6 @@ export const THEMES: readonly Theme[] = ['light', 'dark', 'high-contrast'] as co
 export type TextSize = 'a' | 'a-plus' | 'a-plus-plus';
 export const TEXT_SIZES: readonly TextSize[] = ['a', 'a-plus', 'a-plus-plus'] as const;
 
-const THEME_ICONS: Record<Theme, string> = {
-  light: 'ph-sun',
-  dark: 'ph-moon',
-  'high-contrast': 'ph-circle-half',
-};
-
 const THEME_KEY = 'teww-theme';
 const SIZE_KEY = 'teww-size';
 
@@ -36,9 +30,8 @@ export function applyTheme(t: Theme): void {
   const root = document.documentElement;
   root.setAttribute('data-theme', t);
 
-  // Theme-button icon (the small sun/moon at the top of the page)
-  const btn = document.getElementById('theme-btn');
-  if (btn) btn.innerHTML = `<i class="ph ${THEME_ICONS[t]}"></i>`;
+  // Theme-button icon is rendered from React state in components/Nav.tsx
+  // (since MED-5 PR 2a) — no longer mutated imperatively from here.
 
   // Old asset-driven logos (still present on legacy HTML routes).
   // The new inline SVG logo respects var(--brand)/var(--accent), so

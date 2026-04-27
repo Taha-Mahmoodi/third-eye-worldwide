@@ -2,7 +2,11 @@
  * Mobile-nav open/close DOM helpers, shared between the React
  * `NavProvider` and the legacy `window.*` helpers.
  *
- * Per MED-6 in CODEBASE_REVIEW.md.
+ * Per MED-6. The burger glyph is now rendered from React state in
+ * components/Nav.tsx (since MED-5 PR 2a) — these helpers no longer
+ * mutate `burger.innerHTML`. Aria + classlist mutations stay so
+ * legacy HTML routes that don't share React state still get sane
+ * behavior when they call window.openNav / closeNav.
  */
 
 export function openNav(): void {
@@ -12,7 +16,6 @@ export function openNav(): void {
   if (!links || !burger) return;
   links.classList.add('open');
   burger.setAttribute('aria-expanded', 'true');
-  burger.innerHTML = '<i class="ph ph-x"></i>';
   burger.setAttribute('aria-label', 'Close navigation menu');
   document.body.classList.add('nav-open');
 }
@@ -25,7 +28,6 @@ export function closeNav(): void {
   links.classList.remove('open');
   if (burger) {
     burger.setAttribute('aria-expanded', 'false');
-    burger.innerHTML = '<i class="ph ph-list"></i>';
     burger.setAttribute('aria-label', 'Open navigation menu');
   }
   document.body.classList.remove('nav-open');

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Microphone, MicrophoneSlash, X } from '@phosphor-icons/react';
 
 // The Web Speech API isn't in lib.dom.d.ts as a constructor — type as
 // a permissive shape that covers what we use.
@@ -410,7 +411,7 @@ export default function VoiceAssistant() {
               onClick={() => setPanelOpen(false)}
               aria-label="Close panel"
             >
-              <i className="ph ph-x" aria-hidden="true"></i>
+              <X size="1em" aria-hidden="true" />
             </button>
           </div>
 
@@ -426,11 +427,11 @@ export default function VoiceAssistant() {
               <div className="te-panel-actions">
                 {status === 'disabled' ? (
                   <button type="button" className="btn-primary te-btn-enable" onClick={() => enable({ intro: true })}>
-                    <i className="ph-fill ph-microphone"></i> Enable TE
+                    <Microphone weight="fill" size="1em" aria-hidden="true" /> Enable TE
                   </button>
                 ) : (
                   <button type="button" className="btn-secondary te-btn-disable" onClick={disable}>
-                    <i className="ph ph-microphone-slash"></i> Turn off
+                    <MicrophoneSlash size="1em" aria-hidden="true" /> Turn off
                   </button>
                 )}
               </div>
