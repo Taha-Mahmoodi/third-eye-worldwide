@@ -26,6 +26,52 @@ export async function generateMetadata() {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function PhotosTab({ photos, cats }: { photos: any[]; cats: string[] }) {
+  // If no photos are configured (the v2 default state — no fictional
+  // archive), render an honest empty state with a contribution CTA
+  // instead of the filterable grid.
+  if (photos.length === 0) {
+    return (
+      <>
+        <section className="section">
+          <div className="section-inner" style={{ maxWidth: 720, textAlign: 'left' }}>
+            <h2 className="section-title">Photos</h2>
+            <p style={{ color: 'var(--fg-muted)', lineHeight: 1.7, fontSize: '1.02rem' }}>
+              Our photo archive is being built. The first images will come from community
+              members who choose to share — alongside contributed photos from people who
+              use our tools, with their consent. Every photo will include full alt text
+              and audio description.
+            </p>
+            <p style={{ color: 'var(--fg-muted)', lineHeight: 1.7, fontSize: '1.02rem' }}>
+              Want to contribute a photo? Email{' '}
+              <a href="mailto:hello@thirdeyeworldwide.org?subject=Photo">
+                hello@thirdeyeworldwide.org
+              </a>{' '}
+              with the subject line <strong>Photo</strong>. With consent, with credit.
+            </p>
+            <div style={{ marginTop: 24 }}>
+              <a
+                href="mailto:hello@thirdeyeworldwide.org?subject=Photo"
+                className="btn-primary"
+              >
+                Contribute a photo
+              </a>
+            </div>
+          </div>
+        </section>
+        <section className="section section-alt">
+          <div className="section-inner" style={{ textAlign: 'center' }}>
+            <div className="photo-accessibility-eyebrow">Photo Accessibility</div>
+            <h2 className="photo-accessibility-title">Every image will be described.</h2>
+            <p className="photo-accessibility-body">
+              Each photo will include full alt text and an audio description before it
+              publishes. Translations follow as the volunteer translation pool grows.
+            </p>
+          </div>
+        </section>
+      </>
+    );
+  }
+
   return (
     <>
       <section className="section">
@@ -38,8 +84,8 @@ function PhotosTab({ photos, cats }: { photos: any[]; cats: string[] }) {
           <div className="photo-accessibility-eyebrow">Photo Accessibility</div>
           <h2 className="photo-accessibility-title">Every image is described.</h2>
           <p className="photo-accessibility-body">
-            All our photos include full alt text in 40+ languages. Audio descriptions are
-            available for every photo essay.
+            Each photo includes full alt text and an audio description. Translations
+            follow as the volunteer translation pool grows.
           </p>
         </div>
       </section>

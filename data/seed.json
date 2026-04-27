@@ -304,9 +304,20 @@
       { "title": "Apply", "desc": "Fill out a short form. It takes 6 minutes. We read every application within 48 hours." },
       { "title": "Orientation call", "desc": "A 30-minute video or phone call with a program coordinator to match you to the right role." },
       { "title": "Onboarding", "desc": "Self-paced training, plus a live kickoff session with other new volunteers in your region." },
-      { "title": "Meet your mentor", "desc": "Every volunteer is paired with an experienced mentor for their first three months." },
+      { "title": "Meet your mentor", "desc": "Every volunteer is paired with a member of the core team for the first three months — that may be the founder, a board member, or a senior volunteer depending on your role." },
       { "title": "Start contributing", "desc": "First task, first translation, first code review — whatever your role, you're shipping in week two." }
-    ]
+    ],
+    "rolesSubhead": "Every role is remote, self-paced, and paired with a member of our small team. We respond to applications individually — there's no scoring rubric and no quota.",
+    "stepsHeading": "From application to first contribution, in a week or two.",
+    "formFootMicrocopy": "We accept applications from anywhere. We read every one personally — it may take us a few days to respond, especially if many come in at once.",
+    "dropInCta": {
+      "heading": "Not sure where you fit?",
+      "body": "Send an email — we'll set up a 20-minute call. No commitment, no script. Just a conversation about what you'd like to do and where it might fit.",
+      "primaryLabel": "Email us",
+      "primaryHref": "mailto:hello@thirdeyeworldwide.org?subject=Volunteer",
+      "secondaryLabel": "Donate Instead",
+      "secondaryHref": "/donate"
+    }
   },
   "about": {
     "heroEyebrow": "About Us",
@@ -409,16 +420,16 @@
     "heroTitle": "From the <em>field.</em>",
     "heroSub": "Photos, podcasts, and videos from our community — every video captioned, every podcast transcribed, every photo described.",
     "photos": [
-      { "id": "p1",  "cls": "p-6-4", "cat": "sports",    "loc": "Oceanside, USA",      "caption": "A blind longboarder reads the set by sound and balance",   "grad1": "#1f61ff", "grad2": "#1349d4", "img": "https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=1400&q=80" },
-      { "id": "p2",  "cls": "p-3-2", "cat": "daily",     "loc": "Tokyo, Japan",        "caption": "Morning commute with a cane — learned routes, felt edges",  "grad1": "#e76021", "grad2": "#f07a3d", "img": "https://images.unsplash.com/photo-1519677584237-752f8853252e?auto=format&fit=crop&w=1000&q=80" },
-      { "id": "p3",  "cls": "p-3-2", "cat": "music",     "loc": "New Orleans, USA",    "caption": "A blind pianist mid-phrase — no sheet in sight",            "grad1": "#0d0407", "grad2": "#4a4a6a", "img": "https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=1000&q=80" },
-      { "id": "p4",  "cls": "p-4-2", "cat": "daily",     "loc": "London, UK",          "caption": "Reading braille on the tube at rush hour",                  "grad1": "#1349d4", "grad2": "#4d7eff", "img": "https://images.unsplash.com/photo-1543165365-3bee94e3e4bf?auto=format&fit=crop&w=1000&q=80" },
-      { "id": "p5",  "cls": "p-4-2", "cat": "sports",    "loc": "Chamonix, France",    "caption": "Tandem mountain biking — verbal cues, trust, velocity",     "grad1": "#c04c18", "grad2": "#e76021", "img": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1000&q=80" },
-      { "id": "p6",  "cls": "p-4-4", "cat": "work",      "loc": "Berlin, Germany",     "caption": "A blind engineer pair-coding with a screen reader",         "grad1": "#0d0407", "grad2": "#333350", "img": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1000&q=80" },
-      { "id": "p7",  "cls": "p-4-2", "cat": "everyday",  "loc": "Dakar, Senegal",      "caption": "Laughing across a table — a family dinner, no spotlight",   "grad1": "#1f61ff", "grad2": "#4d7eff", "img": "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=1000&q=80" },
-      { "id": "p8",  "cls": "p-4-2", "cat": "sports",    "loc": "Kilimanjaro, Tanzania","caption": "A blind climber's summit selfie — taken by a friend",       "grad1": "#333350", "grad2": "#0d0407", "img": "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80" },
-      { "id": "p9",  "cls": "p-6-2", "cat": "work",      "loc": "Manila, Philippines", "caption": "Teaching a class the first hotkeys — the room is all ears",  "grad1": "#e76021", "grad2": "#c04c18", "img": "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1400&q=80" },
-      { "id": "p10", "cls": "p-6-2", "cat": "everyday",  "loc": "Lisbon, Portugal",    "caption": "A guide dog at a café window, patient, pretending to nap",   "grad1": "#7a9fff", "grad2": "#1f61ff", "img": "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1400&q=80" }
+      { "id": "p1",  "cls": "p-6-4", "cat": "sports",    "loc": "Oceanside, USA",      "caption": "A blind longboarder reads the set by sound and balance",   "grad1": "#1f61ff", "grad2": "#1349d4", "img": "https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=1400&q=80", "visible": false },
+      { "id": "p2",  "visible": false, "cls": "p-3-2", "cat": "daily",     "loc": "Tokyo, Japan",        "caption": "Morning commute with a cane — learned routes, felt edges",  "grad1": "#e76021", "grad2": "#f07a3d", "img": "https://images.unsplash.com/photo-1519677584237-752f8853252e?auto=format&fit=crop&w=1000&q=80" },
+      { "id": "p3",  "visible": false, "cls": "p-3-2", "cat": "music",     "loc": "New Orleans, USA",    "caption": "A blind pianist mid-phrase — no sheet in sight",            "grad1": "#0d0407", "grad2": "#4a4a6a", "img": "https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=1000&q=80" },
+      { "id": "p4",  "visible": false, "cls": "p-4-2", "cat": "daily",     "loc": "London, UK",          "caption": "Reading braille on the tube at rush hour",                  "grad1": "#1349d4", "grad2": "#4d7eff", "img": "https://images.unsplash.com/photo-1543165365-3bee94e3e4bf?auto=format&fit=crop&w=1000&q=80" },
+      { "id": "p5",  "visible": false, "cls": "p-4-2", "cat": "sports",    "loc": "Chamonix, France",    "caption": "Tandem mountain biking — verbal cues, trust, velocity",     "grad1": "#c04c18", "grad2": "#e76021", "img": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1000&q=80" },
+      { "id": "p6",  "visible": false, "cls": "p-4-4", "cat": "work",      "loc": "Berlin, Germany",     "caption": "A blind engineer pair-coding with a screen reader",         "grad1": "#0d0407", "grad2": "#333350", "img": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1000&q=80" },
+      { "id": "p7",  "visible": false, "cls": "p-4-2", "cat": "everyday",  "loc": "Dakar, Senegal",      "caption": "Laughing across a table — a family dinner, no spotlight",   "grad1": "#1f61ff", "grad2": "#4d7eff", "img": "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=1000&q=80" },
+      { "id": "p8",  "visible": false, "cls": "p-4-2", "cat": "sports",    "loc": "Kilimanjaro, Tanzania","caption": "A blind climber's summit selfie — taken by a friend",       "grad1": "#333350", "grad2": "#0d0407", "img": "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80" },
+      { "id": "p9",  "visible": false, "cls": "p-6-2", "cat": "work",      "loc": "Manila, Philippines", "caption": "Teaching a class the first hotkeys — the room is all ears",  "grad1": "#e76021", "grad2": "#c04c18", "img": "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1400&q=80" },
+      { "id": "p10", "visible": false, "cls": "p-6-2", "cat": "everyday",  "loc": "Lisbon, Portugal",    "caption": "A guide dog at a café window, patient, pretending to nap",   "grad1": "#7a9fff", "grad2": "#1f61ff", "img": "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1400&q=80" }
     ],
     "podcastShow": {
       "name": "The Third Eye Podcast",
