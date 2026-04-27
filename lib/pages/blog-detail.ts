@@ -20,13 +20,13 @@ export function renderBlogDetail(content: SiteContent | null | undefined, slug?:
   const post: CmsBlogPost = (slug && blogs.find((b) => b.id === slug || b.slug === slug)) || blogs[0] || {};
 
   const tag = _esc(post.tagLabel || 'Research');
-  const title = _esc(post.title || 'What WCAG misses — and how we test for it.');
-  const standfirst = _esc(post.desc || 'Two years of field research across four countries. The guidelines get you to the door. They don\'t get you inside.');
-  const author = _esc(post.author || 'Dr. Rhea Nair');
-  const initials = _esc(post.initials || 'RN');
-  const role = _esc(post.role || 'Head of Research · Third Eye Worldwide');
-  const dateStr = _esc(post.date || 'April 14, 2026');
-  const readTime = _esc(post.meta || post.readTime || '12 min read');
+  const title = _esc(post.title || 'Disability is a failure of imagination');
+  const standfirst = _esc(post.desc || 'A foundational essay on why the right frame for our work is not charity, and not even accessibility — but imagination, and what we owe each other when imagination falls short.');
+  const author = _esc(post.author || 'Said Mohaddes Sadeqi');
+  const initials = _esc(post.initials || 'SM');
+  const role = _esc(post.role || 'Founder & President · Third Eye Worldwide');
+  const dateStr = _esc(post.date || 'April 2026');
+  const readTime = _esc(post.meta || post.readTime || '6 min read');
 
   return `
 <style>

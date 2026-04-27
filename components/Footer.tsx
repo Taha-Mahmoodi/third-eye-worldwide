@@ -17,7 +17,7 @@ export default function Footer() {
             <div className="footer-logo">
               <LogoAnimated className="footer-logo-svg" ariaLabel="Third Eye Worldwide" />
             </div>
-            <p>Technology that opens new worlds for people with visual impairment. Free, open-source, and built for everyone.</p>
+            <p>Free, open-source technology for blind and low-vision people. Built from inside the experience.</p>
             <div className="footer-social">
               <a href="#" aria-label="GitHub"><GithubLogo size="1em" aria-hidden="true" /></a>
               <a href="#" aria-label="LinkedIn"><LinkedinLogo size="1em" aria-hidden="true" /></a>
