@@ -47,9 +47,29 @@ export async function isAdmin(req: NextRequest | Request): Promise<AdminAuthResu
   const envToken = process.env.CMS_TOKEN;
   if (headerToken && envToken) {
     if (!HEX64.test(envToken)) {
+      // Misconfigured CMS_TOKEN. In production this is a deploy-time
+      // mistake that would silently disable token auth — fail loudly so
+      // it surfaces in error dashboards. In dev/test we keep the warn
+      // so local iteration on hashing isn't a blocker.
+      if (process.env.NODE_ENV === 'production') {
+        throw new Error(
+          'CMS_TOKEN must be a 64-char hex SHA-256 hash in production. ' +
+          'Run: echo -n "$YOUR_SECRET" | sha256sum and set the result as CMS_TOKEN.',
+        );
+      }
       warnPlaintextOnce();
     } else if (tokenMatches(headerToken, envToken)) {
       return { via: 'token' };
+    } else {
+      // Valid-format token that didn't match — log so credential probes
+      // are visible in the audit log instead of being a silent 401.
+      logger.warn(
+        {
+          event: 'cms_token_invalid',
+          ip: req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? '0.0.0.0',
+        },
+        'x-cms-token header present but did not match — possible credential probe',
+      );
     }
   }
 

@@ -20,6 +20,7 @@
  */
 
 import { RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS } from '@/lib/constants';
+import logger from '@/lib/logger';
 
 interface Bucket {
   tokens: number;
@@ -149,10 +150,16 @@ export async function checkAsync(
     const r = await limiter.limit(key);
     const retryAfter = r.success ? 0 : Math.max(1, Math.ceil((r.reset - Date.now()) / 1000));
     return { allowed: r.success, remaining: Math.max(0, r.remaining), retryAfter };
-  } catch {
+  } catch (err) {
     // Don't let a Redis hiccup block legitimate traffic — fall back
     // to local. Worst-case: the limit isn't shared across instances
     // until Redis comes back, which is the pre-Upstash behavior.
+    // Log the fallback so a multi-instance deploy doesn't silently
+    // start drifting per-instance during a Redis outage.
+    logger.warn(
+      { event: 'rate_limit_redis_fallback', key, err },
+      'Upstash unreachable — degraded to per-process in-memory rate limit',
+    );
     return checkLocal(key, opts);
   }
 }
