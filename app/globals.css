@@ -94,7 +94,7 @@ nav.topnav { position: sticky; top: 0; z-index: 100; background: var(--bg-elevat
 .nav-links a, .nav-links button.nav-link-btn { font-family: var(--font-display); font-size: .9rem; font-weight: 500; color: var(--fg-muted); padding: 6px 0; border-bottom: 2px solid transparent; transition: color .15s, border-color .15s; background: none; border-left: none; border-right: none; border-top: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
 .nav-links a:hover, .nav-links a.active, .nav-links button.nav-link-btn:hover, .nav-links button.nav-link-btn.active { color: var(--fg); border-bottom-color: var(--brand); }
 .nav-dropdown { position: absolute; top: calc(100% + 6px); left: -16px; min-width: 220px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); padding: 8px; opacity: 0; visibility: hidden; transform: translateY(-4px); transition: opacity .15s, transform .15s, visibility .15s; z-index: 110; }
-.nav-links > li:hover .nav-dropdown, .nav-links > li:focus-within .nav-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+.nav-links > li:hover .nav-dropdown, .nav-links > li:focus-within .nav-dropdown, .nav-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0); }
 .nav-dropdown a { display: block; padding: 10px 12px; border-radius: var(--radius-md); border-bottom: none; color: var(--fg); font-weight: 500; font-size: .88rem; }
 .nav-dropdown a:hover { background: var(--bg-subtle); color: var(--fg); }
 
@@ -470,6 +470,18 @@ nav.topnav { position: sticky; top: 0; z-index: 100; background: var(--bg-elevat
 /* ── MEDIA GRID ───────────────────── */
 .photo-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; grid-auto-rows: 180px; }
 .photo-tile { border-radius: var(--radius-lg); overflow: hidden; position: relative; cursor: pointer; transition: transform .3s ease; background: var(--bg-subtle); border: 1px solid var(--border); }
+/* Strip default <button> chrome when .photo-tile is rendered as a
+   button (since the FRONTEND_FIXES a11y migration). Browser handles
+   Enter/Space activation and focus-visible automatically. */
+button.photo-tile {
+  font: inherit; color: inherit; text-align: left;
+  padding: 0; margin: 0; appearance: none;
+  width: 100%; display: block;
+}
+button.photo-tile:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 3px;
+}
 .photo-tile:hover { transform: scale(1.015); }
 .photo-tile .overlay { position: absolute; inset: 0; padding: 18px; display: flex; flex-direction: column; justify-content: flex-end; background: linear-gradient(180deg, transparent 40%, rgba(13,4,7,.8) 100%); color: #fff; opacity: 0; transition: opacity .2s; }
 .photo-tile:hover .overlay { opacity: 1; }

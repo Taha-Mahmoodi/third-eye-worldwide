@@ -54,8 +54,69 @@ export default function Nav() {
   const showIcon = (key: string) =>
     hoverTab === key || isActive(key, pathname);
 
+  // Keyboard-driven dropdown state. The parent <Link> still navigates
+  // (Enter on the trigger goes to /about, /media, /documents) but
+  // ArrowDown opens the dropdown without leaving the page, and the
+  // arrow / Escape keys move focus through dropdown items the way a
+  // proper menu should.
+  const [openDropdown, setOpenDropdown] = React.useState<string | null>(null);
+
+  function handleTriggerKey(key: string, e: React.KeyboardEvent) {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setOpenDropdown(key);
+      // Wait one tick so React has flipped the dropdown to .open,
+      // then move focus to the first menu item.
+      setTimeout(() => {
+        const firstItem = document.querySelector<HTMLElement>(
+          `.nav-dropdown[data-key="${key}"] a`,
+        );
+        firstItem?.focus();
+      }, 0);
+    } else if (e.key === 'Escape') {
+      setOpenDropdown(null);
+    }
+  }
+
+  function handleItemKey(key: string, e: React.KeyboardEvent<HTMLAnchorElement>) {
+    const item = e.currentTarget;
+    const list = Array.from(
+      item.closest('.nav-dropdown')?.querySelectorAll('a') ?? [],
+    ) as HTMLElement[];
+    const idx = list.indexOf(item);
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      list[idx + 1]?.focus();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prev = list[idx - 1];
+      if (prev) prev.focus();
+      else {
+        // Up from the first item → close + return focus to the trigger
+        setOpenDropdown(null);
+        const trigger = document.querySelector<HTMLElement>(
+          `[data-nav="${key}"]`,
+        );
+        trigger?.focus();
+      }
+    } else if (e.key === 'Escape') {
+      setOpenDropdown(null);
+      const trigger = document.querySelector<HTMLElement>(
+        `[data-nav="${key}"]`,
+      );
+      trigger?.focus();
+    }
+  }
+
+  function handleNavBlur(e: React.FocusEvent<HTMLElement>) {
+    // If focus is moving outside the whole nav, close any open dropdown.
+    if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+      setOpenDropdown(null);
+    }
+  }
+
   return (
-    <nav className="topnav" aria-label="Main navigation">
+    <nav className="topnav" aria-label="Main navigation" onBlur={handleNavBlur}>
       <div className="nav-inner">
         <Link href="/" className="nav-logo" aria-label="Third Eye Worldwide — home">
           <LogoAnimated className="brand-logo-svg" ariaLabel="Third Eye Worldwide" />
@@ -73,13 +134,16 @@ export default function Nav() {
               href="/about"
               data-nav="about"
               className={`nav-link-btn ${isActive('about', pathname) ? 'active' : ''}`}
+              aria-haspopup="true"
+              aria-expanded={openDropdown === 'about'}
+              onKeyDown={(e) => handleTriggerKey('about', e)}
             >
               <NavTabIcon name={NAV_ICON.about} visible={showIcon('about')} />
               About <CaretDown size="0.65em" aria-hidden="true" />
             </Link>
-            <div className="nav-dropdown">
-              <Link href="/about#mission">Mission</Link>
-              <Link href="/about#team">Team</Link>
+            <div className={`nav-dropdown${openDropdown === 'about' ? ' open' : ''}`} data-key="about">
+              <Link href="/about#mission" onKeyDown={(e) => handleItemKey('about', e)}>Mission</Link>
+              <Link href="/about#team" onKeyDown={(e) => handleItemKey('about', e)}>Team</Link>
             </div>
           </li>
           <li {...tabHandlers('projects')}>
@@ -93,14 +157,17 @@ export default function Nav() {
               href="/media"
               data-nav="media"
               className={`nav-link-btn ${isActive('media', pathname) ? 'active' : ''}`}
+              aria-haspopup="true"
+              aria-expanded={openDropdown === 'media'}
+              onKeyDown={(e) => handleTriggerKey('media', e)}
             >
               <NavTabIcon name={NAV_ICON.media} visible={showIcon('media')} />
               Media <CaretDown size="0.65em" aria-hidden="true" />
             </Link>
-            <div className="nav-dropdown">
-              <Link href="/media#photos">Photos</Link>
-              <Link href="/media#podcasts">Podcasts</Link>
-              <Link href="/media#videos">Videos</Link>
+            <div className={`nav-dropdown${openDropdown === 'media' ? ' open' : ''}`} data-key="media">
+              <Link href="/media#photos" onKeyDown={(e) => handleItemKey('media', e)}>Photos</Link>
+              <Link href="/media#podcasts" onKeyDown={(e) => handleItemKey('media', e)}>Podcasts</Link>
+              <Link href="/media#videos" onKeyDown={(e) => handleItemKey('media', e)}>Videos</Link>
             </div>
           </li>
           <li {...tabHandlers('documents')}>
@@ -108,13 +175,16 @@ export default function Nav() {
               href="/documents"
               data-nav="documents"
               className={`nav-link-btn ${isActive('documents', pathname) ? 'active' : ''}`}
+              aria-haspopup="true"
+              aria-expanded={openDropdown === 'documents'}
+              onKeyDown={(e) => handleTriggerKey('documents', e)}
             >
               <NavTabIcon name={NAV_ICON.documents} visible={showIcon('documents')} />
               Documents <CaretDown size="0.65em" aria-hidden="true" />
             </Link>
-            <div className="nav-dropdown">
-              <Link href="/documents#blogs">Blogs</Link>
-              <Link href="/documents#stories">Stories</Link>
+            <div className={`nav-dropdown${openDropdown === 'documents' ? ' open' : ''}`} data-key="documents">
+              <Link href="/documents#blogs" onKeyDown={(e) => handleItemKey('documents', e)}>Blogs</Link>
+              <Link href="/documents#stories" onKeyDown={(e) => handleItemKey('documents', e)}>Stories</Link>
             </div>
           </li>
           <li {...tabHandlers('volunteers')}>
