@@ -1,6 +1,6 @@
 'use client';
 
-import type { KeyboardEvent, MouseEvent } from 'react';
+import type { MouseEvent } from 'react';
 import { ArrowsOut, ImageSquare } from '@/components/icons';
 
 export interface PhotoData {
@@ -14,6 +14,13 @@ export interface PhotoData {
   img?: string;
 }
 
+/*
+ * Photo tile that opens the lightbox on click. Uses a native
+ * <button> rather than role="button" on a div — the browser handles
+ * keyboard focus, Enter/Space activation, and focus-visible styling
+ * automatically. Default button chrome is stripped via `all: unset`
+ * in globals.css with the photo-tile base styles re-applied.
+ */
 export default function PhotoTile({ photo }: { photo?: PhotoData }) {
   const {
     cls = 'p-4-2', cat = '', loc = '', caption = '',
@@ -22,29 +29,20 @@ export default function PhotoTile({ photo }: { photo?: PhotoData }) {
 
   const gradient = `linear-gradient(135deg, ${grad1} 0%, ${grad2} 100%)`;
 
-  function open(e: MouseEvent<HTMLDivElement> | KeyboardEvent<HTMLDivElement>) {
+  function open(e: MouseEvent<HTMLButtonElement>) {
     if (typeof window !== 'undefined' && typeof window.openPhotoLightbox === 'function') {
       window.openPhotoLightbox(e.currentTarget);
     }
   }
 
-  function onKey(e: KeyboardEvent<HTMLDivElement>) {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      open(e);
-    }
-  }
-
   return (
-    <div
+    <button
+      type="button"
       className={`photo-tile ${cls}`}
       data-filter-target="photos"
       data-cat={cat}
       style={{ background: gradient }}
       onClick={open}
-      onKeyDown={onKey}
-      tabIndex={0}
-      role="button"
       aria-label={`${caption} — ${loc}`}
       data-bg={gradient}
       data-caption={caption}
@@ -63,6 +61,6 @@ export default function PhotoTile({ photo }: { photo?: PhotoData }) {
       <div className="photo-zoom-hint" aria-hidden="true">
         <ArrowsOut weight="bold" size="1em" aria-hidden="true" />
       </div>
-    </div>
+    </button>
   );
 }
