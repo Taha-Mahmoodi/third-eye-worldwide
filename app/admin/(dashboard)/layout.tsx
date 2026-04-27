@@ -28,7 +28,11 @@ export default async function DashboardLayout({
 }) {
   const session = await auth();
   const role = (session?.user as { role?: string } | undefined)?.role;
-  if (role !== 'admin') {
+  // CMS_ROADMAP PR #7 — editor role can read and edit content but not
+  // manage users or view the audit log. The gate here lets both
+  // admin and editor through; per-page gates redirect editors away
+  // from the admin-only routes (/admin/users, /admin/audit-log).
+  if (role !== 'admin' && role !== 'editor') {
     redirect('/admin/login?callbackUrl=/admin');
   }
 
@@ -41,7 +45,7 @@ export default async function DashboardLayout({
           <span className="adm-brand-mark" aria-hidden="true">TE</span>
           <span className="adm-brand-text">TEWW CMS</span>
         </Link>
-        <AdminNav />
+        <AdminNav role={role} />
         <div className="adm-sidebar-foot">
           <div className="adm-user" title={String(userName)}>
             {userName}

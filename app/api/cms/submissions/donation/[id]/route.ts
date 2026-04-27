@@ -4,6 +4,7 @@ import { prisma } from '@/lib/cms/db';
 import { isAdmin } from '@/lib/cms/auth-guard';
 import { checkAsync, requestIp } from '@/lib/rate-limit';
 import { DONATION_STATUSES } from '@/lib/constants';
+import { logAudit } from '@/lib/audit';
 import logger from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
@@ -102,11 +103,18 @@ export async function PATCH(req: NextRequest, props: { params: Promise<{ id: str
       where: { id },
       data,
     });
+    const actor = admin.user?.email || admin.user?.name || 'token';
     logger.info({
       event: 'donation_patched',
       id,
       keys: Object.keys(data),
-      by: admin.user?.email || admin.user?.name || 'token',
+      by: actor,
+    });
+    void logAudit({
+      actor,
+      action: 'submission.donation.patch',
+      target: String(id),
+      diff: data,
     });
     return NextResponse.json({ ok: true, ...data });
   } catch (e) {
@@ -145,10 +153,12 @@ export async function DELETE(req: NextRequest, props: { params: Promise<{ id: st
 
   try {
     await prisma.donationSubmission.delete({ where: { id } });
-    logger.info({
-      event: 'donation_deleted',
-      id,
-      by: admin.user?.email || admin.user?.name || 'token',
+    const actor = admin.user?.email || admin.user?.name || 'token';
+    logger.info({ event: 'donation_deleted', id, by: actor });
+    void logAudit({
+      actor,
+      action: 'submission.donation.delete',
+      target: String(id),
     });
     return NextResponse.json({ ok: true });
   } catch (e) {

@@ -1,7 +1,9 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
+import { compare } from 'fast-json-patch';
 import { getContent, saveContent } from '@/lib/cms/db';
 import { isAdmin } from '@/lib/cms/auth-guard';
+import { logAudit } from '@/lib/audit';
 import type { SiteContent } from '@/lib/types';
 import { CMS_MAX_PAYLOAD_BYTES } from '@/lib/constants';
 import logger from '@/lib/logger';
@@ -97,8 +99,34 @@ export async function PUT(req: NextRequest) {
 
   const author = admin.user?.email || admin.user?.name || req.headers.get('x-cms-author') || null;
   const note = req.headers.get('x-cms-note') || null;
+
+  // PR #7 — compute the JSON-patch diff against the previous content
+  // BEFORE saving so the audit row reflects what actually changed.
+  // The patch is bounded by the audit log's 50 KB string cap.
+  let diff: unknown = null;
+  try {
+    const previous = (await getContent()) ?? {};
+    diff = compare(
+      previous as Record<string, unknown>,
+      data as Record<string, unknown>,
+    );
+  } catch (err) {
+    logger.warn(
+      { err, event: 'audit_diff_failed' },
+      'failed to compute publish diff — audit row will record the action without a patch',
+    );
+  }
+
   await saveContent(data, { author, note });
   logger.info({ event: 'cms_published', author, via: admin.via });
+
+  // Fire-and-forget audit append. Logged best-effort inside logAudit.
+  void logAudit({
+    actor: author || 'unknown',
+    action: 'cms.publish',
+    target: '/api/cms/data',
+    diff,
+  });
 
   // Revalidate fixed routes + any user-defined /[slug] pages +
   // each project detail at /projects/<slug> + the sitemap

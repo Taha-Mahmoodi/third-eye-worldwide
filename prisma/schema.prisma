@@ -82,11 +82,35 @@ model DonationSubmission {
 }
 
 // Admin users for the /admin CMS dashboard.
+//
+// `role` is `admin` (full access) or `editor` (content edit only —
+// can't manage users or view the audit log). Defaults to `editor`
+// for newly created records so a forgotten role flag can't promote
+// an invited user to admin by accident; the seed user is forced to
+// `admin` explicitly. lastLogin is updated on every successful
+// authorize() call.
 model User {
-  id           Int      @id @default(autoincrement())
-  email        String   @unique
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
   passwordHash String
   name         String?
-  role         String   @default("admin")
-  createdAt    DateTime @default(now())
+  role         String    @default("editor") // admin | editor
+  lastLogin    DateTime?
+  createdAt    DateTime  @default(now())
+}
+
+// Append-only record of every CMS write. CMS_ROADMAP PR #7. Each
+// entry pins WHO did WHAT to WHICH thing, plus an optional
+// machine-readable diff so a future "Restore" UI can apply the
+// inverse patch.
+model AuditLogEntry {
+  id        String   @id @default(cuid())
+  actor     String   // user email or 'system'
+  action    String   // 'cms.publish' | 'cms.media.upload' | 'submission.status_update' | …
+  target    String?  // path, slug, or record id
+  diff      String?  // JSON-patch (RFC 6902) for content edits
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([actor])
 }

@@ -71,6 +71,7 @@ export {
   Star,
   Sun,
   Trash,
+  UserCircle,
   Users,
   Warning,
   X,

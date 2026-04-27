@@ -717,6 +717,103 @@
 }
 .adm-drawer-actions .adm-btn-quiet { text-decoration: none; }
 
+/* PR #7 — Users dashboard: inline create form. */
+.adm-create-form {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.adm-create-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+.adm-create-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: .85rem;
+  color: var(--fg-muted);
+}
+.adm-create-grid input,
+.adm-create-grid select {
+  font: inherit;
+  font-size: .92rem;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 8px 10px;
+}
+.adm-create-grid input:focus-visible,
+.adm-create-grid select:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* PR #7 — Audit log list. */
+.adm-audit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.adm-audit-row {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.adm-audit-summary {
+  display: grid;
+  grid-template-columns: 16px minmax(0, max-content) minmax(0, max-content) 1fr auto;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  color: var(--fg);
+}
+.adm-audit-summary:hover { background: var(--bg-subtle); }
+.adm-audit-summary svg { transition: transform .15s; color: var(--fg-muted); }
+.adm-audit-row.open .adm-audit-summary svg { transform: rotate(90deg); }
+.adm-audit-action {
+  font-family: var(--font-mono, monospace);
+  font-size: .82rem;
+  color: var(--brand);
+  background: var(--bg-subtle);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.adm-audit-actor { font-size: .85rem; color: var(--fg); }
+.adm-audit-target { font-size: .82rem; color: var(--fg-muted); }
+.adm-audit-time { font-size: .8rem; color: var(--fg-muted); white-space: nowrap; }
+.adm-audit-diff {
+  margin: 0;
+  padding: 12px 14px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  font-family: var(--font-mono, monospace);
+  font-size: .8rem;
+  color: var(--fg);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+}
+
+.adm-audit-load-more {
+  margin-top: 16px;
+  text-align: center;
+}
+
 /* CMS-3: skeleton shimmer for the (dashboard) loading.tsx. */
 .adm-skeleton {
   background: linear-gradient(
