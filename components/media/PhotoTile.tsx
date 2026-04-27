@@ -2,6 +2,7 @@
 
 import type { MouseEvent } from 'react';
 import { ArrowsOut, ImageSquare } from '@/components/icons';
+import { isSafeImageUrl } from '@/lib/utils';
 
 export interface PhotoData {
   id?: string;
@@ -32,6 +33,7 @@ export default function PhotoTile({ photo }: PhotoTileProps) {
   } = photo || {};
 
   const gradient = `linear-gradient(135deg, ${grad1} 0%, ${grad2} 100%)`;
+  const safeImg = isSafeImageUrl(img) ? img : '';
 
   function open(e: MouseEvent<HTMLButtonElement>) {
     if (typeof window !== 'undefined' && typeof window.openPhotoLightbox === 'function') {
@@ -51,10 +53,10 @@ export default function PhotoTile({ photo }: PhotoTileProps) {
       data-bg={gradient}
       data-caption={caption}
       data-loc={loc}
-      data-img={img}
+      data-img={safeImg}
     >
-      {img ? (
-        <div className="ph-img-bg" style={{ backgroundImage: `url('${img}')` }}></div>
+      {safeImg ? (
+        <div className="ph-img-bg" style={{ backgroundImage: `url('${safeImg}')` }}></div>
       ) : (
         <div className="ph-placeholder"><ImageSquare size="1em" aria-hidden="true" /></div>
       )}

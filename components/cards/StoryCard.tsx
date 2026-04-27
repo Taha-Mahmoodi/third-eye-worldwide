@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { isSafeImageUrl } from '@/lib/utils';
 
 /*
  * Shared story/blog card. Used on the home page "Latest Stories"
@@ -43,9 +44,10 @@ export default function StoryCard({ story, featured = false }: StoryCardProps) {
   } = story || {};
 
   const href = heroType === 'type-blog' ? '/documents#blogs' : '/documents#stories';
-  const bgStyle = img
+  const safeImg = isSafeImageUrl(img) ? img : '';
+  const bgStyle = safeImg
     ? {
-        backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.05) 30%, rgba(13,4,7,.75) 100%), url('${img}')`,
+        backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.05) 30%, rgba(13,4,7,.75) 100%), url('${safeImg}')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }
