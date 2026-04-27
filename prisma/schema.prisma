@@ -99,6 +99,36 @@ model User {
   createdAt    DateTime  @default(now())
 }
 
+// Media assets uploaded via the dashboard (CMS_ROADMAP PR #1).
+//
+// `kind` is one of `image | video | audio | document`. Variant URLs
+// (urlThumb, urlMedium) and `blurhash` are populated only when the
+// storage adapter ran an image pipeline; they stay null for raw
+// uploads, video/audio/document, and the local-disk dev adapter.
+//
+// `url` is always the canonical full-size URL — relative when stored
+// on the same origin, absolute otherwise.
+model MediaAsset {
+  id         String   @id @default(cuid())
+  kind       String   // image | video | audio | document
+  filename   String
+  mime       String
+  bytes      Int
+  width      Int?
+  height     Int?
+  duration   Float?   // audio/video, seconds
+  alt        String?
+  caption    String?
+  url        String
+  urlThumb   String?  // ~320w
+  urlMedium  String?  // ~1024w
+  blurhash   String?
+  uploadedBy String?
+  createdAt  DateTime @default(now())
+
+  @@index([kind, createdAt])
+}
+
 // Append-only record of every CMS write. CMS_ROADMAP PR #7. Each
 // entry pins WHO did WHAT to WHICH thing, plus an optional
 // machine-readable diff so a future "Restore" UI can apply the
