@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import RichText from '@/components/RichText';
+import CmsIcon from '@/components/CmsIcon';
 
 /*
  * Renders a single project's detail view. Shape expected:
@@ -45,7 +46,7 @@ export default function ProjectDetail({ project }: { project: ProjectDetailData 
           </Link>
           <div className="pd-hero-top">
             <div className="pd-hero-icon" aria-hidden="true">
-              <i className={`ph ${icon || 'ph-star'}`}></i>
+              <CmsIcon name={icon || 'star'} />
             </div>
             {statusLabel ? (
               <span className={`pd-status pd-status-${status || 'info'}`}>

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import CmsIcon from '@/components/CmsIcon';
 
 /*
  * Card that renders a single project in the /projects grid.
@@ -25,7 +26,7 @@ export default function ProjectCard({ project }: { project?: Project }) {
   const inner = (
     <>
       <div className="prog-icon">
-        <i className={`ph ${icon || 'ph-star'}`} aria-hidden="true"></i>
+        <CmsIcon name={icon || 'star'} aria-hidden="true" />
       </div>
       <div className="prog-content">
         <h3>{title || ''}</h3>
