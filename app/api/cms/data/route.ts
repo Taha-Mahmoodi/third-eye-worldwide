@@ -34,18 +34,49 @@ export async function GET() {
 
 export async function PUT(req: NextRequest) {
   const admin = await isAdmin(req);
-  if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-  const declaredSize = Number(req.headers.get('content-length') || 0);
-  if (Number.isFinite(declaredSize) && declaredSize > CMS_MAX_PAYLOAD_BYTES) {
+  if (!admin) {
     return NextResponse.json(
-      { error: `Payload too large — max ${Math.round(CMS_MAX_PAYLOAD_BYTES / 1024)} KB.` },
-      { status: 413 }
+      { error: 'Unauthorized' },
+      { status: 401, headers: { 'WWW-Authenticate': 'Bearer realm="CMS Admin"' } },
     );
   }
 
+  // Count actual bytes from the body stream — Content-Length can be
+  // spoofed (a hostile client can advertise 1 KB and stream 100 MB).
+  // We bail out as soon as the running total exceeds the cap so we
+  // never buffer the full hostile payload in memory.
+  let rawBody: string;
+  try {
+    const reader = req.body?.getReader();
+    if (!reader) return NextResponse.json({ error: 'Empty body' }, { status: 400 });
+    const chunks: Uint8Array[] = [];
+    let totalBytes = 0;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      totalBytes += value.byteLength;
+      if (totalBytes > CMS_MAX_PAYLOAD_BYTES) {
+        await reader.cancel();
+        return NextResponse.json(
+          { error: `Payload too large — max ${Math.round(CMS_MAX_PAYLOAD_BYTES / 1024)} KB.` },
+          { status: 413 },
+        );
+      }
+      chunks.push(value);
+    }
+    const merged = new Uint8Array(totalBytes);
+    let offset = 0;
+    for (const c of chunks) {
+      merged.set(c, offset);
+      offset += c.byteLength;
+    }
+    rawBody = new TextDecoder().decode(merged);
+  } catch {
+    return NextResponse.json({ error: 'Failed to read body' }, { status: 400 });
+  }
+
   let body: unknown;
-  try { body = await req.json(); } catch { return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 }); }
+  try { body = JSON.parse(rawBody); } catch { return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 }); }
   if (!body || typeof body !== 'object') return NextResponse.json({ error: 'Expected object' }, { status: 400 });
   const data = body as SiteContent & {
     site?: unknown;
@@ -80,9 +111,11 @@ export async function PUT(req: NextRequest) {
     ? projectItems.filter((p: CmsItem) => p?.slug && p?.visible !== false).map((p: CmsItem) => '/projects/' + p.slug)
     : [];
   const seoRoutes = ['/sitemap.xml', '/robots.txt'];
+  let revalidatedCount = 0;
   for (const path of [...ALL_ROUTES, ...slugRoutes, ...projectRoutes, ...seoRoutes]) {
     try {
       revalidatePath(path);
+      revalidatedCount++;
     } catch (err) {
       // Don't fail the publish on a single bad route — but log so we
       // notice when a path consistently can't be revalidated. Per LOW-3.
@@ -90,5 +123,9 @@ export async function PUT(req: NextRequest) {
     }
   }
 
-  return NextResponse.json({ ok: true, revalidated: ALL_ROUTES.length + slugRoutes.length });
+  // Return the actual number of paths that succeeded. Previous code
+  // reported `ALL_ROUTES.length + slugRoutes.length` which was both
+  // wrong (omitted projectRoutes + seoRoutes) and a lie if any path
+  // threw inside the loop.
+  return NextResponse.json({ ok: true, revalidated: revalidatedCount });
 }

@@ -61,3 +61,16 @@ export const RESEND_CONFIRMATION_WINDOW_MS = 60 * 60 * 1000;
 // template doesn't blow up on a bogus code.
 export const ACCEPTED_CURRENCIES = ['USD', 'EUR', 'GBP', 'CAD', 'AUD'] as const;
 export type AcceptedCurrency = (typeof ACCEPTED_CURRENCIES)[number];
+
+// ── Submission status allow-lists ────────────────────────────────
+// `status` is plain TEXT in the DB; without an application-layer
+// allow-list a PATCH route could persist `"actve"` instead of
+// `"active"` with no error. The constants below are the source of
+// truth for any handler that writes status. Defaults set on insert
+// (`"new"` / `"pending"`) are also drawn from these tuples, so a
+// rename ripples cleanly.
+export const VOLUNTEER_STATUSES = ['new', 'contacted', 'onboarded', 'rejected'] as const;
+export type VolunteerStatus = (typeof VOLUNTEER_STATUSES)[number];
+
+export const DONATION_STATUSES = ['pending', 'succeeded', 'failed'] as const;
+export type DonationStatus = (typeof DONATION_STATUSES)[number];
