@@ -20,6 +20,14 @@ vi.mock('@/lib/logger', () => ({
   default: { info: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn() },
 }));
 
+// Cut the import chain that would otherwise pull lib/auth.ts → next-auth
+// (next-auth's ESM tries to resolve next/server which vitest's jsdom
+// loader can't). The POST handler under test never calls isAdmin —
+// only the GET path does — so the mock has no behavioral effect.
+vi.mock('@/lib/cms/auth-guard', () => ({
+  isAdmin: vi.fn(async () => null),
+}));
+
 // Re-import after the mocks are set up. The route module reads its
 // dependencies at the top level, so the order matters.
 async function loadRoute() {
