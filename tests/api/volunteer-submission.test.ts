@@ -28,6 +28,12 @@ vi.mock('@/lib/cms/auth-guard', () => ({
   isAdmin: vi.fn(async () => null),
 }));
 
+// Stub the email send so we don't actually hit Resend during tests.
+const sendEmailMock = vi.fn(async () => ({ ok: true, id: 'mock-id' }));
+vi.mock('@/lib/email/send', () => ({
+  sendEmail: sendEmailMock,
+}));
+
 // Re-import after the mocks are set up. The route module reads its
 // dependencies at the top level, so the order matters.
 async function loadRoute() {
@@ -53,7 +59,16 @@ function makeReq(body: unknown, headers: Record<string, string> = {}): NextReque
 
 beforeEach(() => {
   createMock.mockReset();
-  createMock.mockResolvedValue({ id: 42 });
+  // The route reads `id`, `email`, `name`, `createdAt` off the returned
+  // row to build the confirmation email — return all of them.
+  createMock.mockResolvedValue({
+    id: 42,
+    email: 'jane@example.com',
+    name: 'Jane Smith',
+    createdAt: new Date('2026-04-27T00:00:00Z'),
+  });
+  sendEmailMock.mockReset();
+  sendEmailMock.mockResolvedValue({ ok: true, id: 'mock-id' });
 });
 
 describe('POST /api/cms/submissions/volunteer', () => {
@@ -66,6 +81,23 @@ describe('POST /api/cms/submissions/volunteer', () => {
     const body = await res.json();
     expect(body).toEqual({ ok: true, id: 42 });
     expect(createMock).toHaveBeenCalledOnce();
+  });
+
+  it('fires off the confirmation email on success', async () => {
+    const { POST } = await loadRoute();
+    await POST(makeReq({ name: 'Jane Smith', email: 'jane@example.com' }));
+    // sendEmail is fire-and-forget (not awaited). Give it a microtask
+    // tick so the .catch handler attaches.
+    await new Promise((r) => setTimeout(r, 0));
+    expect(sendEmailMock).toHaveBeenCalledOnce();
+    const calls = sendEmailMock.mock.calls as unknown as Array<
+      [{ to: string; subject: string; text: string }]
+    >;
+    const arg = calls[0]?.[0];
+    expect(arg).toBeDefined();
+    expect(arg!.to).toBe('jane@example.com');
+    expect(arg!.subject).toMatch(/confirm/i);
+    expect(arg!.text).toContain('/api/cms/submissions/confirm?type=volunteer&id=42&token=');
   });
 
   it('rejects missing email with 400', async () => {

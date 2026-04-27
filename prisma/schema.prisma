@@ -32,6 +32,9 @@ model ContentRevision {
 }
 
 // Volunteer form submissions — sent from /volunteers form, triaged in /admin.
+// `confirmed` flips true after the user clicks the link in the
+// confirmation email (MED-8). Admin GET filters to confirmed=true by
+// default.
 model VolunteerSubmission {
   id        Int      @id @default(autoincrement())
   name      String
@@ -40,10 +43,13 @@ model VolunteerSubmission {
   skills    String?
   message   String?
   status    String   @default("new") // new | contacted | onboarded | rejected
+  confirmed Boolean  @default(false)
   createdAt DateTime @default(now())
 }
 
 // Donation form submissions — record of intent; payment processing is external.
+// `confirmed` flips true after the user clicks the link in the
+// confirmation email (MED-8).
 model DonationSubmission {
   id        Int      @id @default(autoincrement())
   name      String
@@ -53,6 +59,7 @@ model DonationSubmission {
   currency  String   @default("USD")
   status    String   @default("pending") // pending | succeeded | failed
   note      String?
+  confirmed Boolean  @default(false)
   createdAt DateTime @default(now())
 }
 

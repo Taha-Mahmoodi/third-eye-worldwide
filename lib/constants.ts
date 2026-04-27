@@ -41,3 +41,13 @@ export const SESSION_MAX_AGE_SECONDS = 60 * 60 * 12;
 // 5 attempts per 15 minutes per IP per email.
 export const LOGIN_RATE_LIMIT_MAX_REQUESTS = 5;
 export const LOGIN_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+
+// ── Email confirmation (MED-8) ───────────────────────────────────
+// Confirmation links emailed to volunteer / donation submitters expire
+// after this window. Anything older the user has to re-submit the form.
+export const CONFIRMATION_TOKEN_TTL_MS = 24 * 60 * 60 * 1000;
+
+// Re-send confirmation email rate limit: 1 attempt per IP per hour.
+// Stops a script from carpet-bombing requests.
+export const RESEND_CONFIRMATION_MAX_REQUESTS = 1;
+export const RESEND_CONFIRMATION_WINDOW_MS = 60 * 60 * 1000;

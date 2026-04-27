@@ -6,6 +6,9 @@ import { RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS } from '@/lib/constants';
 import logger from '@/lib/logger';
 import { isValidEmail } from '@/lib/validators';
 import { isAllowedOrigin, tripsHoneypot } from '@/lib/csrf';
+import { sendEmail } from '@/lib/email/send';
+import { volunteerConfirmationEmail } from '@/lib/email/templates/confirm-volunteer';
+import { siteUrl } from '@/lib/seo';
 
 interface VolunteerBody {
   name?: unknown;
@@ -70,6 +73,20 @@ export async function POST(req: NextRequest) {
       },
     });
     logger.info({ event: 'volunteer_submitted', id: row.id, ip, email: row.email });
+
+    // MED-8: send the confirmation email. Fail-open — if Resend is
+    // down or unconfigured, accept the submission anyway (admin will
+    // see it as `confirmed: false` in the dashboard) rather than
+    // rejecting the user.
+    const email_ = volunteerConfirmationEmail({
+      id: row.id,
+      name: row.name,
+      createdAt: row.createdAt,
+      siteUrl: siteUrl(''),
+    });
+    sendEmail({ to: row.email, subject: email_.subject, text: email_.text, html: email_.html })
+      .catch((err) => logger.error({ err, event: 'email_send_threw', id: row.id }));
+
     return NextResponse.json({ ok: true, id: row.id });
   } catch (err) {
     logger.error({ err, event: 'volunteer_submit_failed', ip }, 'volunteer create failed');
@@ -81,6 +98,16 @@ export async function GET(req: NextRequest) {
   if (!(await isAdmin(req))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  const rows = await prisma.volunteerSubmission.findMany({ orderBy: { createdAt: 'desc' }, take: 200 });
+  // MED-8: by default only return rows where the user clicked the
+  // confirmation link. Admin can pass `?all=true` to see unconfirmed
+  // (e.g., to debug a delivery issue or view spam).
+  const url = new URL(req.url);
+  const includeAll = url.searchParams.get('all') === 'true';
+  const where = includeAll ? {} : { confirmed: true };
+  const rows = await prisma.volunteerSubmission.findMany({
+    where,
+    orderBy: { createdAt: 'desc' },
+    take: 200,
+  });
   return NextResponse.json(rows);
 }
