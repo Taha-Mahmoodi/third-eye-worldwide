@@ -52,8 +52,8 @@ describe('confirmation token', () => {
   });
 
   it('rejects when the token is older than the TTL window', () => {
-    // 25 hours ago — TTL is 24h.
-    const createdAt = new Date(Date.now() - 25 * 60 * 60 * 1000);
+    // 3 hours ago — TTL is 2h (CONFIRMATION_TOKEN_TTL_MS in lib/constants.ts).
+    const createdAt = new Date(Date.now() - 3 * 60 * 60 * 1000);
     const token = signConfirmationToken('volunteer', 1, createdAt);
     expect(
       verifyConfirmationToken('volunteer', 1, createdAt, token),
