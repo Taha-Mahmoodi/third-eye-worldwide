@@ -1,0 +1,16 @@
+; /etc/systemd/system/teww-cron-purge.timer
+;
+; Fires teww-cron-purge.service at 03:00 on the 1st of every month
+; (matches the schedule from vercel.json). `Persistent=true` makes
+; missed runs (e.g. VPS rebooting through 03:00) catch up next boot.
+
+[Unit]
+Description=Run monthly PII purge
+
+[Timer]
+OnCalendar=*-*-01 03:00:00
+Persistent=true
+Unit=teww-cron-purge.service
+
+[Install]
+WantedBy=timers.target

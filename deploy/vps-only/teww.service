@@ -1,0 +1,35 @@
+; /etc/systemd/system/teww.service
+;
+; Manages the Next.js standalone server (`node server.js`).
+; Reads env vars from /srv/teww/app/.env so the app uses the same
+; .env loader convention as `npm run dev` does locally.
+
+[Unit]
+Description=Third Eye Worldwide — Next.js
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=teww
+Group=teww
+WorkingDirectory=/srv/teww/app
+EnvironmentFile=/srv/teww/app/.env
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=HOSTNAME=127.0.0.1
+ExecStart=/usr/bin/node server.js
+Restart=on-failure
+RestartSec=3
+
+; Hardening — most NodeJS apps don't need to write outside their
+; working dir or read system paths. systemd-analyze security
+; teww.service is a useful follow-up.
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/srv/teww/app/public/uploads /srv/teww/data
+
+[Install]
+WantedBy=multi-user.target

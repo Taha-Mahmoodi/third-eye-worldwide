@@ -1,0 +1,26 @@
+; /etc/systemd/system/teww-backup.service
+;
+; Nightly off-site backup of the SQLite DB + media uploads via
+; restic. Pulls credentials from /etc/restic/env (out of the repo).
+;
+; SQLite + WAL is safe to copy live, but the safe pattern is the
+; ".backup" command which produces an internally-consistent
+; snapshot — important if a write lands while the file is being
+; copied.
+
+[Unit]
+Description=Third Eye Worldwide — nightly off-site backup
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=teww
+EnvironmentFile=/etc/restic/env
+ExecStartPre=/usr/bin/sqlite3 /srv/teww/data/prod.db ".backup '/tmp/teww-prod.db.snapshot'"
+ExecStart=/usr/bin/restic backup \
+    /tmp/teww-prod.db.snapshot \
+    /srv/teww/app/public/uploads \
+    --tag nightly
+ExecStartPost=/usr/bin/restic forget \
+    --keep-daily 7 --keep-weekly 4 --keep-monthly 12 --prune
+ExecStopPost=/bin/rm -f /tmp/teww-prod.db.snapshot
