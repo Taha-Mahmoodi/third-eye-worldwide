@@ -162,6 +162,68 @@
       "author": "TEWW Editorial",
       "initials": "TE",
       "role": "Open call · 2026"
+    },
+    "book": {
+      "eyebrow": "From the Book · The Third Eye",
+      "title": "<em>The Third Eye</em> — a memoir-in-progress.",
+      "subtitle": "Said Mohaddes Sadeqi",
+      "intro": "Six short pieces adapted from a memoir-in-progress by our founder. They cover the eight months he spent blind in a shelter in Kabul after a 2021 explosion, the surgeries that returned partial sight, and the design philosophy behind the Third Eye Kit. Read these if you want to understand where the work comes from. Skip them if you'd rather hear from the community we serve — those stories live on the Stories tab.",
+      "chapters": [
+        {
+          "id": "ch-1-airport",
+          "num": "01",
+          "title": "The day the world ended at an airport",
+          "readTime": "5 min",
+          "status": "Excerpt coming soon",
+          "snippet": "On the day everything changed, the sun was an ordinary sun. The first chapter of the memoir opens at the moment of the explosion at Kabul airport in 2021, told from the inside of an experience there was no language for. Excerpt to be published when the chapter is final.",
+          "slug": "airport"
+        },
+        {
+          "id": "ch-2-the-room",
+          "num": "02",
+          "title": "The room where the world forgot us",
+          "readTime": "6 min",
+          "status": "Excerpt coming soon",
+          "snippet": "The second chapter is set in the eight months of darkness that followed — a shelter in Kabul, no tools, no help, the world's attention briefly on the country and then gone. A meditation on the difference between being seen and being noticed. Excerpt forthcoming.",
+          "slug": "the-room"
+        },
+        {
+          "id": "ch-3-the-little-boy",
+          "num": "03",
+          "title": "The little boy who asked what seeing was like",
+          "readTime": "5 min",
+          "status": "Excerpt coming soon",
+          "snippet": "A child in the shelter had been blind from birth. He asked what seeing was like, and his question reframed the entire problem. The chapter the engineer-in-progress would later trace as the seed of the Third Eye Kit.",
+          "slug": "the-little-boy"
+        },
+        {
+          "id": "ch-4-dreams-light",
+          "num": "04",
+          "title": "In dreams, I had light",
+          "readTime": "5 min",
+          "status": "Excerpt coming soon",
+          "snippet": "On the strange paradox of dreaming with sight when waking life is dark — and what that taught the author about how perception is built, not given.",
+          "slug": "dreams-light"
+        },
+        {
+          "id": "ch-5-blindness-language",
+          "num": "05",
+          "title": "Blindness isn't silence. It's a language.",
+          "readTime": "6 min",
+          "status": "Excerpt coming soon",
+          "snippet": "A defense of blindness as its own grammar of the world — texture, sound, distance, weight. The case the author makes against \"compensation\" framing in mainstream assistive technology.",
+          "slug": "blindness-language"
+        },
+        {
+          "id": "ch-6-boiled-potato",
+          "num": "06",
+          "title": "A boiled potato that felt like Harvard",
+          "readTime": "5 min",
+          "status": "Excerpt coming soon",
+          "snippet": "Years later, the author is studying for an exam in Pakistan. A boiled potato becomes the breakthrough. The chapter ends where the work begins.",
+          "slug": "boiled-potato"
+        }
+      ]
     }
   },
   "volunteers": {
