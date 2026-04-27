@@ -45,7 +45,10 @@ export const LOGIN_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
 // ── Email confirmation (MED-8) ───────────────────────────────────
 // Confirmation links emailed to volunteer / donation submitters expire
 // after this window. Anything older the user has to re-submit the form.
-export const CONFIRMATION_TOKEN_TTL_MS = 24 * 60 * 60 * 1000;
+// Industry standard for email-confirmation tokens is 1–2 hours; 24 h
+// (the previous value) means a stolen link is valid for a full day.
+// Both confirm-volunteer and confirm-donation copy match this value.
+export const CONFIRMATION_TOKEN_TTL_MS = 2 * 60 * 60 * 1000;
 
 // Re-send confirmation email rate limit: 1 attempt per IP per hour.
 // Stops a script from carpet-bombing requests.

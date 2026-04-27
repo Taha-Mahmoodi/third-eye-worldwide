@@ -25,7 +25,7 @@ const ERROR_COPY: Record<string, { title: string; body: string }> = {
   },
   expired: {
     title: 'That confirmation link has expired',
-    body: 'Confirmation links are good for 24 hours. Submit the form again to get a fresh one.',
+    body: 'Confirmation links are good for 2 hours. Submit the form again to get a fresh one.',
   },
   mismatch: {
     title: 'That link is not valid for this submission',
