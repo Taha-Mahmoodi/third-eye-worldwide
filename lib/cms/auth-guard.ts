@@ -11,9 +11,8 @@
 // token auth refused (with a one-time warn log) until the env value
 // is rotated to a sha256 hex. Session auth continues to work.
 
-import { getServerSession } from 'next-auth';
 import { createHash, timingSafeEqual } from 'node:crypto';
-import { authOptions } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 import logger from '@/lib/logger';
 import type { AdminAuthResult } from '@/lib/types';
 import type { NextRequest } from 'next/server';
@@ -54,7 +53,7 @@ export async function isAdmin(req: NextRequest | Request): Promise<AdminAuthResu
     }
   }
 
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   const role = (session?.user as { role?: string } | undefined)?.role;
   if (role === 'admin') {
     return { via: 'session', user: session!.user as AdminAuthResult['user'] };

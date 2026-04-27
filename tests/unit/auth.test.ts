@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { scryptSync, randomBytes } from 'node:crypto';
-import { verifyPassword } from '@/lib/auth';
+import { verifyPassword } from '@/lib/auth/verify-password';
 
 /**
  * verifyPassword is the only piece of the auth path that doesn't
