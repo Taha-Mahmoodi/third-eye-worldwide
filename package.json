@@ -19,6 +19,7 @@
     "seed": "node --env-file=.env prisma/seed.mjs"
   },
   "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
     "@prisma/client": "^6.19.3",
     "@radix-ui/react-slot": "^1.2.4",
     "@upstash/ratelimit": "^2.0.8",

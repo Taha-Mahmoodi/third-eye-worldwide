@@ -1,3 +1,5 @@
+import CmsIcon from '@/components/CmsIcon';
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface Value { num?: string; icon?: string; title?: string; desc?: string; meta?: string; variant?: string; [key: string]: any }
 export default function ValueCard({ value }: { value?: Value }) {
@@ -5,7 +7,7 @@ export default function ValueCard({ value }: { value?: Value }) {
   return (
     <li className={`val-card ${variant || 'v-brand'}`}>
       <div className="val-num">{num}</div>
-      <div className="val-ico"><i className={`ph ${icon || ''}`} aria-hidden="true"></i></div>
+      <div className="val-ico"><CmsIcon name={icon} aria-hidden="true" /></div>
       <h3>{title}</h3>
       <p>{desc}</p>
       <div className="val-meta"><span>{meta}</span></div>

@@ -1,10 +1,12 @@
+import CmsIcon from '@/components/CmsIcon';
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface Role { icon?: string; title?: string; desc?: string; tag1?: string; tag2?: string; [key: string]: any }
 export default function RoleCard({ role }: { role?: Role }) {
-  const { icon = 'ph-hand-heart', title = '', desc = '', tag1, tag2 } = role || {};
+  const { icon = 'hand-heart', title = '', desc = '', tag1, tag2 } = role || {};
   return (
     <div className="role-card">
-      <div className="role-icon"><i className={`ph ${icon}`} aria-hidden="true"></i></div>
+      <div className="role-icon"><CmsIcon name={icon} aria-hidden="true" /></div>
       <h4>{title}</h4>
       <p>{desc}</p>
       <div className="role-tags">
