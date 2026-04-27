@@ -31,7 +31,13 @@ export default function ProjectsPage() {
 }
 
 async function ProjectsPageContent() {
-  const content = await getContent();
+  // DB hiccup → empty sections, not a 500. See app/page.tsx.
+  let content = null;
+  try {
+    content = await getContent();
+  } catch {
+    // fall through to empty-content render
+  }
   // Backward-compat with CMS data seeded before the Programs → Projects rename.
   const p = content?.projects || content?.programs || {};
   const items = visibleSorted(p.items || []);

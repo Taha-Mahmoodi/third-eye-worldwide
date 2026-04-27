@@ -94,7 +94,13 @@ export default function DocumentsPage() {
 }
 
 async function DocumentsPageContent() {
-  const content = await getContent();
+  // DB hiccup → empty sections, not a 500. See app/page.tsx.
+  let content = null;
+  try {
+    content = await getContent();
+  } catch {
+    // fall through to empty-content render
+  }
   const d = content?.documents || {};
   const blogs = visibleSorted(d.blogs || []);
   const stories = visibleSorted(d.stories || []);

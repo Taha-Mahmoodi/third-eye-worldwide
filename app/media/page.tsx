@@ -139,7 +139,13 @@ export default function MediaPage() {
 }
 
 async function MediaPageContent() {
-  const content = await getContent();
+  // DB hiccup → empty sections, not a 500. See app/page.tsx.
+  let content = null;
+  try {
+    content = await getContent();
+  } catch {
+    // fall through to empty-content render
+  }
   const m = content?.media || {};
   const photos = visibleSorted(m.photos || []);
   const pods   = visibleSorted(m.podcasts || []);

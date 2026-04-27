@@ -45,7 +45,17 @@ export default function HomePage() {
 }
 
 async function HomePageContent() {
-  const content = await getContent();
+  // If the DB is briefly unreachable (cold-start lock, transient
+  // connection drop), render the page with empty CMS sections rather
+  // than throwing all the way out to the error boundary. getContent()
+  // already returns null on JSON parse errors; this catch handles
+  // connection-level failures the same way.
+  let content = null;
+  try {
+    content = await getContent();
+  } catch {
+    // intentional empty — fall through to the empty-content render
+  }
   const h = content?.home || {};
   const docs = content?.documents || {};
   const projectsSection = content?.projects || content?.programs || {};

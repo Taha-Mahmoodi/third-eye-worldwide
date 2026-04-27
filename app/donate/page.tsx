@@ -39,7 +39,13 @@ export default function DonatePage() {
 }
 
 async function DonatePageContent() {
-  const content = await getContent();
+  // DB hiccup → empty sections, not a 500. See app/page.tsx.
+  let content = null;
+  try {
+    content = await getContent();
+  } catch {
+    // fall through to empty-content render
+  }
   const d = content?.donate || {};
   const impact = visibleSorted(d.impactBreakdown || []);
 

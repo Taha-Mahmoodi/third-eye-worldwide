@@ -206,7 +206,13 @@ export default function AboutPage() {
 }
 
 async function AboutPageContent() {
-  const content = await getContent();
+  // DB hiccup → empty sections, not a 500. See app/page.tsx.
+  let content = null;
+  try {
+    content = await getContent();
+  } catch {
+    // fall through to empty-content render
+  }
   const a = content?.about || {};
   const faqs = visibleSorted(a.faqs || []);
   const team = visibleSorted(a.team || []);

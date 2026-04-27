@@ -34,7 +34,13 @@ export default function VolunteersPage() {
 }
 
 async function VolunteersPageContent() {
-  const content = await getContent();
+  // DB hiccup → empty sections, not a 500. See app/page.tsx.
+  let content = null;
+  try {
+    content = await getContent();
+  } catch {
+    // fall through to empty-content render
+  }
   const v = content?.volunteers || {};
   const stats = visibleSorted(v.stats || []);
   const roles = visibleSorted(v.roles || []);
