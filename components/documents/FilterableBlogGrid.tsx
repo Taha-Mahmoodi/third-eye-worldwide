@@ -35,6 +35,7 @@ export default function FilterableBlogGrid({ blogs, cats }: FilterableBlogGridPr
           <button
             type="button"
             className={cn('filter-pill', { active: filter === 'all' })}
+            aria-pressed={filter === 'all'}
             onClick={() => setFilter('all')}
           >
             All
@@ -44,6 +45,7 @@ export default function FilterableBlogGrid({ blogs, cats }: FilterableBlogGridPr
               key={c}
               type="button"
               className={cn('filter-pill', { active: filter === c })}
+              aria-pressed={filter === c}
               onClick={() => setFilter(c)}
             >
               {c.charAt(0).toUpperCase() + c.slice(1)}

@@ -20,6 +20,7 @@ export default function FilterableVideoGrid({ videos, cats }: FilterableVideoGri
           <button
             type="button"
             className={`filter-pill${filter === 'all' ? ' active' : ''}`}
+            aria-pressed={filter === 'all'}
             onClick={() => setFilter('all')}
           >
             All
@@ -29,6 +30,7 @@ export default function FilterableVideoGrid({ videos, cats }: FilterableVideoGri
               key={c}
               type="button"
               className={`filter-pill${filter === c ? ' active' : ''}`}
+              aria-pressed={filter === c}
               onClick={() => setFilter(c)}
             >
               {c.charAt(0).toUpperCase() + c.slice(1)}

@@ -2954,6 +2954,20 @@ details.faq-item[open] .faq-chev { transform: rotate(45deg); background: var(--b
   .skeleton-block { animation: none; opacity: .6; }
 }
 
+/* Required-field signalling on user-facing forms (a11y §2.4).
+   The * is decorative — sr users get the same info via aria-required
+   on the input and the .form-required-note legend above each form. */
+.required-star {
+  color: var(--accent, #c0392b);
+  margin-left: 2px;
+  font-weight: 600;
+}
+.form-required-note {
+  font-size: .85rem;
+  color: var(--fg-muted);
+  margin-bottom: var(--space-3);
+}
+
 /* Tier-grid checkmark — reserved for future re-introduction of the
    amount tier grid. The current donate page uses a single input. */
 .amount-btn { position: relative; }

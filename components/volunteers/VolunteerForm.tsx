@@ -94,19 +94,29 @@ export default function VolunteerForm({ roles }: VolunteerFormProps) {
   return (
     <div className="vol-form">
       <h3>Apply to volunteer</h3>
+      <p className="form-required-note">
+        Fields marked <span aria-hidden="true" className="required-star">*</span>
+        <span className="sr-only">with an asterisk</span> are required.
+      </p>
       <div className="pay-row">
         <div className="pay-field">
-          <label htmlFor="vol-first">First name</label>
-          <input id="vol-first" type="text" placeholder="Jane" value={first} onChange={(e) => setFirst(e.target.value)} />
+          <label htmlFor="vol-first">
+            First name <span aria-hidden="true" className="required-star">*</span>
+          </label>
+          <input id="vol-first" type="text" placeholder="Jane" value={first} onChange={(e) => setFirst(e.target.value)} aria-required="true" />
         </div>
         <div className="pay-field">
-          <label htmlFor="vol-last">Last name</label>
-          <input id="vol-last" type="text" placeholder="Smith" value={last} onChange={(e) => setLast(e.target.value)} />
+          <label htmlFor="vol-last">
+            Last name <span aria-hidden="true" className="required-star">*</span>
+          </label>
+          <input id="vol-last" type="text" placeholder="Smith" value={last} onChange={(e) => setLast(e.target.value)} aria-required="true" />
         </div>
       </div>
       <div className="pay-field">
-        <label htmlFor="vol-email">Email</label>
-        <input id="vol-email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <label htmlFor="vol-email">
+          Email <span aria-hidden="true" className="required-star">*</span>
+        </label>
+        <input id="vol-email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} aria-required="true" />
       </div>
       {/* MED-1 honeypot. */}
       <input

@@ -221,19 +221,29 @@ export default function DonateWidget() {
           {' '}No payment is taken on this page — a member of our team
           will reach out to complete your gift through a secure checkout.
         </div>
+        <p className="form-required-note">
+          Fields marked <span aria-hidden="true" className="required-star">*</span>
+          <span className="sr-only">with an asterisk</span> are required.
+        </p>
         <div className="pay-row">
           <div className="pay-field">
-            <label htmlFor="donor-first">First name</label>
-            <input id="donor-first" type="text" placeholder="Jane" value={first} onChange={(e) => setFirst(e.target.value)} />
+            <label htmlFor="donor-first">
+              First name <span aria-hidden="true" className="required-star">*</span>
+            </label>
+            <input id="donor-first" type="text" placeholder="Jane" value={first} onChange={(e) => setFirst(e.target.value)} aria-required="true" />
           </div>
           <div className="pay-field">
-            <label htmlFor="donor-last">Last name</label>
-            <input id="donor-last" type="text" placeholder="Smith" value={last} onChange={(e) => setLast(e.target.value)} />
+            <label htmlFor="donor-last">
+              Last name <span aria-hidden="true" className="required-star">*</span>
+            </label>
+            <input id="donor-last" type="text" placeholder="Smith" value={last} onChange={(e) => setLast(e.target.value)} aria-required="true" />
           </div>
         </div>
         <div className="pay-field">
-          <label htmlFor="donor-email">Email for receipt</label>
-          <input id="donor-email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <label htmlFor="donor-email">
+            Email for receipt <span aria-hidden="true" className="required-star">*</span>
+          </label>
+          <input id="donor-email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} aria-required="true" />
         </div>
         <div className="pay-field">
           <label htmlFor="donor-note">Note (optional)</label>
