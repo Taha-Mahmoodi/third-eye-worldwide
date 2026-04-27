@@ -13,15 +13,18 @@ import {
 
 /*
  * Donation widget. Owns every interactive piece of the /donate page:
- * - monthly / one-time mode toggle
- * - amount grid + custom input (per mode)
- * - donor fields
- * - submit to /api/cms/submissions/donation
- * - live status line
+ *   - monthly / one-time mode toggle
+ *   - free-text amount input (donor decides what to give)
+ *   - donor fields
+ *   - submit to /api/cms/submissions/donation
+ *   - live status line
+ *
+ * Per the v2 content update, the previous tier grid (preset amounts
+ * with "impact lines") is replaced with a single amount input. The
+ * impact lines were aspirational — the org just incorporated and
+ * doesn't yet have audited program-spend numbers to back them up.
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface AmountItem { id?: string; amt?: string; imp?: string; [key: string]: any }
 type DonationMode = 'monthly' | 'once';
 
 function parseAmount(str: string | undefined): number {
@@ -30,42 +33,10 @@ function parseAmount(str: string | undefined): number {
   return Number.isNaN(num) ? 0 : num;
 }
 
-interface AmountGridProps {
-  items: AmountItem[];
-  selectedIdx: number;
-  onPick: (i: number) => void;
-}
-
-function AmountGrid({ items, selectedIdx, onPick }: AmountGridProps) {
-  return (
-    <div className="amount-grid">
-      {items.map((it: AmountItem, i: number) => (
-        <button
-          key={it.id || i}
-          type="button"
-          className={`amount-btn${selectedIdx === i ? ' selected' : ''}`}
-          data-amount={it.amt || ''}
-          onClick={() => onPick(i)}
-        >
-          <div className="amt">{it.amt || ''}</div>
-          <div className="imp">{it.imp || ''}</div>
-        </button>
-      ))}
-    </div>
-  );
-}
-
-interface DonateWidgetProps {
-  monthly: AmountItem[];
-  once: AmountItem[];
-}
-
-export default function DonateWidget({ monthly, once }: DonateWidgetProps) {
+export default function DonateWidget() {
   const [mode, setMode] = useState<DonationMode>('monthly');
-  const [monthlyIdx, setMonthlyIdx] = useState(1);
-  const [onceIdx, setOnceIdx] = useState(1);
-  const [monthlyCustom, setMonthlyCustom] = useState('');
-  const [onceCustom, setOnceCustom] = useState('');
+  const [monthlyAmount, setMonthlyAmount] = useState('');
+  const [onceAmount, setOnceAmount] = useState('');
   const [first, setFirst] = useState('');
   const [last, setLast] = useState('');
   const [email, setEmail] = useState('');
@@ -78,15 +49,9 @@ export default function DonateWidget({ monthly, once }: DonateWidgetProps) {
   const [status, setStatus] = useState<{ text: string; error: boolean }>({ text: '', error: false });
   const [submitting, setSubmitting] = useState(false);
 
-  function pickMonthly(i: number) { setMonthlyIdx(i); setMonthlyCustom(''); }
-  function pickOnce(i: number)    { setOnceIdx(i);    setOnceCustom(''); }
-
   async function submit(submitMode: DonationMode) {
-    const items = submitMode === 'monthly' ? monthly : once;
-    const idx = submitMode === 'monthly' ? monthlyIdx : onceIdx;
-    const custom = submitMode === 'monthly' ? monthlyCustom : onceCustom;
-    const selected = items[idx];
-    const amount = parseAmount(custom) || parseAmount(selected?.amt);
+    const raw = submitMode === 'monthly' ? monthlyAmount : onceAmount;
+    const amount = parseAmount(raw);
 
     if (!first.trim() || !last.trim()) {
       setStatus({ text: 'Please enter your name.', error: true });
@@ -96,8 +61,8 @@ export default function DonateWidget({ monthly, once }: DonateWidgetProps) {
       setStatus({ text: 'Please enter a valid email.', error: true });
       return;
     }
-    if (!amount) {
-      setStatus({ text: 'Please pick or enter an amount.', error: true });
+    if (!amount || amount <= 0) {
+      setStatus({ text: 'Please enter an amount.', error: true });
       return;
     }
     setSubmitting(true);
@@ -161,17 +126,26 @@ export default function DonateWidget({ monthly, once }: DonateWidgetProps) {
 
       {mode === 'monthly' ? (
         <div data-donate-mode="monthly">
-          <AmountGrid items={monthly} selectedIdx={monthlyIdx} onPick={pickMonthly} />
-          <div className="custom-amount">
-            <span className="cur">$</span>
-            <input
-              id="custom-amount-input"
-              type="text"
-              placeholder="Custom amount"
-              value={monthlyCustom}
-              onChange={(e) => setMonthlyCustom(e.target.value)}
-            />
-            <span className="custom-amount-suffix">/ month</span>
+          <div className="custom-amount custom-amount-solo">
+            <label htmlFor="donate-amount-monthly" className="custom-amount-label">
+              Choose your amount
+            </label>
+            <div className="custom-amount-input">
+              <span className="cur">$</span>
+              <input
+                id="donate-amount-monthly"
+                type="text"
+                inputMode="decimal"
+                placeholder="Any amount"
+                value={monthlyAmount}
+                onChange={(e) => setMonthlyAmount(e.target.value)}
+                aria-describedby="donate-amount-help-monthly"
+              />
+              <span className="custom-amount-suffix">/ month</span>
+            </div>
+            <p id="donate-amount-help-monthly" className="custom-amount-help">
+              Whatever fits your budget. Every amount is welcome.
+            </p>
           </div>
           <p className="donate-note">
             <SealCheck weight="fill" size="1em" style={{ color: 'var(--brand)' }} aria-hidden="true" />
@@ -189,17 +163,26 @@ export default function DonateWidget({ monthly, once }: DonateWidgetProps) {
         </div>
       ) : (
         <div data-donate-mode="once">
-          <AmountGrid items={once} selectedIdx={onceIdx} onPick={pickOnce} />
-          <div className="custom-amount">
-            <span className="cur">$</span>
-            <input
-              id="custom-amount-input-once"
-              type="text"
-              placeholder="Custom amount"
-              value={onceCustom}
-              onChange={(e) => setOnceCustom(e.target.value)}
-            />
-            <span className="custom-amount-suffix">once</span>
+          <div className="custom-amount custom-amount-solo">
+            <label htmlFor="donate-amount-once" className="custom-amount-label">
+              Choose your amount
+            </label>
+            <div className="custom-amount-input">
+              <span className="cur">$</span>
+              <input
+                id="donate-amount-once"
+                type="text"
+                inputMode="decimal"
+                placeholder="Any amount"
+                value={onceAmount}
+                onChange={(e) => setOnceAmount(e.target.value)}
+                aria-describedby="donate-amount-help-once"
+              />
+              <span className="custom-amount-suffix">once</span>
+            </div>
+            <p id="donate-amount-help-once" className="custom-amount-help">
+              Whatever fits your budget. Every amount is welcome.
+            </p>
           </div>
           <p className="donate-note">
             <Gift weight="fill" size="1em" style={{ color: 'var(--accent)' }} aria-hidden="true" />

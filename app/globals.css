@@ -375,6 +375,44 @@ nav.topnav { position: sticky; top: 0; z-index: 100; background: var(--bg-elevat
 .custom-amount .cur { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--fg-muted); }
 .custom-amount input { flex: 1; border: none; background: transparent; outline: none; font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--fg); }
 .custom-amount input::placeholder { color: var(--fg-subtle); font-weight: 400; }
+.custom-amount-suffix { font-family: var(--font-display); font-size: .9rem; color: var(--fg-muted); }
+
+/* Standalone amount input (since the v2 update — donor types any amount,
+   no preset tier grid). */
+.custom-amount-solo { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+.custom-amount-solo .custom-amount-label {
+  font-family: var(--font-display); font-size: .82rem; font-weight: 600;
+  letter-spacing: .04em; color: var(--fg);
+}
+.custom-amount-solo .custom-amount-input {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg-elevated);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  transition: border-color .15s, box-shadow .15s;
+}
+.custom-amount-solo .custom-amount-input:focus-within {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 4px var(--brand-subtle);
+}
+.custom-amount-solo .cur {
+  font-family: var(--font-display); font-size: 1.6rem; font-weight: 700;
+  color: var(--fg-muted);
+}
+.custom-amount-solo input {
+  flex: 1; border: none; background: transparent; outline: none;
+  font-family: var(--font-display); font-size: 1.6rem; font-weight: 700;
+  color: var(--fg); min-width: 0;
+}
+.custom-amount-solo input::placeholder { color: var(--fg-subtle); font-weight: 500; }
+.custom-amount-solo .custom-amount-suffix {
+  font-family: var(--font-display); font-size: 1rem; font-weight: 500;
+  color: var(--fg-muted); flex-shrink: 0;
+}
+.custom-amount-help {
+  font-size: .82rem; color: var(--fg-muted); margin: 2px 4px 0;
+}
 
 .donate-impact { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 32px; box-shadow: var(--shadow-md); }
 .donate-impact h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--fg); margin-bottom: 8px; }

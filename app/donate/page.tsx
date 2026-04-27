@@ -31,8 +31,6 @@ export async function generateMetadata() {
 export default async function DonatePage() {
   const content = await getContent();
   const d = content?.donate || {};
-  const monthly = visibleSorted(d.monthlyAmounts || []);
-  const once = visibleSorted(d.onceAmounts || []);
   const impact = visibleSorted(d.impactBreakdown || []);
 
   return (
@@ -48,7 +46,7 @@ export default async function DonatePage() {
       <section className="section">
         <div className="section-inner">
           <div className="donate-grid">
-            <DonateWidget monthly={monthly} once={once} />
+            <DonateWidget />
 
             <div className="donate-sidebar">
               <div className="donate-impact">
