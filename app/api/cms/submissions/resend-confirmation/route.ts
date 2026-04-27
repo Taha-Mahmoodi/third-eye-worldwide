@@ -96,7 +96,8 @@ export async function POST(req: NextRequest) {
     const e = donationConfirmationEmail({
       id: row.id,
       name: row.name,
-      amount: row.amount,
+      // row.amount is integer cents; the template expects dollars.
+      amount: row.amount / 100,
       mode: row.mode,
       currency: row.currency,
       createdAt: row.createdAt,

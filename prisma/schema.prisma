@@ -29,6 +29,9 @@ model ContentRevision {
   author    String?
   note      String?
   createdAt DateTime @default(now())
+
+  // pruneRevisions() orders by createdAt on every successful publish.
+  @@index([createdAt])
 }
 
 // Volunteer form submissions — sent from /volunteers form, triaged in /admin.
@@ -45,6 +48,12 @@ model VolunteerSubmission {
   status    String   @default("new") // new | contacted | onboarded | rejected
   confirmed Boolean  @default(false)
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Admin lists default to confirmed=true ordered by createdAt desc.
+  @@index([confirmed, createdAt])
+  @@index([status])
+  @@index([email])
 }
 
 // Donation form submissions — record of intent; payment processing is external.
@@ -54,13 +63,18 @@ model DonationSubmission {
   id        Int      @id @default(autoincrement())
   name      String
   email     String
-  amount    Float
+  amount    Int      // integer cents (e.g. $49.99 → 4999)
   mode      String   // monthly | once
   currency  String   @default("USD")
   status    String   @default("pending") // pending | succeeded | failed
   note      String?
   confirmed Boolean  @default(false)
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([confirmed, createdAt])
+  @@index([status])
+  @@index([email])
 }
 
 // Admin users for the /admin CMS dashboard.
