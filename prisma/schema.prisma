@@ -1,14 +1,21 @@
 // Prisma schema for Third Eye Worldwide dynamic site.
-// Default dev datasource: SQLite (zero-config, file at prisma/dev.db).
-// For production, set DATABASE_URL to a Postgres connection string
-// and change `provider` to "postgresql". Schema is portable.
+//
+// Branch deploy/vercel-vps targets Postgres because the database
+// lives on a VPS reachable from Vercel's serverless functions over
+// the public internet — SQLite's single-writer / file-on-disk model
+// doesn't fit that topology. The schema is portable; the only diff
+// from main is the `provider` line below.
+//
+// Existing prisma/migrations/* are SQLite-flavoured and won't apply
+// against Postgres. The runbook walks through generating a fresh
+// initial migration on the VPS DB before switching the app over.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
