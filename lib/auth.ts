@@ -70,6 +70,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
 
         logger.info({ event: 'auth_success', email });
+        // PR #7 — track lastLogin so the Users dashboard can show
+        // dormant accounts. Fire-and-forget; an audit-table hiccup
+        // shouldn't block someone signing in.
+        prisma.user
+          .update({ where: { id: user.id }, data: { lastLogin: new Date() } })
+          .catch((err) => logger.error({ err, event: 'last_login_update_failed' }));
         return {
           id: String(user.id),
           email: user.email,

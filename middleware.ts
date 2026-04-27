@@ -65,16 +65,35 @@ export default auth((req) => {
   if (isAdminPath && !isAuthBypass) {
     // Auth.js v5: req.auth is the Session, not the raw JWT. The role
     // ends up on session.user (set by the session callback in
-    // lib/auth.config.ts). The previous read of req.auth?.role was
-    // never populated and only "worked" because /admin used to be a
-    // static rewrite that bypassed middleware entirely; once the
-    // rewrite was removed (CMS_ROADMAP) every /admin hit landed on
-    // the redirect path. See lib/cms/auth-guard.ts for the same shape.
+    // lib/auth.config.ts). See lib/cms/auth-guard.ts for the same
+    // shape on the server side.
     const session = req.auth as { user?: { role?: string } } | null;
-    if (session?.user?.role !== 'admin') {
+    const role = session?.user?.role;
+
+    // Two tiers (CMS_ROADMAP PR #7):
+    //   • Anyone without role admin/editor → bounce to login.
+    //   • Editor on the admin-only routes (/admin/users,
+    //     /admin/audit-log) → bounce back to /admin. The dashboard's
+    //     sidebar already hides those links for editors but a typed
+    //     URL would otherwise reach the page (where the per-page
+    //     server gate would also redirect, but doing it at the edge
+    //     saves a Prisma round-trip).
+    if (role !== 'admin' && role !== 'editor') {
       const loginUrl = new URL('/admin/login', req.url);
       loginUrl.searchParams.set('callbackUrl', pathname);
       const redirect = NextResponse.redirect(loginUrl);
+      redirect.headers.set('Content-Security-Policy', csp);
+      return redirect;
+    }
+
+    const isAdminOnlyPath =
+      pathname === '/admin/users' ||
+      pathname.startsWith('/admin/users/') ||
+      pathname === '/admin/audit-log' ||
+      pathname.startsWith('/admin/audit-log/');
+    if (isAdminOnlyPath && role !== 'admin') {
+      const home = new URL('/admin', req.url);
+      const redirect = NextResponse.redirect(home);
       redirect.headers.set('Content-Security-Policy', csp);
       return redirect;
     }

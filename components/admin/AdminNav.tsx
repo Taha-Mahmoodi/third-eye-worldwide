@@ -5,25 +5,26 @@ import { usePathname } from 'next/navigation';
 import {
   ChartLineUp,
   Database,
+  FileText,
   HandHeart,
+  UserCircle,
   Users,
 } from '@/components/icons';
 import type { Icon as PhosphorIcon } from '@phosphor-icons/react';
 
 /*
- * Sidebar navigation for the new Next.js dashboard. Each link is a
- * route under app/admin/(dashboard)/ — the (dashboard) route group
- * doesn't show up in the URL.
- *
- * usePathname starts with /admin/* so the Overview link is special-
- * cased: only `/admin` (or trailing slash) counts as active, otherwise
- * /admin/volunteers would match it via prefix.
+ * Sidebar navigation for the dashboard. Items flagged `adminOnly`
+ * are hidden when the signed-in user is an editor (CMS_ROADMAP PR #7).
+ * The matching middleware rule still blocks direct URL hits, so the
+ * gate is purely cosmetic — a confused editor doesn't see Users /
+ * Audit log links they can't open.
  */
 
 interface NavItem {
   href: string;
   label: string;
   icon: PhosphorIcon;
+  adminOnly?: boolean;
 }
 
 const NAV: NavItem[] = [
@@ -31,6 +32,8 @@ const NAV: NavItem[] = [
   { href: '/admin/volunteers', label: 'Volunteers', icon: Users },
   { href: '/admin/donations', label: 'Donations', icon: HandHeart },
   { href: '/admin/content', label: 'Content', icon: Database },
+  { href: '/admin/users', label: 'Users', icon: UserCircle, adminOnly: true },
+  { href: '/admin/audit-log', label: 'Audit log', icon: FileText, adminOnly: true },
 ];
 
 function isActive(href: string, pathname: string | null): boolean {
@@ -39,12 +42,19 @@ function isActive(href: string, pathname: string | null): boolean {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export default function AdminNav() {
+export interface AdminNavProps {
+  /** Role of the currently signed-in user. Falls back to 'editor'
+   * defensively so admin-only items hide unless explicitly admin. */
+  role?: string;
+}
+
+export default function AdminNav({ role = 'editor' }: AdminNavProps) {
   const pathname = usePathname();
+  const items = NAV.filter((item) => !item.adminOnly || role === 'admin');
   return (
     <nav className="adm-nav" aria-label="Admin navigation">
       <ul>
-        {NAV.map((item) => {
+        {items.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.href, pathname);
           return (

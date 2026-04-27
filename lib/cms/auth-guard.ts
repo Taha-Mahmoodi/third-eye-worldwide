@@ -81,3 +81,45 @@ export async function isAdmin(req: NextRequest | Request): Promise<AdminAuthResu
 
   return null;
 }
+
+/**
+ * CMS_ROADMAP PR #7 — role-aware variant of `isAdmin()`.
+ *
+ * `isAdmin()` is preserved for the existing call sites (pure-token
+ * paths, GDPR-deletion routes that should stay admin-locked). New
+ * routes that want to allow editors as well should call
+ * `requireRole('editor')` — this returns the auth result when the
+ * caller's role is at least `editor` (so admins also pass), and null
+ * otherwise.
+ *
+ * Token auth is treated as `admin` (the token is a deploy-time
+ * secret, not a user account). If a future deploy needs token-only
+ * editor access we can add a second token bucket.
+ */
+export type Role = 'admin' | 'editor';
+
+const ROLE_RANK: Record<Role, number> = { editor: 1, admin: 2 };
+
+export async function requireRole(
+  req: NextRequest | Request,
+  minRole: Role,
+): Promise<AdminAuthResult | null> {
+  const result = await isAdmin(req);
+  if (result) return result; // admin passes everything
+
+  if (minRole === 'editor') {
+    // The session check inside isAdmin() only returns when role is
+    // admin; re-run the session lookup here to recognise editor.
+    const session = await auth();
+    const role = (session?.user as { role?: string } | undefined)?.role;
+    if (role && (role === 'admin' || role === 'editor')) {
+      const need = ROLE_RANK[minRole];
+      const got = ROLE_RANK[role as Role];
+      if (got >= need) {
+        return { via: 'session', user: session!.user as AdminAuthResult['user'] };
+      }
+    }
+  }
+
+  return null;
+}
