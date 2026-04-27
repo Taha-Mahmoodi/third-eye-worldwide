@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import Link from 'next/link';
 import { getContent, visibleSorted } from '@/lib/cms/db';
 import RichText from '@/components/RichText';
@@ -56,7 +57,15 @@ export default async function HomePage() {
     <>
       <JsonLd data={webPageJsonLd({ title: h.heroEyebrow ? 'Home' : undefined, path: '/' })} />
       <section className="hero">
-        <div className="hero-photo" aria-hidden="true"></div>
+        <div
+          className="hero-photo"
+          aria-hidden="true"
+          style={
+            (h.heroImage as string | undefined)
+              ? ({ '--hero-image': `url('${h.heroImage}')` } as CSSProperties)
+              : undefined
+          }
+        ></div>
         <HeroGraphics liveLabel={showLiveLabel ? h.liveLabel : null} />
         <Reveal as="div" className="hero-inner" stagger={0.1} delay={0.1} y={18}>
           {h.heroEyebrow ? <div className="hero-eyebrow">{h.heroEyebrow}</div> : null}

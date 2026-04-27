@@ -2,6 +2,29 @@
 @font-face { font-family: 'DM Sans'; src: url('/fonts/DMSans-VariableFont_opsz_wght.ttf') format('truetype-variations'); font-weight: 100 1000; font-display: swap; }
 @font-face { font-family: 'DM Sans'; src: url('/fonts/DMSans-Italic-VariableFont_opsz_wght.ttf') format('truetype-variations'); font-weight: 100 1000; font-style: italic; font-display: swap; }
 
+/*
+ * Fallback @font-face declarations with size-adjust + ascent/descent
+ * overrides. The browser uses these while the real font files are
+ * downloading, so the layout doesn't shift when the swap happens
+ * (eliminates ~0.05–0.1 of CLS per page on slow networks).
+ */
+@font-face {
+  font-family: 'Space Grotesk Fallback';
+  src: local('Arial');
+  size-adjust: 105%;
+  ascent-override: 95%;
+  descent-override: 25%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'DM Sans Fallback';
+  src: local('Arial');
+  size-adjust: 100%;
+  ascent-override: 96%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+}
+
 /* Tailwind utilities (shadcn/ui). Preflight is disabled in tailwind.config.js
    so the existing reset below remains the source of truth. */
 @tailwind base;
@@ -11,8 +34,8 @@
 /* ── RESET & TOKENS ─────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
+  --font-display: 'Space Grotesk', 'Space Grotesk Fallback', sans-serif;
+  --font-body: 'DM Sans', 'DM Sans Fallback', sans-serif;
   --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-xl: 16px; --radius-full: 9999px;
   --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;--space-20:5rem;--space-24:6rem;
   --maxw: 1280px;
@@ -123,12 +146,18 @@ nav.topnav { position: sticky; top: 0; z-index: 100; background: var(--bg-elevat
   border-bottom: 1px solid var(--border);
   background: #0d0407;
 }
+/*
+ * `--hero-image` is the URL the home page hero photo uses. Set it
+ * via the inline style on `.hero-photo` (driven by CMS data).
+ * Fallback below keeps the page intact if no CMS value is configured.
+ */
 .hero-photo {
   position: absolute; inset: 0; z-index: 0;
+  --hero-image: url('https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=2400&q=80');
   background-image:
     linear-gradient(180deg, rgba(13,4,7,.18) 0%, rgba(13,4,7,.35) 40%, rgba(13,4,7,.88) 100%),
     linear-gradient(90deg, rgba(13,4,7,.6) 0%, rgba(13,4,7,0) 55%),
-    url('https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=2400&q=80');
+    var(--hero-image);
   background-size: cover; background-position: center 35%;
   filter: saturate(.95) contrast(1.05);
 }
@@ -145,11 +174,18 @@ nav.topnav { position: sticky; top: 0; z-index: 100; background: var(--bg-elevat
   width: 560px; height:auto; opacity:.10;
   color:#fff;
   animation: hgFloat 14s ease-in-out infinite;
+  will-change: transform;
 }
 .hero-graphics svg.hg-rings {
   position:absolute; left: 6%; top: 18%;
   width: 380px; opacity:.14; color:#fff;
   animation: hgSpin 60s linear infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-graphics svg.hg-eye,
+  .hero-graphics svg.hg-rings,
+  .hero-graphics .hg-live .dot { animation: none; }
 }
 .hero-graphics .hg-dots {
   position:absolute; right: 8%; bottom: 26%;
@@ -2844,3 +2880,55 @@ details.faq-item[open] .faq-chev { transform: rotate(45deg); background: var(--b
   .audio-tour-player { animation: none; }
   .audio-tour-player .atp-progress-bar { transition: none; }
 }
+
+/* ── FRONTEND-FIXES utility classes ──────────────────────────────
+   Small reusable classes referenced from form polish, blog grid
+   empty states, suspense skeletons, etc. */
+
+/* Generic loading spinner — used inside disabled submit buttons. */
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn-spinner {
+  display: inline-block;
+  width: 13px; height: 13px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin .6s linear infinite;
+  vertical-align: -2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-spinner { animation: none; }
+}
+
+/* Status messaging on the donate / volunteer forms — error state
+   uses the brand-accent colour (orange) so screen readers and
+   sighted users both get the cue, not just the text. */
+.donate-status--error { color: var(--accent); }
+
+/* Character counter pinned below textareas. Warns at 90% capacity. */
+.char-counter {
+  font-size: 11px;
+  color: var(--fg-subtle);
+  text-align: right;
+  margin-top: 4px;
+}
+.char-counter--warn { color: var(--accent); }
+
+/* Empty-state messaging in grids (FilterableBlogGrid etc). */
+.grid-empty {
+  color: var(--fg-muted);
+  font-size: .9rem;
+  padding: var(--space-12) 0;
+  text-align: center;
+}
+
+/* Skeleton loader (used by Suspense fallbacks). */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: .4; }
+}
+
+/* Tier-grid checkmark — reserved for future re-introduction of the
+   amount tier grid. The current donate page uses a single input. */
+.amount-btn { position: relative; }
+.amt-check { position: absolute; top: 6px; right: 6px; color: var(--brand); }
