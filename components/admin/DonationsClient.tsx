@@ -2,7 +2,9 @@
 
 import { useMemo, useState } from 'react';
 import {
+  ArrowRight,
   CurrencyDollar,
+  FileText,
   Funnel,
   MagnifyingGlass,
   Repeat,
@@ -14,6 +16,7 @@ import {
   DONATION_STATUSES,
   type DonationStatus,
 } from '@/lib/constants';
+import DonationDrawer from './DonationDrawer';
 
 /*
  * Donations admin table. Same shape as VolunteersClient — search,
@@ -23,6 +26,10 @@ import {
  * `amount` arrives as integer cents (DB-1). DonationRow comments call
  * this out, and every render path divides by 100 before formatting
  * (CMS-1).
+ *
+ * CMS_ROADMAP PR #4: row → drawer with full detail + admin notes,
+ * Export CSV button hits /api/cms/submissions/export?type=donations,
+ * page header shows aggregate stats from the server query.
  */
 
 export interface DonationRow {
@@ -35,13 +42,28 @@ export interface DonationRow {
   currency: string;
   status: string;
   note: string | null;
+  adminNote: string | null;
   confirmed: boolean;
   createdAt: string;
   updatedAt: string;
 }
 
+/** Aggregate stats panel — built server-side, dollars (not cents). */
+export interface DonationAggregates {
+  totalRaised: number;
+  totalCount: number;
+  monthlyCount: number;
+  onceCount: number;
+  avgGift: number;
+  thisMonthRaised: number;
+  thisMonthCount: number;
+  last7dRaised: number;
+  last7dCount: number;
+}
+
 interface DonationsClientProps {
   initialRows: DonationRow[];
+  aggregates: DonationAggregates;
 }
 
 type StatusFilter = 'all' | DonationStatus;
@@ -62,13 +84,19 @@ function formatAmount(cents: number, currency: string): string {
   }
 }
 
-export default function DonationsClient({ initialRows }: DonationsClientProps) {
+export default function DonationsClient({ initialRows, aggregates }: DonationsClientProps) {
   const [rows, setRows] = useState<DonationRow[]>(initialRows);
   const [query, setQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [pendingDeleteId, setPendingDeleteId] = useState<number | null>(null);
   const [busyId, setBusyId] = useState<number | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [drawerId, setDrawerId] = useState<number | null>(null);
+
+  function applyPatch(id: number, patch: Partial<DonationRow>) {
+    setRows((rs) => rs.map((r) => (r.id === id ? { ...r, ...patch } : r)));
+  }
+  const drawerRow = drawerId !== null ? rows.find((r) => r.id === drawerId) ?? null : null;
 
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -132,14 +160,48 @@ export default function DonationsClient({ initialRows }: DonationsClientProps) {
 
   return (
     <>
-      <header className="adm-page-header">
-        <h1>Donations</h1>
-        <p className="adm-page-sub">
-          {rows.length.toLocaleString()} total · showing {visible.length.toLocaleString()}
-          {' · '}
-          <strong>{usd.format(visibleTotal)}</strong> in view
-        </p>
+      <header className="adm-page-header adm-page-header-row">
+        <div>
+          <h1>Donations</h1>
+          <p className="adm-page-sub">
+            {rows.length.toLocaleString()} total · showing {visible.length.toLocaleString()}
+            {' · '}
+            <strong>{usd.format(visibleTotal)}</strong> in view
+          </p>
+        </div>
+        <a
+          className="adm-btn-quiet"
+          href="/api/cms/submissions/export?type=donations"
+          download
+        >
+          <FileText size="1em" aria-hidden="true" /> Export CSV
+        </a>
       </header>
+
+      <section className="adm-aggregate-row" aria-label="Donation summary">
+        <div className="adm-aggregate-card">
+          <div className="adm-aggregate-label">This month</div>
+          <div className="adm-aggregate-value">{usd.format(aggregates.thisMonthRaised)}</div>
+          <div className="adm-aggregate-sub">{aggregates.thisMonthCount} gifts</div>
+        </div>
+        <div className="adm-aggregate-card">
+          <div className="adm-aggregate-label">Last 7 days</div>
+          <div className="adm-aggregate-value">{usd.format(aggregates.last7dRaised)}</div>
+          <div className="adm-aggregate-sub">{aggregates.last7dCount} gifts</div>
+        </div>
+        <div className="adm-aggregate-card">
+          <div className="adm-aggregate-label">Average gift</div>
+          <div className="adm-aggregate-value">{usd.format(aggregates.avgGift)}</div>
+          <div className="adm-aggregate-sub">across {aggregates.totalCount} confirmed</div>
+        </div>
+        <div className="adm-aggregate-card">
+          <div className="adm-aggregate-label">Recurring split</div>
+          <div className="adm-aggregate-value">
+            {aggregates.monthlyCount}<span className="adm-aggregate-divider">/</span>{aggregates.onceCount}
+          </div>
+          <div className="adm-aggregate-sub">monthly / one-time</div>
+        </div>
+      </section>
 
       <div className="adm-toolbar">
         <label className="adm-search">
@@ -208,7 +270,20 @@ export default function DonationsClient({ initialRows }: DonationsClientProps) {
             ) : (
               visible.map((r) => (
                 <tr key={r.id} aria-busy={busyId === r.id}>
-                  <td>{r.name}</td>
+                  <td>
+                    <button
+                      type="button"
+                      className="adm-row-trigger"
+                      onClick={() => setDrawerId(r.id)}
+                      aria-label={`Open details for ${r.name}`}
+                    >
+                      {r.name}
+                      {r.adminNote ? (
+                        <span className="adm-note-dot" aria-label="Has admin note" />
+                      ) : null}
+                      <ArrowRight size="0.85em" aria-hidden="true" />
+                    </button>
+                  </td>
                   <td>
                     <a href={`mailto:${r.email}`} className="adm-link">
                       {r.email}
@@ -296,6 +371,12 @@ export default function DonationsClient({ initialRows }: DonationsClientProps) {
           </tbody>
         </table>
       </div>
+
+      <DonationDrawer
+        row={drawerRow}
+        onClose={() => setDrawerId(null)}
+        onPatch={applyPatch}
+      />
     </>
   );
 }

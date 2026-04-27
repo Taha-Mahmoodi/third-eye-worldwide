@@ -39,6 +39,7 @@ export default async function VolunteersAdminPage() {
     message: r.message,
     status: r.status,
     confirmed: r.confirmed,
+    adminNote: r.adminNote,
     createdAt: r.createdAt.toISOString(),
     updatedAt: r.updatedAt.toISOString(),
   }));

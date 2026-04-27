@@ -35,16 +35,20 @@ async function rateLimit(req: NextRequest, action: 'patch' | 'delete') {
   );
 }
 
+const ADMIN_NOTE_MAX = 4000;
+
 /**
  * PATCH /api/cms/submissions/volunteer/:id
  *
- * Updates the row's `status` (and nothing else for now). Admin-only.
- *
- * Body:  { status: 'new' | 'contacted' | 'onboarded' | 'rejected' }
+ * Partial update — accepts `status` and/or `adminNote`. Either or both
+ * may be present; missing keys are ignored, an empty body is a 400.
+ * Status (when present) is validated against the VOLUNTEER_STATUSES
+ * allow-list. adminNote is treated as free-form text capped at 4000
+ * chars; pass null or empty string to clear it.
  *
  * Responses:
- *   200 { ok: true, status }
- *   400 { error }              — bad id / invalid status
+ *   200 { ok: true, status?, adminNote? }
+ *   400 { error }              — bad id / invalid status / empty patch
  *   401 { error: 'Unauthorized' }
  *   429 { error }              — rate-limited
  *   404 { error: 'Not found' }
@@ -62,17 +66,41 @@ export async function PATCH(req: NextRequest, props: { params: Promise<{ id: str
     return NextResponse.json({ error: 'invalid id' }, { status: 400 });
   }
 
-  let body: { status?: unknown };
+  let body: { status?: unknown; adminNote?: unknown };
   try {
-    body = (await req.json()) as { status?: unknown };
+    body = (await req.json()) as { status?: unknown; adminNote?: unknown };
   } catch {
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
   }
 
-  const { status } = body;
-  if (typeof status !== 'string' || !(VOLUNTEER_STATUSES as readonly string[]).includes(status)) {
+  const data: { status?: string; adminNote?: string | null } = {};
+
+  if (body.status !== undefined) {
+    if (
+      typeof body.status !== 'string' ||
+      !(VOLUNTEER_STATUSES as readonly string[]).includes(body.status)
+    ) {
+      return NextResponse.json(
+        { error: `status must be one of: ${VOLUNTEER_STATUSES.join(', ')}` },
+        { status: 400 },
+      );
+    }
+    data.status = body.status;
+  }
+
+  if (body.adminNote !== undefined) {
+    if (body.adminNote === null || body.adminNote === '') {
+      data.adminNote = null;
+    } else if (typeof body.adminNote !== 'string') {
+      return NextResponse.json({ error: 'adminNote must be a string or null' }, { status: 400 });
+    } else {
+      data.adminNote = body.adminNote.slice(0, ADMIN_NOTE_MAX);
+    }
+  }
+
+  if (Object.keys(data).length === 0) {
     return NextResponse.json(
-      { error: `status must be one of: ${VOLUNTEER_STATUSES.join(', ')}` },
+      { error: 'patch must include at least one of: status, adminNote' },
       { status: 400 },
     );
   }
@@ -80,15 +108,15 @@ export async function PATCH(req: NextRequest, props: { params: Promise<{ id: str
   try {
     await prisma.volunteerSubmission.update({
       where: { id },
-      data: { status },
+      data,
     });
     logger.info({
-      event: 'volunteer_status_updated',
+      event: 'volunteer_patched',
       id,
-      status,
+      keys: Object.keys(data),
       by: admin.user?.email || admin.user?.name || 'token',
     });
-    return NextResponse.json({ ok: true, status });
+    return NextResponse.json({ ok: true, ...data });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
       return NextResponse.json({ error: 'Not found' }, { status: 404 });

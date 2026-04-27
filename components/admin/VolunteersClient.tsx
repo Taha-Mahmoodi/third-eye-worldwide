@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from 'react';
 import {
+  ArrowRight,
+  FileText,
   Funnel,
   MagnifyingGlass,
   SealCheck,
@@ -12,12 +14,16 @@ import {
   VOLUNTEER_STATUSES,
   type VolunteerStatus,
 } from '@/lib/constants';
+import VolunteerDrawer from './VolunteerDrawer';
 
 /*
  * Volunteer admin table — search, status filter, optimistic status
  * update, and a two-step confirmation for delete (CMS-4: replaces
  * blocking window.confirm with an inline UI). Created/Updated columns
  * surface DATABASE_FIXES DB-6's @updatedAt (CMS-6).
+ *
+ * CMS_ROADMAP PR #4: row click opens VolunteerDrawer with full detail
+ * + admin-note textarea; "Export CSV" hits the export endpoint.
  */
 
 export interface VolunteerRow {
@@ -29,6 +35,7 @@ export interface VolunteerRow {
   message: string | null;
   status: string;
   confirmed: boolean;
+  adminNote: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -46,6 +53,14 @@ export default function VolunteersClient({ initialRows }: VolunteersClientProps)
   const [pendingDeleteId, setPendingDeleteId] = useState<number | null>(null);
   const [busyId, setBusyId] = useState<number | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [drawerId, setDrawerId] = useState<number | null>(null);
+
+  // Apply a partial patch from the drawer back into the live table so
+  // a status edit / admin-note save shows up immediately on close.
+  function applyPatch(id: number, patch: Partial<VolunteerRow>) {
+    setRows((rs) => rs.map((r) => (r.id === id ? { ...r, ...patch } : r)));
+  }
+  const drawerRow = drawerId !== null ? rows.find((r) => r.id === drawerId) ?? null : null;
 
   // Pre-compute filtered view. The dataset is bounded at 1000 rows so
   // a per-keystroke linear filter is fine and avoids a debounce.
@@ -106,11 +121,20 @@ export default function VolunteersClient({ initialRows }: VolunteersClientProps)
 
   return (
     <>
-      <header className="adm-page-header">
-        <h1>Volunteers</h1>
-        <p className="adm-page-sub">
-          {rows.length.toLocaleString()} total · showing {visible.length.toLocaleString()}
-        </p>
+      <header className="adm-page-header adm-page-header-row">
+        <div>
+          <h1>Volunteers</h1>
+          <p className="adm-page-sub">
+            {rows.length.toLocaleString()} total · showing {visible.length.toLocaleString()}
+          </p>
+        </div>
+        <a
+          className="adm-btn-quiet"
+          href="/api/cms/submissions/export?type=volunteers"
+          download
+        >
+          <FileText size="1em" aria-hidden="true" /> Export CSV
+        </a>
       </header>
 
       <div className="adm-toolbar">
@@ -179,7 +203,21 @@ export default function VolunteersClient({ initialRows }: VolunteersClientProps)
             ) : (
               visible.map((r) => (
                 <tr key={r.id} aria-busy={busyId === r.id}>
-                  <td>{r.name}</td>
+                  <td>
+                    {/* Name cell opens the drawer with full detail. */}
+                    <button
+                      type="button"
+                      className="adm-row-trigger"
+                      onClick={() => setDrawerId(r.id)}
+                      aria-label={`Open details for ${r.name}`}
+                    >
+                      {r.name}
+                      {r.adminNote ? (
+                        <span className="adm-note-dot" aria-label="Has admin note" />
+                      ) : null}
+                      <ArrowRight size="0.85em" aria-hidden="true" />
+                    </button>
+                  </td>
                   <td>
                     <a href={`mailto:${r.email}`} className="adm-link">
                       {r.email}
@@ -256,6 +294,12 @@ export default function VolunteersClient({ initialRows }: VolunteersClientProps)
           </tbody>
         </table>
       </div>
+
+      <VolunteerDrawer
+        row={drawerRow}
+        onClose={() => setDrawerId(null)}
+        onPatch={applyPatch}
+      />
     </>
   );
 }
