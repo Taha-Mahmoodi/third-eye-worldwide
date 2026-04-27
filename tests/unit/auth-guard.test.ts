@@ -17,16 +17,20 @@ vi.mock('@/lib/logger', () => ({
   default: { warn: vi.fn(), info: vi.fn(), error: vi.fn(), debug: vi.fn() },
 }));
 
-const ORIGINAL_ENV = { ...process.env };
+// Vitest's vi.stubEnv is the only reliable way to mutate NODE_ENV in
+// modern Node/Vitest — direct assignment to process.env.NODE_ENV is
+// either rejected (TS) or silently no-ops at runtime in strict mode.
+// Other env vars can still be set directly via the permissive cast.
+const env = process.env as Record<string, string | undefined>;
 
 beforeEach(() => {
   vi.resetModules();
-  delete process.env.CMS_TOKEN;
-  delete process.env.NODE_ENV;
+  delete env.CMS_TOKEN;
+  vi.unstubAllEnvs();
 });
 
 afterEach(() => {
-  process.env = { ...ORIGINAL_ENV };
+  vi.unstubAllEnvs();
 });
 
 async function loadGuard() {
@@ -73,8 +77,8 @@ describe('isAdmin', () => {
   });
 
   it('warns once and returns null when CMS_TOKEN is plaintext in dev', async () => {
-    process.env.CMS_TOKEN = 'not-a-sha256-hash';
-    process.env.NODE_ENV = 'development';
+    env.CMS_TOKEN = 'not-a-sha256-hash';
+    vi.stubEnv('NODE_ENV', 'development');
     const logger = await import('@/lib/logger');
     const { isAdmin } = await loadGuard();
     const result = await isAdmin(makeReq({ 'x-cms-token': 'anything' }));
@@ -87,8 +91,8 @@ describe('isAdmin', () => {
   });
 
   it('throws when CMS_TOKEN is plaintext in production', async () => {
-    process.env.CMS_TOKEN = 'not-a-sha256-hash';
-    process.env.NODE_ENV = 'production';
+    env.CMS_TOKEN = 'not-a-sha256-hash';
+    vi.stubEnv('NODE_ENV', 'production');
     const { isAdmin } = await loadGuard();
     await expect(isAdmin(makeReq({ 'x-cms-token': 'anything' }))).rejects.toThrow(
       /64-char hex SHA-256/i,

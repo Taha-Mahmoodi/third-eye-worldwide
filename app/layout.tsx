@@ -44,10 +44,10 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
   // Per-request nonce minted by middleware.ts. Threaded into the
   // theme-bootstrap <script> below so the strict CSP allows it.
-  const nonce = headers().get('x-nonce') ?? undefined;
+  const nonce = (await headers()).get('x-nonce') ?? undefined;
 
   return (
     <html lang="en" data-theme="light" data-text-size="a" suppressHydrationWarning>
