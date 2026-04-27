@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Microphone, MicrophoneSlash, X } from '@phosphor-icons/react';
 
 // The Web Speech API isn't in lib.dom.d.ts as a constructor — type as
@@ -180,6 +180,7 @@ export function parseCommand(raw: string): CommandDescriptor {
 
 export default function VoiceAssistant() {
   const router = useRouter();
+  const pathname = usePathname();
   const [supported, setSupported] = useState(true);
   const [status, setStatus] = useState<Status>('disabled');
   const [lastHeard, setLastHeard] = useState('');
@@ -383,6 +384,10 @@ export default function VoiceAssistant() {
     awake:     'te-dot-awake',
     idle:      '',
   } as Record<Status, string>)[status] || '';
+
+  // Suppressed inside the admin dashboard. The voice "navigate to X"
+  // commands target public-site routes only.
+  if (pathname?.startsWith('/admin')) return null;
 
   return (
     <>

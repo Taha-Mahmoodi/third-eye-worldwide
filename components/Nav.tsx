@@ -115,6 +115,12 @@ export default function Nav() {
     }
   }
 
+  // Admin routes have their own sidebar (see app/admin/(dashboard)/) —
+  // suppress the public top-nav so the two chromes don't fight over
+  // the viewport. Conditional return goes AFTER all hooks so the
+  // hook order stays consistent across renders.
+  if (pathname?.startsWith('/admin')) return null;
+
   return (
     <nav className="topnav" aria-label="Main navigation" onBlur={handleNavBlur}>
       <div className="nav-inner">
