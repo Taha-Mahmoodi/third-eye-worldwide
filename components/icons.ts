@@ -27,6 +27,7 @@ export {
   ArrowUpRight,
   ArrowsOut,
   Bank,
+  Books,
   Briefcase,
   CalendarBlank,
   CalendarCheck,

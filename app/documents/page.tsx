@@ -5,6 +5,7 @@ import DocCard from '@/components/documents/DocCard';
 import FilterableBlogGrid from '@/components/documents/FilterableBlogGrid';
 import NewsletterForm from '@/components/documents/NewsletterForm';
 import FeaturedStory from '@/components/documents/FeaturedStory';
+import BookTab, { type BookContent } from '@/components/documents/BookTab';
 import { pageMetadata, readSeoOverrides } from '@/lib/seo';
 
 export const revalidate = 3600;
@@ -88,7 +89,17 @@ export default async function DocumentsPage() {
   const blogs = visibleSorted(d.blogs || []);
   const stories = visibleSorted(d.stories || []);
   const fs = d.featuredStory || {};
+  const book = (d.book || {}) as BookContent;
   const cats = Array.from(new Set(blogs.map((b) => (b as { cat?: string }).cat).filter(Boolean))) as string[];
+  const tabs: { id: string; label: string; content: React.ReactNode }[] = [
+    { id: 'blogs', label: 'Blogs', content: <BlogsTab blogs={blogs} cats={cats} /> },
+    { id: 'stories', label: 'Stories', content: <StoriesTab stories={stories} fs={fs} /> },
+  ];
+  // Only mount the Book tab if the CMS has any chapters configured —
+  // keeps it from showing as an empty section on a fresh install.
+  if (book?.chapters && book.chapters.length > 0) {
+    tabs.push({ id: 'book', label: 'Book', content: <BookTab book={book} /> });
+  }
 
   return (
     <>
@@ -104,10 +115,7 @@ export default async function DocumentsPage() {
         page="documents"
         ariaLabel="Documents sections"
         defaultTab="blogs"
-        tabs={[
-          { id: 'blogs', label: 'Blogs', content: <BlogsTab blogs={blogs} cats={cats} /> },
-          { id: 'stories', label: 'Stories', content: <StoriesTab stories={stories} fs={fs} /> },
-        ]}
+        tabs={tabs}
       />
     </>
   );
