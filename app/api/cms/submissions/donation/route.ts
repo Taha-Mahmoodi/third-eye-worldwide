@@ -55,10 +55,10 @@ export async function POST(req: NextRequest) {
 
   const name = typeof body?.name === 'string' ? body.name.trim() : '';
   const email = typeof body?.email === 'string' ? body.email.trim() : '';
-  const amount = Number(body?.amount);
+  const amountDollars = Number(body?.amount);
   const mode = typeof body?.mode === 'string' ? body.mode : '';
 
-  if (!name || !email || !Number.isFinite(amount) || !mode) {
+  if (!name || !email || !Number.isFinite(amountDollars) || !mode) {
     return NextResponse.json({ error: 'name, email, amount, mode required' }, { status: 400 });
   }
   if (!isValidEmail(email)) {
@@ -67,19 +67,24 @@ export async function POST(req: NextRequest) {
   if (!['monthly', 'once'].includes(mode)) {
     return NextResponse.json({ error: 'mode must be monthly or once' }, { status: 400 });
   }
-  if (amount < MIN_DONATION_AMOUNT || amount > MAX_DONATION_AMOUNT) {
+  if (amountDollars < MIN_DONATION_AMOUNT || amountDollars > MAX_DONATION_AMOUNT) {
     return NextResponse.json(
       { error: `amount must be between ${MIN_DONATION_AMOUNT} and ${MAX_DONATION_AMOUNT}` },
       { status: 400 }
     );
   }
 
+  // Store as integer cents to avoid IEEE-754 drift (e.g. $49.99 → 4999).
+  // The DB column is now Int; conversions back to dollars happen at the
+  // edges (email template, admin UI).
+  const amountCents = Math.round(amountDollars * 100);
+
   try {
     const row = await prisma.donationSubmission.create({
       data: {
         name: name.slice(0, 200),
         email: email.toLowerCase().slice(0, 200),
-        amount,
+        amount: amountCents,
         mode,
         currency: body.currency ? String(body.currency).slice(0, 8) : 'USD',
         note: body.note ? String(body.note).slice(0, 1000) : null,
@@ -89,17 +94,19 @@ export async function POST(req: NextRequest) {
       event: 'donation_submitted',
       id: row.id,
       ip,
-      amount,
+      amountCents,
+      amountDollars,
       mode,
       currency: row.currency,
     });
 
     // MED-8: send the confirmation email. Fail-open — admin sees the
     // row as `confirmed: false` rather than rejecting the submitter.
+    // Convert cents back to dollars for the human-facing template.
     const email_ = donationConfirmationEmail({
       id: row.id,
       name: row.name,
-      amount: row.amount,
+      amount: row.amount / 100,
       mode: row.mode,
       currency: row.currency,
       createdAt: row.createdAt,
