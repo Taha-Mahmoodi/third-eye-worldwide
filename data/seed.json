@@ -31,7 +31,7 @@
       },
       "/donate": {
         "title": "Donate — Third Eye Worldwide",
-        "description": "Every dollar funds free tools, free training, and free devices for visually impaired people worldwide. 94¢ of every dollar goes to programs.",
+        "description": "Free, open-source tools cost real money to build. Every contribution funds hardware, software, training, and the small team building all of it.",
         "image": "",
         "noindex": false
       },
@@ -64,6 +64,7 @@
   "home": {
     "heroEyebrow": "Tech NGO · Est. 2025",
     "heroTitle": "A world <em>Beyond Vision.</em>",
+    "heroSub": "Free, open-source, voice-first technology for blind and low-vision people, built from inside the experience by a founder who has lived it. Hardware that works on 2G. Software that works for the user, not around them. Tools that return what was always theirs — independence, confidence, dignity.",
     "liveLabel": "Live · 1,284 users online now",
     "liveLabelEnabled": false,
     "impactEyebrow": "Our impact, to date",
@@ -75,19 +76,19 @@
       { "number": "$0", "label": "Cost of core tools" }
     ],
     "statsBand": [
-      { "id": "global",     "number": "<em>2.2B</em>",  "label": "People with vision impairment globally (WHO)" },
-      { "id": "lmic",       "number": "<em>89%</em>",   "label": "Live in low- and middle-income countries" },
-      { "id": "treatable",  "number": "<em>1B</em>+",   "label": "Cases could be prevented or treated" }
+      { "id": "global",       "number": "<em>2.2B</em>", "label": "People with vision impairment globally (WHO)" },
+      { "id": "unemployment", "number": "<em>70%</em>",  "label": "Global unemployment rate among blind people" },
+      { "id": "lmic",         "number": "<em>89%</em>",  "label": "Live in low- and middle-income countries" }
     ],
     "coreValuesEyebrow": "Core Values",
     "coreValuesTitle": "Five promises we make <em>every day.</em>",
     "coreValuesSub": "Every tool we ship, every partnership we sign, and every hire we make is measured against these. They are non-negotiable.",
     "coreValues": [
       { "num": "01", "icon": "ph-hand-heart", "variant": "v-brand", "title": "Dignity first", "desc": "Accessibility is not a feature we add at the end — it is the foundation we start from. Every user deserves full, independent access with no compromise.", "meta": "Non-negotiable" },
-      { "num": "02", "icon": "ph-eye-slash", "variant": "v-accent", "title": "Our founder is visually impaired", "desc": "No product decision gets made without lived experience in the room. Our founder lives the problem we build for — and steers every design call accordingly.", "meta": "Founder-led accessibility" },
+      { "num": "02", "icon": "ph-eye-slash", "variant": "v-accent", "title": "Our founder is visually impaired", "desc": "This work is built from inside the experience, not from the outside looking in. Our founder is visually impaired. No product decision ships without lived experience in the room.", "meta": "Founder-led accessibility" },
       { "num": "03", "icon": "ph-code", "variant": "v-ink", "title": "Open by default", "desc": "All our core software is MIT-licensed. Translations are crowd-sourced. Knowledge and access should never be gatekept by cost, language, or geography.", "meta": "MIT licensed · Forever" },
       { "num": "04", "icon": "ph-globe-hemisphere-east", "variant": "v-brand", "title": "Built for where people live", "desc": "We design for 2G networks, five-year-old smartphones, and the last mile. If it only works in a lab in San Francisco, it doesn't work.", "meta": "Low-bandwidth tested" },
-      { "num": "05", "icon": "ph-scales", "variant": "v-accent", "title": "Radical transparency", "desc": "Every dollar donated is tracked to a program. Every impact number is auditable. Every mistake we make is published — because trust is earned, not claimed.", "meta": "94¢ / $ to programs" }
+      { "num": "05", "icon": "ph-scales", "variant": "v-accent", "title": "Radical transparency", "desc": "Every dollar donated is tracked to a specific program. Every impact number we publish is auditable. Every mistake we make is published — because trust is earned, not claimed.", "meta": "Trust is earned" }
     ],
     "features": [
       { "icon": "ph-speaker-high", "title": "Screen Reader", "desc": "Real-time audio descriptions and voice navigation for any web or mobile interface — in 40+ languages." },
@@ -140,36 +141,38 @@
     "heroTitle": "Read <em>deeper.</em>",
     "heroSub": "Long-form writing from our team and community — research, opinion, and the stories of people our work reaches.",
     "blogs": [
-      { "id": "b1", "extra": "featured", "heroType": "type-blog", "tagClass": "blog", "tagLabel": "Research", "cat": "research", "title": "Why 'accessibility mode' is the wrong mental model", "desc": "Bolting accessibility onto a product late is how we ended up with second-class experiences. We argue for voice-first as the default — not an afterthought mode.", "author": "Said Mohaddes Sadeqi", "initials": "SM", "meta": "9 min read · Apr 18", "img": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80" },
-      { "id": "b2", "extra": "", "heroType": "type-blog", "tagClass": "blog", "tagLabel": "Engineering", "cat": "engineering", "title": "Building for 2G: performance lessons from the last mile", "desc": "Our first users live on networks where a 200KB page is a meaningful cost. Here's what we changed in the build pipeline — and why it helped sighted users too.", "author": "Said Mohaddes Sadeqi", "initials": "SM", "meta": "7 min · Apr 12", "img": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" },
-      { "id": "b3", "extra": "", "heroType": "type-tutorial", "tagClass": "tutorial", "tagLabel": "Tutorial", "cat": "tutorials", "title": "What Pete Gustin taught us about voice-first interface design", "desc": "A blind longboard surfer can feel terrain his eyes can't report. We learned the same lesson building TE — the richest signals often aren't visual.", "author": "Sayed Towfiq Mowafaq", "initials": "ST", "meta": "6 min · Apr 6", "img": "https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=1200&q=80" },
-      { "id": "b4", "extra": "", "heroType": "type-report", "tagClass": "report", "tagLabel": "Research", "cat": "research", "title": "Field notes from our first three users", "desc": "Hours on real devices with real users who had never touched a screen reader. Patterns we did not expect, and three fixes we shipped the next week.", "author": "Tom DeMeo", "initials": "TD", "meta": "11 min · Mar 30", "img": "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=1200&q=80" }
+      { "id": "b-imagination", "extra": "featured", "heroType": "type-blog", "tagClass": "blog", "tagLabel": "Research", "cat": "research", "title": "Disability is a failure of imagination", "desc": "A foundational essay on why the right frame for our work is not charity, and not even accessibility — but imagination, and what we owe each other when imagination falls short.", "author": "Said Mohaddes Sadeqi", "initials": "SM", "meta": "6 min · Foundational", "img": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80" },
+      { "id": "b-2g", "visible": false, "extra": "", "heroType": "type-blog", "tagClass": "blog", "tagLabel": "Engineering", "cat": "engineering", "title": "Building for 2G: performance lessons from the last mile", "desc": "Our first users live on networks where a 200KB page is a meaningful cost.", "author": "Said Mohaddes Sadeqi", "initials": "SM", "meta": "7 min · Apr 12", "img": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" },
+      { "id": "b-pete", "visible": false, "extra": "", "heroType": "type-tutorial", "tagClass": "tutorial", "tagLabel": "Tutorial", "cat": "tutorials", "title": "What Pete Gustin taught us about voice-first interface design", "desc": "A blind longboard surfer can feel terrain his eyes can't report.", "author": "Sayed Towfiq Mowafaq", "initials": "ST", "meta": "6 min · Apr 6", "img": "https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=1200&q=80" },
+      { "id": "b-field-notes", "visible": false, "extra": "", "heroType": "type-report", "tagClass": "report", "tagLabel": "Research", "cat": "research", "title": "Field notes from our first three users", "desc": "Hours on real devices with real users who had never touched a screen reader.", "author": "Tom DeMeo", "initials": "TD", "meta": "11 min · Mar 30", "img": "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=1200&q=80" }
     ],
     "stories": [
-      { "id": "s1", "extra": "featured", "heroType": "type-story", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Pete Gustin and the feel of a wave", "desc": "A longboard surfer who has been blind for most of his career reads waves with his feet, ears, and a spotter in the channel. His craft is a working demo of what 'voice-first' and 'feel-first' can be.", "author": "TEWW Editorial", "initials": "TE", "meta": "5 min · Apr 20", "img": "https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=1200&q=80" },
-      { "id": "s2", "extra": "", "heroType": "type-story2", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Haben Girma — lawyer, author, first deafblind Harvard Law graduate", "desc": "Haben's career is a reminder that the 'access' in accessibility is a practice, not a compliance checkbox. She changed the courts. She is still changing the internet.", "author": "TEWW Editorial", "initials": "TE", "meta": "6 min · Apr 15", "img": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1200&q=80" },
-      { "id": "s3", "extra": "", "heroType": "type-story", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Erik Weihenmayer's Everest — and the quiet engineering behind it", "desc": "The first blind climber to summit Everest did it with a team, a rope, and a patiently-built toolkit of haptic and verbal cues. Good assistive tech is the same discipline at smaller scale.", "author": "TEWW Editorial", "initials": "TE", "meta": "7 min · Apr 9", "img": "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80" },
-      { "id": "s4", "extra": "", "heroType": "type-story2", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Christine Ha cooks without sight — and teaches why that matters", "desc": "The MasterChef winner runs a restaurant kitchen by smell, sound, timing, and muscle memory. Every visit is a case study in adaptive design, translated into the web.", "author": "TEWW Editorial", "initials": "TE", "meta": "5 min · Mar 30", "img": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80" }
+      { "id": "s-open-call", "extra": "", "heroType": "type-story", "tagClass": "story", "tagLabel": "Submit a story", "cat": "", "title": "Tell us your story", "desc": "If you live with visual impairment — or someone you love does — your story has a place here. We'll never publish anything without your approval. Email hello@thirdeyeworldwide.org with the subject line Story.", "author": "TEWW Editorial", "initials": "TE", "meta": "Open submission", "img": "" },
+      { "id": "s-founder-series", "extra": "", "heroType": "type-story2", "tagClass": "story", "tagLabel": "Founder's series", "cat": "", "title": "From <em>The Third Eye</em> — six short pieces by our founder", "desc": "If you want to understand where this work comes from, six short excerpts from Said Mohaddes Sadeqi's memoir-in-progress are linked from the About page. These are not part of the regular community archive.", "author": "Said Mohaddes Sadeqi", "initials": "SM", "meta": "Memoir · 30 min total", "img": "" },
+      { "id": "s1-pete", "visible": false, "extra": "featured", "heroType": "type-story", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Pete Gustin and the feel of a wave", "desc": "A longboard surfer who has been blind for most of his career reads waves with his feet, ears, and a spotter in the channel.", "author": "TEWW Editorial", "initials": "TE", "meta": "5 min · Apr 20", "img": "https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=1200&q=80" },
+      { "id": "s2-haben", "visible": false, "extra": "", "heroType": "type-story2", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Haben Girma — lawyer, author, first deafblind Harvard Law graduate", "desc": "Haben's career is a reminder that the 'access' in accessibility is a practice, not a compliance checkbox.", "author": "TEWW Editorial", "initials": "TE", "meta": "6 min · Apr 15", "img": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1200&q=80" },
+      { "id": "s3-erik", "visible": false, "extra": "", "heroType": "type-story", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Erik Weihenmayer's Everest — and the quiet engineering behind it", "desc": "The first blind climber to summit Everest did it with a team, a rope, and a patiently-built toolkit of haptic and verbal cues.", "author": "TEWW Editorial", "initials": "TE", "meta": "7 min · Apr 9", "img": "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80" },
+      { "id": "s4-christine", "visible": false, "extra": "", "heroType": "type-story2", "tagClass": "story", "tagLabel": "Story", "cat": "", "title": "Christine Ha cooks without sight — and teaches why that matters", "desc": "The MasterChef winner runs a restaurant kitchen by smell, sound, timing, and muscle memory.", "author": "TEWW Editorial", "initials": "TE", "meta": "5 min · Mar 30", "img": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80" }
     ],
     "featuredStory": {
-      "eyebrow": "Featured Story · 5 min read",
-      "pullQuote": "I don't miss the wave. I feel it coming.",
-      "title": "Pete Gustin and the feel of a wave",
-      "desc": "Pete Gustin has been a professional longboard surfer for most of his adult life — and blind for most of that. His craft is built on touch, sound, timing, and a trusted spotter. We follow his line to understand why voice-first tools we build for the web borrow the same principle: the richest signals often aren't visual.",
+      "eyebrow": "Editorial · Open call",
+      "pullQuote": "This page is for the community we serve. We are not seeding it with stock content.",
+      "title": "The first profiles arrive when the first conversations finish.",
+      "desc": "We are commissioning our first community profiles now. They will feature blind and low-vision users of our tools, builders in our open-source community, educators, athletes, advocates, and people whose stories deserve a wider audience. Each will be reported, written with care, and reviewed by the subject before publication. If you would like to be one of those subjects — or to suggest someone we should profile — please get in touch.",
       "author": "TEWW Editorial",
       "initials": "TE",
-      "role": "Published Apr 20, 2026"
+      "role": "Open call · 2026"
     }
   },
   "volunteers": {
     "heroEyebrow": "Volunteer",
     "heroTitle": "Lend your <em>skills.</em>",
-    "heroSub": "Our work happens because 800+ volunteers around the world give what they can — an hour, an afternoon, a pull request. Here's where to start.",
+    "heroSub": "We are a small team building something large, and we are actively looking for volunteers — engineers, educators, writers, designers, organizers, or anyone who simply cares. Even a few hours a month is meaningful. Tell us what you can offer; we'll be in touch to find the right place for you.",
     "stats": [
-      { "number": "820+", "label": "Active volunteers" },
-      { "number": "62", "label": "Countries" },
-      { "number": "40+", "label": "Languages supported" },
-      { "number": "1–4", "label": "Hours / week commitment" }
+      { "number": "6", "label": "Active volunteers today" },
+      { "number": "∞", "label": "Roles open" },
+      { "number": "1–4", "label": "Hours / week most contributors give" },
+      { "number": "2025", "label": "We just started — get in on the ground floor" }
     ],
     "roles": [
       { "id": "translator", "icon": "ph-translate", "title": "Translator", "desc": "Localise our interfaces, docs, and audio scripts into your language.", "tag1": "Language fluency", "tag2": "2–4 hrs/wk" },
@@ -198,7 +201,7 @@
         "id": "faq1",
         "num": "01",
         "question": "Who <em>are</em> we?",
-        "body": "<p><strong>Third Eye Worldwide (TEWW)</strong> is a registered non-profit technology NGO, founded in 2025 by a visually impaired engineer who believed the tools available to blind and low-vision users were decades behind what was possible.</p><p>Today we're a small team — three full-time staff and six active volunteers — building voice-first, open-source tools for the blind and low-vision community. Our founder lives the problem we build for: no product decision ships without lived experience in the room.</p>",
+        "body": "<p><strong>Third Eye Worldwide (TEWW)</strong> is a registered 501(c)(3) nonprofit dedicated to empowering blind and visually impaired people worldwide through assistive technology, education, community, and advocacy.</p><p>We were founded in 2025 by Said Mohaddes Sadeqi, an engineer and educator who lives with visual impairment. The work is built from inside the experience, not from the outside looking in.</p><p>Today we are a small team — three full-time staff and six active volunteers — building hardware, software, and a global community for users that mainstream technology has never been designed for.</p>",
         "chips": [
           { "icon": "ph-eye-slash", "text": "Founder-led accessibility", "accent": true },
           { "icon": "ph-users-three", "text": "3 staff · 6 volunteers" },
@@ -209,14 +212,14 @@
         "id": "faq2",
         "num": "02",
         "question": "What do we <em>do?</em>",
-        "body": "<p>We build <strong>voice-first, open-source assistive tools</strong> — free at point of use. Today we have two active projects:</p><ul><li><strong>TE — AI Voice Navigator.</strong> A voice assistant built into our website. Say \"Hey TE\" and go anywhere on the site, read the page aloud, switch themes, or control the audio tour — no mouse, no keyboard.</li><li><strong>Third Eye World.</strong> A voice-first social network for blind and low-vision users — every post is a voice memo, every action is a voice command. In build; public beta coming soon.</li></ul><p>Everything we ship is MIT-licensed forever, designed for the lowest-bandwidth conditions, and shaped by users who live with visual impairment.</p>",
+        "body": "<p>We build <strong>hardware, software, and a long-term ecosystem</strong> for blind and low-vision people. Free at point of use, open-source where it can be, designed for the conditions our users actually live in.</p><p><strong>Live today</strong></p><ul><li><strong>Third Eye Kit</strong> — a three-part wearable navigation system (glasses, shoes, gloves) with ultrasonic sensors, GPS, fall detection, and emergency alerts. Works on 2G. Roughly $50 to build. Award-winner at TEKNOFEST Black Sea 2022.</li><li><strong>TE — AI Voice Navigator</strong> — say \"Hey TE\" anywhere on this site to navigate, read, or control the audio tour by voice.</li></ul><p><strong>In active development</strong></p><ul><li><strong>Third Eye AI</strong> — a voice-first AI built into the Third Eye mobile app, trained specifically for blind users. First release in 2026.</li><li><strong>Third Eye World</strong> — a voice-first social platform where every post is a voice memo and every action is a voice command. Public beta in 2026.</li></ul><p><strong>Planned</strong></p><p>A free voice-first global online university, a career service, a news channel, and a story submission portal. Each is part of one ecosystem: built around the full life of a blind or visually impaired person, not a single product moment.</p>",
         "chips": []
       },
       {
         "id": "faq3",
         "num": "03",
         "question": "Our <em>mission.</em>",
-        "body": "<p>To give every blind and low-vision person on earth <strong>full, independent, dignified access</strong> to the digital world — at no cost, on whatever device they already own.</p><p>We measure the mission in three ways: the number of people who gain a capability they didn't have yesterday, the share of our tools that stay free and open forever, and the percentage of users who say our software feels like it was built <em>for them</em> — not adapted to them.</p>",
+        "body": "<p>To ensure that no blind or visually impaired person, anywhere in the world, has to navigate a system that was never built for them.</p><p>Disability is not a medical condition — it is a failure of imagination. Roughly <strong>70% of blind people are unemployed worldwide</strong>, not because they cannot work, but because every job, tool, and interface has been designed for people with sight and then blamed blind users for failing to fit.</p><p>We reject the charity frame. Blind users are not other; they are the same — with the same range of talents, ambitions, intelligence, and capacity for contribution as anyone else. The work is to return what has always been theirs: the gift of inclusion, the gift of independence, the gift of confidence, the gift of dignity.</p><p>Drawing from the Sufi tradition that gives the organization its name, Third Eye Worldwide is built on a single line from Rumi: <em>we are all blind until we see each other's pain.</em></p>",
         "chips": [
           { "icon": "ph-code", "text": "MIT licensed forever", "accent": true },
           { "icon": "ph-currency-circle-dollar", "text": "$0 for end users" }
@@ -250,7 +253,7 @@
       { "id": "cost",       "number": "$0",   "label": "Cost of core tools", "visible": false }
     ],
     "team": [
-      { "initials": "SM", "bg": "bg-1", "name": "Said Mohaddes Sadeqi", "role": "Founder & President", "bio": "Engineer, educator, and humanitarian innovator dedicated to creating an inclusive world through technology and compassion.", "img": "/assets/team/said-mohaddes-sadeqi.jpg" },
+      { "initials": "SM", "bg": "bg-1", "name": "Said Mohaddes Sadeqi", "role": "Founder & President", "bio": "Engineer, educator, and humanitarian innovator dedicated to creating an inclusive world through technology and compassion. Visually impaired; built the first prototype of the Third Eye Kit during his own recovery from sight loss, and has been refining it ever since.", "img": "/assets/team/said-mohaddes-sadeqi.jpg" },
       { "initials": "KL", "bg": "bg-2", "name": "Kenneth Lafond", "role": "Treasurer", "bio": "Computer engineer with 14 years at Intel. Founder of ADEvantage Technology; serves on the Advisory Board.", "img": "/assets/team/kenneth-lafond.jpg" },
       { "initials": "TD", "bg": "bg-3", "name": "Tom DeMeo", "role": "Secretary", "bio": "Ecologist with a 38-year US Forest Service career. Refugee mentor and volunteer with multiple humanitarian organizations.", "img": "/assets/team/tom-demeo.jpg" },
       { "initials": "ST", "bg": "bg-4", "name": "Sayed Towfiq Mowafaq", "role": "Technology Advisor", "bio": "Humanitarian and former U.S. military interpreter from Afghanistan. Co-founder focused on expanding opportunities for the blind community.", "img": "/assets/team/sayed-towfiq-mowafaq.jpg" }
@@ -298,7 +301,7 @@
   "donate": {
     "heroEyebrow": "Give",
     "heroTitle": "Your gift <em>opens worlds.</em>",
-    "heroSub": "Every dollar funds free tools, free training, and free devices for visually impaired people worldwide. 94¢ of every dollar goes directly to programs.",
+    "heroSub": "Free, open-source tools cost real money to build. Every dollar funds the hardware, software, and small team that make this work possible. We are a 501(c)(3); your gift is tax-deductible.",
     "monthlyAmounts": [
       { "amt": "$10", "imp": "1 user / year" },
       { "amt": "$25", "imp": "3 users / year", "selected": true },
@@ -316,11 +319,10 @@
       { "amt": "$5,000", "imp": "Major donor" }
     ],
     "impactBreakdown": [
-      { "icon": "ph-speaker-high", "title": "Free tools & software", "desc": "40% · Maintains our screen reader, magnifier, and navigation apps" },
-      { "icon": "ph-chalkboard-teacher", "title": "Training programs", "desc": "28% · Four-week bootcamps and one-on-one sessions" },
-      { "icon": "ph-device-mobile", "title": "Device distribution", "desc": "18% · Pre-configured smartphones for underserved users" },
-      { "icon": "ph-graduation-cap", "title": "Scholarships & grants", "desc": "8% · STEM and design scholarships for blind students" },
-      { "icon": "ph-gear", "title": "Operations", "desc": "6% · Audited annually · 94¢/dollar to programs" }
+      { "icon": "ph-device-mobile", "title": "Hardware production", "desc": "Materials, sensors, components, and prototyping costs for the Third Eye Kit." },
+      { "icon": "ph-code", "title": "Software & infrastructure", "desc": "Server costs, AI training, app store fees, and the open-source tools we maintain for the community." },
+      { "icon": "ph-chalkboard-teacher", "title": "Training & onboarding", "desc": "Curriculum design, translator stipends, and the volunteers who run live sessions for new users." },
+      { "icon": "ph-gear", "title": "Operations", "desc": "A small staff salary line, accounting, and the cost of being a registered nonprofit. We aim to keep this minimal." }
     ]
   }
 }

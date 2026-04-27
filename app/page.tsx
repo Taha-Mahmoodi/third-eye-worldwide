@@ -61,6 +61,7 @@ export default async function HomePage() {
         <Reveal as="div" className="hero-inner" stagger={0.1} delay={0.1} y={18}>
           {h.heroEyebrow ? <div className="hero-eyebrow">{h.heroEyebrow}</div> : null}
           <RichText as="h1" className="hero-title" html={h.heroTitle || ''} />
+          {h.heroSub ? <p className="hero-sub">{h.heroSub}</p> : null}
           {showImpact && h.impactEyebrow ? (
             <div className="hero-impact-eyebrow">{h.impactEyebrow}</div>
           ) : null}
