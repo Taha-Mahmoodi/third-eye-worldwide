@@ -101,11 +101,32 @@
   },
   "projects": {
     "heroEyebrow": "Projects",
-    "heroTitle": "Two projects. <em>One mission.</em>",
-    "heroSub": "Voice-first tools that let blind and low-vision users operate the web and each other's stories without a single sighted assumption.",
+    "heroTitle": "Five projects. <em>One ecosystem.</em>",
+    "heroSub": "Hardware, software, education, community, and a coalition. Each piece is built around the full life of a blind or visually impaired person — not a single moment of need.",
+    "otherWork": {
+      "title": "And the rest of the ecosystem.",
+      "body": "Beyond the five projects above, we are building three more pieces of the ecosystem in parallel: a <strong>consulting and career service</strong> matching blind users to meaningful work based on actual talents, not historical assumptions; a <strong>dedicated news channel</strong> reporting from inside the Third Eye world; and a <strong>story submission portal</strong> open to anyone — newly blind, lifelong blind, the parent of a newborn, the friend of someone who has just lost their sight — where you can share your story to inspire others. Each is in early planning. We'll announce on this page when they ship."
+    },
     "items": [
       {
+        "id": "third-eye-kit",
+        "order": 1,
+        "slug": "third-eye-kit",
+        "icon": "ph-eye-slash",
+        "title": "Third Eye Kit",
+        "desc": "A three-part wearable navigation system: glasses for upper-body obstacles, shoes for ground-level hazards, and gloves with ultrasonic sensors for stairs and surfaces. GPS, fall detection, emergency alerts, all on 2G. Roughly $50 to build. Best Presentation Award, TEKNOFEST Black Sea 2022.",
+        "tag": "Hardware · Validated",
+        "status": "live",
+        "statusLabel": "Validated · TEKNOFEST 2022",
+        "what": "The Third Eye Kit is the organization's first deliverable and its most thoroughly tested one. Three integrated components — glasses, shoes, gloves — each handle a different layer of the navigation problem.<br><br><strong>Glasses</strong> detect upper-body obstacles: tree branches, signs, doorframes, people walking toward you.<br><strong>Shoes</strong> detect ground-level hazards: curbs, holes, steps, objects underfoot.<br><strong>Gloves</strong> carry ultrasonic sensors for navigating stairs, sensing surfaces, and reading terrain by hand — the user climbs by feel, not faith.<br><br>All three components connect to GPS. Live location is transmitted to family or caregivers. The kit detects falls and physiological distress and sends emergency alerts when something goes wrong. It works on 2G networks, which means it works in rural villages, dense urban environments, and anywhere in between. End-to-end build cost is roughly fifty dollars.",
+        "how": "Each component carries a small set of ultrasonic distance sensors and a microcontroller. Distance readings translate into vibration patterns the user learns over a short training period — closer obstacles produce stronger, faster pulses; clear paths produce nothing. The components communicate over Bluetooth and connect through a paired phone for GPS, alerts, and remote monitoring.<br><br>The system is deliberately low-fidelity. There is no camera. There is no machine-learning model running in the cloud. The kit works offline, works on old hardware, and works in places where any of those dependencies would fail. The intelligence is in the design, not in the silicon.",
+        "why": "Mainstream assistive technology assumes a user with money, infrastructure, and access to expensive devices. The Third Eye Kit is built on the opposite assumption: that the people who need this most are the ones the rest of the industry hasn't reached. ~$50, 2G, open-source. Independence shouldn't have a price tag, and where it does, the tag should be small enough that no one is excluded.",
+        "usage": "A user puts on the three components and pairs them with a phone. The kit calibrates to the user's gait, height, and stride during a brief setup. From there it operates passively — no buttons to press, no commands to issue. Vibrations on the gloves, shoes, and glasses tell the user what's around them. The phone handles GPS and emergency comms in the background.<br><br>A trusted contact (family member, caregiver) receives live location and an alert if the system detects a fall or physiological distress. The user controls who sees what.<br><br>We've tested the kit in real-world conditions across multiple countries — different terrains, different climates, different sound environments. The same device behaves differently in every place. Walls echo at different pitches. Hallways have different widths. Streets have different textures. Invention only succeeds when it listens.",
+        "future": "Three priorities. First: a manufacturing partner who can produce the kit at the $50 target price at volume, so we can distribute it free or near-free to users who can't pay. Second: a training curriculum delivered through the upcoming Third Eye University so users learn the kit on day one, in their own language. Third: open-sourcing the full build — schematics, firmware, training materials — so any community anywhere can manufacture locally.<br><br>The award is not the goal. The goal is that no one has to wait for the world to remember that good navigation tools should exist for everyone."
+      },
+      {
         "id": "te-voice",
+        "order": 2,
         "slug": "te",
         "icon": "ph-microphone",
         "title": "TE — AI Voice Navigator",
@@ -120,7 +141,24 @@
         "future": "Today TE only lives in our web browser. Next milestones: a standalone iOS and Android app so TE travels with our users, then a browser extension that brings the same voice interface to any site on the internet, and finally an OS-level integration that runs TE alongside system screen readers without fighting them for focus."
       },
       {
+        "id": "third-eye-ai",
+        "order": 3,
+        "slug": "third-eye-ai",
+        "icon": "ph-magnifying-glass",
+        "title": "Third Eye AI",
+        "desc": "A voice-first AI built into the Third Eye mobile app and trained for blind users. Strips the visual and color-based assumptions out of mainstream AI and rebuilds understanding around what matters: sound, space, environment, intent. First-user release in 2026.",
+        "tag": "AI · In development · 2026",
+        "status": "in-progress",
+        "statusLabel": "In development · 2026",
+        "what": "Most consumer AI is trained on a sighted person's questions about a sighted person's world. \"What does this look like?\" \"Find the red one.\" \"Show me the chart.\" The default mental model is visual.<br><br>Third Eye AI starts somewhere else. It is trained on the questions blind users actually ask — about navigating an unfamiliar room, identifying a sound, parsing a conversation, reading a label, finding a friend in a crowd, knowing what's in front of you and what's behind it. Voice in, voice out. No assumption that the user can confirm anything by glancing at a screen.",
+        "how": "Third Eye AI lives inside the Third Eye mobile app. Users speak; the model listens. Output is spoken back, with optional haptic confirmation for environments where audio isn't safe or appropriate.<br><br>Underneath, the model is fine-tuned on a corpus of blind-user interactions, voice queries, and environmental audio — building up a different intuition about what a \"useful answer\" looks like. We're collecting that training corpus in partnership with the community, with full consent and full transparency about what's used and what isn't.<br><br>The app is designed for the same low-bandwidth conditions as the rest of our work. Where the cloud isn't reachable, a smaller on-device model still answers the most common queries.",
+        "why": "The blind users we work with already use mainstream AI assistants. They also describe the same frustrations over and over: assistants that default to visual descriptions, refuse to commit to spatial answers, and produce a kind of confident vagueness that's harder to use than silence.<br><br>Third Eye AI is built around a single design principle: a useful answer to a blind user is rarely the same as a useful answer to a sighted user. Same model architecture. Different training. Different defaults. Different definition of \"helpful.\"",
+        "usage": "The app is in active development for first-user release in 2026. Once shipped, users will be able to ask the model anything — practical questions (\"what's on this label?\"), spatial questions (\"what's the room I just walked into?\"), social questions (\"who's at this table?\"), and abstract questions, the same way any user would talk to any other AI. The app integrates with the Third Eye Kit hardware where available, and works standalone on any phone where it isn't.",
+        "future": "A small private beta with users from our existing cohort, then phased rollout in 2026. The training corpus is being built now. If you're a blind or low-vision user who'd like to contribute voice queries (paid, with full consent and full data control), we'd like to hear from you."
+      },
+      {
         "id": "third-eye-world",
+        "order": 4,
         "slug": "third-eye-world",
         "icon": "ph-users-three",
         "title": "Third Eye World",
@@ -132,7 +170,23 @@
         "how": "The whole app is organised around voice. Users record a voice memo to post. The timeline is an audio stream — memos play one after another. To interact, the user speaks a simple command (\"like\", \"comment\", \"next\") or taps a single on-screen button that the screen reader announces clearly. Comments are themselves voice memos. Server-side, memos are stored as short audio files with machine-generated transcripts for search — never displayed visually by default.",
         "why": "Mainstream social media was designed for sighted browsing: visual feeds, thumb-scroll mechanics, endless follow graphs. For blind users, adapting that through a screen reader is exhausting and slow. We wanted a platform that starts from voice as the first-class input and output — one where a blind user is the default user, not an accommodation.",
         "usage": "Create an account with your voice (TE guides the onboarding flow). Record a voice memo to post — up to two minutes. The timeline plays new memos from the community. Say <em>\"like\"</em> to like, <em>\"comment\"</em> to reply with your own short memo, or <em>\"next\"</em> to skip. There's no follow button and no algorithmic feed; everyone you follow in spirit is simply everyone on Third Eye World.",
-        "future": "Third Eye World is in build. The roadmap: private beta with fifty blind testers in Nairobi, Lagos, and Dhaka; a voice transcription and search layer for memo discovery; accessibility certification (WCAG 2.2 AAA as a floor, then real-world field validation); moderation tooling that flags abusive audio without requiring visual review; and finally a global open beta paired with free onboarding training in every user's first language."
+        "future": "Third Eye World is in build. The roadmap: a private beta with blind testers across multiple cities; a voice transcription and search layer for memo discovery; accessibility certification targeting WCAG 2.2 AAA, then real-world field validation; moderation tooling that flags abusive audio without requiring visual review; and finally a global open beta paired with free onboarding training in every user's first language."
+      },
+      {
+        "id": "third-eye-university",
+        "order": 5,
+        "slug": "university",
+        "icon": "ph-graduation-cap",
+        "title": "Third Eye University",
+        "desc": "A free, voice-first global online university — open to anyone, anywhere. Foundational literacy through specialised skill-building, with language instruction for users connecting across borders. Curriculum in design.",
+        "tag": "Education · Planned",
+        "status": "coming-soon",
+        "statusLabel": "Education · Planned",
+        "what": "A web of voice-first courses delivered through the Third Eye mobile app. Subjects include foundational literacy, digital literacy, vocational skills, and language instruction for users connecting across borders.<br><br>The university is voice-first by default — every lecture is audio, every assignment is voice or text, every interaction is screen-reader-clean. Sighted users are welcome. Blind users are the primary audience.<br><br>Curriculum is being designed in partnership with educators, advocacy organizations, and the blind community itself. Anyone teaching in a relevant subject — and especially blind educators — is invited to contribute.",
+        "how": "Lectures are recorded as audio. Assignments are submitted as voice or text. Discussion happens in voice memos. The platform is built on the same voice-first stack as the rest of our work, so users move between the Third Eye Kit, Third Eye AI, and the university with no learning curve between them.",
+        "why": "Mainstream online education assumes visual content delivery — slides, readings, video lectures with on-screen text. For blind users, that means perpetually translating someone else's medium back into yours. We're starting from the other end: audio is the first-class container, and visual material is the accommodation.",
+        "usage": "If you teach, design curriculum, or have content you'd like to contribute, write to us at <strong>hello@thirdeyeworldwide.org</strong> with the subject line <strong>University</strong>. We're not announcing launch dates yet — this is a long-term build, and we'd rather ship one excellent course than ten rushed ones.",
+        "future": "First courses launch in partnership with educators in the disability advocacy space. We'll publish a roadmap as the curriculum stabilises. Course catalog, instructor recruitment, and a translation pipeline are all in early design."
       }
     ]
   },
