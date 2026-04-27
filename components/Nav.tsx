@@ -7,6 +7,7 @@ import LogoAnimated from '@/components/LogoAnimated';
 import NavTabIcon, { type NavTabIconName } from '@/components/animate-ui/icons/nav-tab-icon';
 import { useTheme } from '@/lib/context/theme-context';
 import { useNav } from '@/lib/context/nav-context';
+import { CaretDown, CircleHalf, Heart, List, Moon, Sun, X } from '@phosphor-icons/react';
 
 const NAV_MATCH: Record<string, (p: string) => boolean> = {
   home: (p) => p === '/',
@@ -35,8 +36,9 @@ function isActive(key: string, pathname: string | null): boolean {
 
 export default function Nav() {
   const pathname = usePathname();
-  const { textSize, setTextSize, cycleTheme } = useTheme();
-  const { toggle: toggleMobileNav } = useNav();
+  const { theme, textSize, setTextSize, cycleTheme } = useTheme();
+  const ThemeIcon = theme === 'dark' ? Moon : theme === 'high-contrast' ? CircleHalf : Sun;
+  const { toggle: toggleMobileNav, open: navOpen } = useNav();
   // Which top-level tab is currently being hovered or keyboard-focused.
   // Drives the per-tab icon animation in NavTabIcon. We keep the active
   // tab's icon visible too so the user can still see the icon for the
@@ -73,7 +75,7 @@ export default function Nav() {
               className={`nav-link-btn ${isActive('about', pathname) ? 'active' : ''}`}
             >
               <NavTabIcon name={NAV_ICON.about} visible={showIcon('about')} />
-              About <i className="ph ph-caret-down" style={{ fontSize: '10px' }}></i>
+              About <CaretDown size="0.65em" aria-hidden="true" />
             </Link>
             <div className="nav-dropdown">
               <Link href="/about#mission">Mission</Link>
@@ -93,7 +95,7 @@ export default function Nav() {
               className={`nav-link-btn ${isActive('media', pathname) ? 'active' : ''}`}
             >
               <NavTabIcon name={NAV_ICON.media} visible={showIcon('media')} />
-              Media <i className="ph ph-caret-down" style={{ fontSize: '10px' }}></i>
+              Media <CaretDown size="0.65em" aria-hidden="true" />
             </Link>
             <div className="nav-dropdown">
               <Link href="/media#photos">Photos</Link>
@@ -108,7 +110,7 @@ export default function Nav() {
               className={`nav-link-btn ${isActive('documents', pathname) ? 'active' : ''}`}
             >
               <NavTabIcon name={NAV_ICON.documents} visible={showIcon('documents')} />
-              Documents <i className="ph ph-caret-down" style={{ fontSize: '10px' }}></i>
+              Documents <CaretDown size="0.65em" aria-hidden="true" />
             </Link>
             <div className="nav-dropdown">
               <Link href="/documents#blogs">Blogs</Link>
@@ -158,22 +160,24 @@ export default function Nav() {
             aria-label="Toggle theme"
             onClick={cycleTheme}
           >
-            <i className="ph ph-sun"></i>
+            <ThemeIcon size="1em" aria-hidden="true" />
           </button>
           <Link href="/donate" className="nav-cta">
-            <i className="ph-fill ph-heart"></i>
+            <Heart weight="fill" size="1em" aria-hidden="true" />
             <span className="nav-cta-label">Donate</span>
           </Link>
           <button
             type="button"
             className="nav-burger"
             id="nav-burger"
-            aria-label="Open navigation menu"
-            aria-expanded="false"
+            aria-label={navOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={navOpen}
             aria-controls="primary-nav"
             onClick={toggleMobileNav}
           >
-            <i className="ph ph-list"></i>
+            {navOpen
+              ? <X size="1em" aria-hidden="true" />
+              : <List size="1em" aria-hidden="true" />}
           </button>
         </div>
       </div>
