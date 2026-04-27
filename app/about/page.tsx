@@ -1,5 +1,7 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { getContent, visibleSorted } from '@/lib/cms/db';
+import { SkeletonHero } from '@/components/Skeleton';
 import RichText from '@/components/RichText';
 import Subnav from '@/components/site/Subnav';
 import FaqItem from '@/components/about/FaqItem';
@@ -195,7 +197,15 @@ function TeamTab({ team, board, teamSubhead, boardRecruit }: TeamTabProps) {
   );
 }
 
-export default async function AboutPage() {
+export default function AboutPage() {
+  return (
+    <Suspense fallback={<SkeletonHero />}>
+      <AboutPageContent />
+    </Suspense>
+  );
+}
+
+async function AboutPageContent() {
   const content = await getContent();
   const a = content?.about || {};
   const faqs = visibleSorted(a.faqs || []);

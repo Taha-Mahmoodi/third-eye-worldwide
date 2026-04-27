@@ -1,5 +1,7 @@
+import { Suspense } from 'react';
 import { getContent, visibleSorted } from '@/lib/cms/db';
 import RichText from '@/components/RichText';
+import { SkeletonHero } from '@/components/Skeleton';
 import Subnav from '@/components/site/Subnav';
 import DocCard from '@/components/documents/DocCard';
 import FilterableBlogGrid from '@/components/documents/FilterableBlogGrid';
@@ -83,7 +85,15 @@ function StoriesTab({ stories, fs }: { stories: any[]; fs: any }) {
   );
 }
 
-export default async function DocumentsPage() {
+export default function DocumentsPage() {
+  return (
+    <Suspense fallback={<SkeletonHero />}>
+      <DocumentsPageContent />
+    </Suspense>
+  );
+}
+
+async function DocumentsPageContent() {
   const content = await getContent();
   const d = content?.documents || {};
   const blogs = visibleSorted(d.blogs || []);
