@@ -57,6 +57,21 @@ COPY --from=builder --chown=nextjs:nodejs /app/data ./data
 # available at runtime for `db:seed`.
 COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
 
+# ── Volume mount points (Dokploy / plain Docker) ────────────────
+# /data persists across rebuilds; the host volume mounted there is
+# the durable location for SQLite + media uploads. We:
+#   - Create /data + /data/uploads so a fresh volume comes up valid.
+#   - Replace the build-time public/uploads dir with a symlink into
+#     /data/uploads so lib/media/local-disk.ts (which writes to
+#     `path.join(process.cwd(), 'public', 'uploads')`) ends up
+#     touching the volume without knowing about Docker.
+# DATABASE_URL is expected at runtime to be `file:/data/prod.db`.
+RUN mkdir -p /data/uploads \
+  && chown -R 1001:1001 /data \
+  && rm -rf /app/public/uploads \
+  && ln -sfn /data/uploads /app/public/uploads
+VOLUME ["/data"]
+
 # Entrypoint that runs migrations + seeding on first start, then exec's
 # the Next standalone server.
 COPY --chown=nextjs:nodejs scripts/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
@@ -64,6 +79,13 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 USER nextjs
 EXPOSE 3000
+
+# Healthcheck — Dokploy / Docker Swarm / orchestrators use this to
+# decide when the container is ready and to restart on failure.
+# Uses Node 20's built-in fetch to avoid depending on busybox wget /
+# curl quirks across base-image variants.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+  CMD node -e "fetch('http://127.0.0.1:3000/api/health').then(r=>r.ok?process.exit(0):process.exit(1)).catch(()=>process.exit(1))"
 
 # tini reaps zombies + forwards signals cleanly to node.
 ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/docker-entrypoint.sh"]
