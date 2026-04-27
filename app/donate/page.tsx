@@ -53,10 +53,19 @@ export default async function DonatePage() {
                 <div className="donate-impact-eyebrow">Your Impact</div>
                 <h3>Where your gift goes</h3>
                 <p className="lead">
-                  Every donation is tracked to a specific program. We publish quarterly impact
-                  reports showing exactly how funds are deployed.
+                  Every donation is tracked to a specific program. We publish an annual
+                  transparency report showing exactly how funds are deployed, and we&apos;ll
+                  publish quarterly reports starting in our second year. Mistakes will be
+                  published alongside the wins.
+                </p>
+                <p className="lead">
+                  Right now, your gift funds four things, in roughly this order of need:
                 </p>
                 {impact.map((it) => <ImpactRow key={it.id || it.title} item={it} />)}
+                <p className="donate-impact-foot">
+                  We&apos;ll publish the actual ratio in our first annual report and update
+                  it every year after that.
+                </p>
               </div>
 
               <div className="donate-other">
@@ -78,27 +87,45 @@ export default async function DonatePage() {
             <div className="section-eyebrow">Transparency</div>
             <h2 className="section-title">Every dollar is accounted for</h2>
             <p className="section-subtitle">
-              Audited annually. Published publicly. Available in accessible formats on request.
+              We are a young organization. We are not yet third-party rated, and we will
+              not claim ratings we don&apos;t have. Here&apos;s what we do commit to:
             </p>
           </div>
           <div className="feature-grid">
             <div className="feature-card">
               <div className="feature-icon"><FileText size="1em" aria-hidden="true" /></div>
               <h3>Annual reports</h3>
-              <p>Detailed financial and program reports published every March — available since our founding in 2025.</p>
-              <a className="card-link" href="#">View reports <ArrowRight size="1em" aria-hidden="true" /></a>
+              <p>
+                Our first annual financial and program report will be published in the
+                first quarter following our first full operating year. Available in
+                accessible formats on request.
+              </p>
             </div>
             <div className="feature-card">
               <div className="feature-icon"><CheckCircle size="1em" aria-hidden="true" /></div>
-              <h3>Third-party audited</h3>
-              <p>Independently audited by Baker Tilly. Charity Navigator 4-star. GuideStar Platinum Seal 2025-2026.</p>
-              <a className="card-link" href="#">See audits <ArrowRight size="1em" aria-hidden="true" /></a>
+              <h3>Independent review</h3>
+              <p>
+                We will engage an independent auditor when the budget supports it — and
+                we&apos;ll publish the results, including anything unflattering. Until
+                then, our books are open on request.
+              </p>
+              <a
+                className="card-link"
+                href="mailto:hello@thirdeyeworldwide.org?subject=Books"
+              >
+                Request our books <ArrowRight size="1em" aria-hidden="true" />
+              </a>
             </div>
             <div className="feature-card">
               <div className="feature-icon"><ShieldCheck size="1em" aria-hidden="true" /></div>
               <h3>Donor privacy</h3>
-              <p>We never sell, rent, or share donor information. Full anonymity available on request.</p>
-              <a className="card-link" href="#">Privacy policy <ArrowRight size="1em" aria-hidden="true" /></a>
+              <p>
+                We never sell, rent, or share donor information. Full anonymity available
+                on request.
+              </p>
+              <a className="card-link" href="/privacy">
+                Privacy policy <ArrowRight size="1em" aria-hidden="true" />
+              </a>
             </div>
           </div>
         </div>

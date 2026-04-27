@@ -417,6 +417,7 @@ nav.topnav { position: sticky; top: 0; z-index: 100; background: var(--bg-elevat
 .donate-impact { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 32px; box-shadow: var(--shadow-md); }
 .donate-impact h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--fg); margin-bottom: 8px; }
 .donate-impact .lead { color: var(--fg-muted); margin-bottom: 20px; font-size: .95rem; line-height: 1.65; }
+.donate-impact-foot { color: var(--fg-muted); margin-top: 18px; font-size: .9rem; line-height: 1.6; font-style: italic; }
 .impact-row { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
 .impact-row:last-of-type { border-bottom: none; }
 .impact-icon { width: 36px; height: 36px; border-radius: var(--radius-md); background: var(--accent-subtle); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
