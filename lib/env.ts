@@ -29,3 +29,32 @@ export function requireAuthSecret(): string {
   }
   return DEV_FALLBACK_SECRET;
 }
+
+let upstashWarned = false;
+
+/**
+ * Warns if exactly one of the Upstash env vars is set. Both must be
+ * present for the distributed rate-limit backend to engage; with only
+ * one set, lib/rate-limit.ts silently falls back to the in-memory
+ * bucket — and on a multi-instance deploy that means each instance
+ * keeps its own count, so the effective limit is `capacity * instances`.
+ *
+ * Idempotent: only logs once per process. In production, escalates the
+ * message to error level so it shows up in monitoring dashboards.
+ */
+export function checkUpstashConfig(): void {
+  if (upstashWarned) return;
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (Boolean(url) === Boolean(token)) return; // both set or both unset → fine
+  upstashWarned = true;
+  const missing = url ? 'UPSTASH_REDIS_REST_TOKEN' : 'UPSTASH_REDIS_REST_URL';
+  const msg =
+    `${missing} is not set — Upstash rate limiting is disabled. ` +
+    'Set both vars or neither so every instance shares state.';
+  if (process.env.NODE_ENV === 'production') {
+    console.error(`[env] ${msg}`);
+  } else {
+    console.warn(`[env] ${msg}`);
+  }
+}

@@ -20,7 +20,12 @@
  */
 
 import { RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS } from '@/lib/constants';
+import { checkUpstashConfig } from '@/lib/env';
 import logger from '@/lib/logger';
+
+// Warn at module load if only one of the Upstash env vars is set
+// (HALF-configured Upstash silently degrades to per-instance limits).
+checkUpstashConfig();
 
 interface Bucket {
   tokens: number;
