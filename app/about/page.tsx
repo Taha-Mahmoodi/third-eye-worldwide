@@ -62,26 +62,25 @@ function FaqTab({ faqs }: { faqs: any[] }) {
   );
 }
 
+interface MissionContent { eyebrow?: string; title?: string; body?: string }
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function MissionTab({ missionStats }: { missionStats: any[] }) {
+function MissionTab({ missionStats, mission }: { missionStats: any[]; mission: MissionContent }) {
+  const eyebrow = mission.eyebrow || 'Our Mission';
+  const title   = mission.title   || 'Technology as the third eye.';
+  const body    = mission.body    || '';
+
   return (
     <>
       <section className="section">
         <div className="section-inner">
           <div className="about-grid">
             <div>
-              <div className="section-eyebrow" style={{ marginBottom: 14 }}>Our Mission</div>
-              <h2 className="about-mission-title">Technology as the third eye.</h2>
-              <p className="about-mission-body">
-                Founded in 2025 on a single belief: that technology should give visually impaired
-                individuals the same digital access as everyone else — no compromise, no
-                watered-down experience.
-              </p>
-              <p className="about-mission-body">
-                Today we operate in one country, with three full-time staff and six active
-                volunteers, building open-source voice-first tools for blind and low-vision
-                users — led by a founder who lives the problem we build for.
-              </p>
+              <div className="section-eyebrow" style={{ marginBottom: 14 }}>{eyebrow}</div>
+              <h2 className="about-mission-title">{title}</h2>
+              {body
+                ? <RichText as="div" className="about-mission-body" html={body} />
+                : null}
               <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', marginTop: 24 }}>
                 <Link href="/volunteers" className="btn-primary">
                   <HandHeart size="1em" aria-hidden="true" /> Join Us
@@ -129,8 +128,21 @@ function MissionTab({ missionStats }: { missionStats: any[] }) {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function TeamTab({ team, board }: { team: any[]; board: any[] }) {
+interface BoardRecruit { title?: string; body?: string; ctaLabel?: string; ctaHref?: string }
+
+interface TeamTabProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  team: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  board: any[];
+  teamSubhead?: string;
+  boardRecruit?: BoardRecruit;
+}
+
+function TeamTab({ team, board, teamSubhead, boardRecruit }: TeamTabProps) {
+  const subhead = teamSubhead ||
+    'A small, deliberate team. Our founder is visually impaired — every product decision passes through lived experience before it ships.';
+
   return (
     <>
       <section className="section">
@@ -138,10 +150,7 @@ function TeamTab({ team, board }: { team: any[]; board: any[] }) {
           <div className="section-heading">
             <div className="section-eyebrow">Leadership</div>
             <h2 className="section-title">The people behind TEWW</h2>
-            <p className="section-subtitle">
-              A small, deliberate team. Our founder is visually impaired — every product
-              decision passes through lived experience before it ships.
-            </p>
+            <p className="section-subtitle">{subhead}</p>
           </div>
 
           <div className="team-grid">
@@ -150,6 +159,18 @@ function TeamTab({ team, board }: { team: any[]; board: any[] }) {
               ? team.map((m: any) => <TeamCard key={m.id || m.name} member={m} />)
               : <p style={{ color: 'var(--fg-muted)' }}>No team members yet.</p>}
           </div>
+
+          {boardRecruit?.title || boardRecruit?.body ? (
+            <div className="board-recruit-card">
+              {boardRecruit.title ? <h3>{boardRecruit.title}</h3> : null}
+              {boardRecruit.body ? <p>{boardRecruit.body}</p> : null}
+              {boardRecruit.ctaLabel && boardRecruit.ctaHref ? (
+                <a href={boardRecruit.ctaHref} className="btn-primary">
+                  {boardRecruit.ctaLabel}
+                </a>
+              ) : null}
+            </div>
+          ) : null}
         </div>
       </section>
 
@@ -181,6 +202,24 @@ export default async function AboutPage() {
   const team = visibleSorted(a.team || []);
   const board = visibleSorted(a.board || []);
   const missionStats = visibleSorted(a.missionStats || []);
+  const mission = (a.mission || {}) as MissionContent;
+  const teamSubhead = a.teamSubhead as string | undefined;
+  const boardRecruit = (a.boardRecruit || {}) as BoardRecruit;
+
+  // Founder's Series — small, intentionally low-key section at the
+  // bottom of /about, anchored at #founders-series. Not promoted on
+  // home or on the main /documents archive (per content-update v2).
+  // Chapter list mirrors documents.book.chapters so the source of
+  // truth stays in one place.
+  const founderSeries = (a.founderSeries || {}) as {
+    eyebrow?: string; title?: string; body?: string;
+    linkLabel?: string; linkHref?: string;
+  };
+  const bookChapters = visibleSorted(
+    (content?.documents as { book?: { chapters?: unknown[] } } | null)?.book?.chapters || [],
+  ) as Array<{ id?: string; num?: string; title?: string; readTime?: string; slug?: string }>;
+  const showFounderSeries =
+    !!(founderSeries.title || founderSeries.body) && bookChapters.length > 0;
 
   return (
     <>
@@ -198,10 +237,48 @@ export default async function AboutPage() {
         defaultTab="faq"
         tabs={[
           { id: 'faq',     label: 'Overview', content: <FaqTab faqs={faqs} /> },
-          { id: 'mission', label: 'Mission',  content: <MissionTab missionStats={missionStats} /> },
-          { id: 'team',    label: 'Team',     content: <TeamTab team={team} board={board} /> },
+          { id: 'mission', label: 'Mission',  content: <MissionTab missionStats={missionStats} mission={mission} /> },
+          { id: 'team',    label: 'Team',     content: <TeamTab team={team} board={board} teamSubhead={teamSubhead} boardRecruit={boardRecruit} /> },
         ]}
       />
+
+      {showFounderSeries ? (
+        <section className="section section-alt" id="founders-series">
+          <div className="section-inner" style={{ maxWidth: 760 }}>
+            <div className="section-heading left" style={{ textAlign: 'left', marginBottom: 24 }}>
+              {founderSeries.eyebrow ? (
+                <div className="section-eyebrow">{founderSeries.eyebrow}</div>
+              ) : null}
+              {founderSeries.title ? (
+                <RichText as="h2" className="section-title" html={founderSeries.title} />
+              ) : null}
+              {founderSeries.body ? (
+                <p className="section-subtitle" style={{ maxWidth: 'none' }}>
+                  {founderSeries.body}
+                </p>
+              ) : null}
+            </div>
+
+            <ol className="founders-series-list" role="list">
+              {bookChapters.map((c, i) => (
+                <li key={c.id || i}>
+                  <span className="fs-num">{c.num || String(i + 1).padStart(2, '0')}</span>
+                  <span className="fs-title">{c.title}</span>
+                  {c.readTime ? <span className="fs-time">{c.readTime}</span> : null}
+                </li>
+              ))}
+            </ol>
+
+            {founderSeries.linkLabel && founderSeries.linkHref ? (
+              <div style={{ marginTop: 28 }}>
+                <Link href={founderSeries.linkHref} className="btn-secondary">
+                  {founderSeries.linkLabel}
+                </Link>
+              </div>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
     </>
   );
 }

@@ -312,6 +312,25 @@
     "heroEyebrow": "About Us",
     "heroTitle": "The answers, <em>up front.</em>",
     "heroSub": "Five honest questions about Third Eye Worldwide — who we are, what we do, what we stand for, and why we think you should come build with us.",
+    "mission": {
+      "eyebrow": "Our Mission",
+      "title": "Technology as the third eye.",
+      "body": "<p>We take our name from a line in Rumi: <em>we are all blind until we see each other's pain.</em> The third eye, in the Sufi tradition, is the eye of insight — the perception that doesn't depend on sight.</p><p>Third Eye Worldwide builds tools that work the same way. Hardware that translates space into vibration. Software that listens, speaks, and removes the assumption that the user can see. Education and community designed around what blind users actually need — not what sighted designers think they should need.</p><p>We are a small team, building deliberately, in the open. Our founder lives the problem we build for.</p>"
+    },
+    "teamSubhead": "A small, deliberate team. Our founder is visually impaired — every product decision passes through lived experience before it ships. We're actively building out the board.",
+    "boardRecruit": {
+      "title": "Board seats: open",
+      "body": "We are actively building out our board, partner network, and funding base, with priority for disability advocacy organizations, academic medical centers, social impact fellowships, and individual donors and advisors who understand what it takes to scale empowerment globally. If that's you, we'd like to talk.",
+      "ctaLabel": "Get in touch",
+      "ctaHref": "mailto:hello@thirdeyeworldwide.org"
+    },
+    "founderSeries": {
+      "eyebrow": "Founder's Series · Optional reading",
+      "title": "From <em>The Third Eye</em>, by our founder.",
+      "body": "Six short pieces adapted from a memoir-in-progress by Said Mohaddes Sadeqi. They cover the eight months he spent blind in a shelter in Kabul after a 2021 explosion, the surgeries that returned partial sight, and the design philosophy behind the Third Eye Kit. Read them if you want to know where the work comes from. Skip them if you'd rather hear from the community we serve — those stories live on the Stories tab.",
+      "linkLabel": "Open the Book tab on /documents",
+      "linkHref": "/documents#book"
+    },
     "faqs": [
       {
         "id": "faq1",
@@ -361,10 +380,12 @@
       }
     ],
     "missionStats": [
-      { "id": "founded",    "number": "2025", "label": "Year founded" },
-      { "id": "countries",  "number": "1",    "label": "Country we operate in" },
-      { "id": "staff",      "number": "3",    "label": "Full-time staff" },
-      { "id": "volunteers", "number": "6",    "label": "Active volunteers" },
+      { "id": "founded",    "number": "2025", "label": "Founded" },
+      { "id": "first-award","number": "2022", "label": "First award (TEKNOFEST Black Sea)" },
+      { "id": "kit-cost",   "number": "~$50", "label": "Cost to build the Third Eye Kit" },
+      { "id": "low-net",    "number": "2G",   "label": "Lowest-bandwidth network the kit operates on" },
+      { "id": "staff",      "number": "3",    "label": "Full-time staff", "visible": false },
+      { "id": "volunteers", "number": "6",    "label": "Active volunteers", "visible": false },
       { "id": "activeusers","number": "1.2M", "label": "Active users", "visible": false },
       { "id": "cost",       "number": "$0",   "label": "Cost of core tools", "visible": false }
     ],

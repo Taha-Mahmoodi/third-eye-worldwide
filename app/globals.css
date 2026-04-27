@@ -613,6 +613,52 @@ nav.topnav { position: sticky; top: 0; z-index: 100; background: var(--bg-elevat
 
 /* ── TEAM ──────────────────────────── */
 .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+
+/* Board recruit card — sits below the team grid on /about → Team. v2 */
+.board-recruit-card {
+  margin-top: 36px;
+  padding: 28px 32px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--brand);
+  border-radius: var(--radius-lg);
+  display: flex; flex-direction: column; gap: 12px; align-items: flex-start;
+  max-width: 720px;
+}
+.board-recruit-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.25rem; font-weight: 700;
+  letter-spacing: -.015em; color: var(--fg);
+}
+.board-recruit-card p {
+  font-size: .98rem; line-height: 1.65; color: var(--fg-muted);
+}
+
+/* Founder's Series — small list, no card imagery, anchored at the
+   bottom of /about. Optional, low-key per v2. */
+.founders-series-list {
+  list-style: none; padding: 0; margin: 0; counter-reset: fs;
+  border-top: 1px solid var(--border);
+}
+.founders-series-list li {
+  display: flex; align-items: baseline; gap: 14px;
+  padding: 16px 4px;
+  border-bottom: 1px solid var(--border);
+  counter-increment: fs;
+}
+.founders-series-list .fs-num {
+  font-family: var(--font-display); font-size: .76rem; font-weight: 700;
+  letter-spacing: .14em; color: var(--accent);
+  flex-shrink: 0; min-width: 32px;
+}
+.founders-series-list .fs-title {
+  flex: 1; font-family: var(--font-display); font-weight: 500;
+  color: var(--fg); line-height: 1.3;
+}
+.founders-series-list .fs-time {
+  font-size: .8rem; color: var(--fg-muted);
+  font-family: var(--font-display); flex-shrink: 0;
+}
 .team-card { text-align: left; }
 .team-photo { width: 100%; aspect-ratio: 1; border-radius: var(--radius-lg); margin-bottom: 16px; background: var(--bg-subtle); border: 1px solid var(--border); position: relative; overflow: hidden; display: flex; align-items: flex-end; padding: 20px; }
 .team-photo::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(13,4,7,.5) 100%); }
