@@ -41,9 +41,21 @@ const logger: Logger = pino({
       'token',
       'authorization',
       'cookie',
+      'apiKey',
+      'secret',
       '*.password',
       '*.token',
       '*.authorization',
+      '*.apiKey',
+      '*.secret',
+      // Two levels of nesting catch shapes like
+      // `{ response: { data: { token: '...' } } }` that the single-
+      // level wildcards above miss.
+      '*.*.password',
+      '*.*.token',
+      '*.*.authorization',
+      '*.*.apiKey',
+      '*.*.secret',
       'req.headers.authorization',
       'req.headers.cookie',
     ],
