@@ -85,10 +85,13 @@ export default function DonateWidget() {
       // page — payment processing happens in a later step run by the
       // Third Eye team. Be explicit so donors don't think they're done.
       setStatus({
-        text:
-          'Thank you for your interest! A member of our team will be in touch shortly to complete your donation. No payment has been taken yet.',
+        text: `Thank you! We've sent a confirmation link to ${email}. Please click it to complete your submission — no payment is taken on this page.`,
         error: false,
       });
+      // Reset every field so the form looks clean after success and a
+      // donor doesn't accidentally re-submit the same payload twice.
+      setFirst(''); setLast(''); setEmail(''); setNote('');
+      setMonthlyAmount(''); setOnceAmount('');
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       setStatus({ text: `Could not submit: ${msg}`, error: true });
@@ -136,6 +139,8 @@ export default function DonateWidget() {
                 id="donate-amount-monthly"
                 type="text"
                 inputMode="decimal"
+                pattern="[0-9]*\.?[0-9]*"
+                maxLength={7}
                 placeholder="Any amount"
                 value={monthlyAmount}
                 onChange={(e) => setMonthlyAmount(e.target.value)}
@@ -157,8 +162,11 @@ export default function DonateWidget() {
             className="btn-accent donate-submit-btn"
             onClick={() => submit('monthly')}
             disabled={submitting}
+            aria-busy={submitting}
           >
-            <Heart weight="fill" size="1em" aria-hidden="true" /> Donate Monthly
+            {submitting
+              ? <><span className="btn-spinner" aria-hidden="true" /> Submitting…</>
+              : <><Heart weight="fill" size="1em" aria-hidden="true" /> Donate Monthly</>}
           </button>
         </div>
       ) : (
@@ -173,6 +181,8 @@ export default function DonateWidget() {
                 id="donate-amount-once"
                 type="text"
                 inputMode="decimal"
+                pattern="[0-9]*\.?[0-9]*"
+                maxLength={7}
                 placeholder="Any amount"
                 value={onceAmount}
                 onChange={(e) => setOnceAmount(e.target.value)}
@@ -194,8 +204,11 @@ export default function DonateWidget() {
             className="btn-primary donate-submit-btn"
             onClick={() => submit('once')}
             disabled={submitting}
+            aria-busy={submitting}
           >
-            <CurrencyDollar size="1em" aria-hidden="true" /> Give Once
+            {submitting
+              ? <><span className="btn-spinner" aria-hidden="true" /> Submitting…</>
+              : <><CurrencyDollar size="1em" aria-hidden="true" /> Give Once</>}
           </button>
         </div>
       )}
@@ -248,8 +261,7 @@ export default function DonateWidget() {
         <div
           id="donate-status"
           aria-live="polite"
-          className="donate-status"
-          style={{ color: status.error ? 'var(--accent)' : 'var(--fg-muted)' }}
+          className={`donate-status${status.error ? ' donate-status--error' : ''}`}
         >
           {status.text}
         </div>
