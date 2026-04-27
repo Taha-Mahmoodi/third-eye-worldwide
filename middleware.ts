@@ -63,8 +63,15 @@ export default auth((req) => {
   const isAdminPath = pathname === '/admin' || pathname.startsWith('/admin/');
 
   if (isAdminPath && !isAuthBypass) {
-    const token = req.auth as { role?: string } | null;
-    if (token?.role !== 'admin') {
+    // Auth.js v5: req.auth is the Session, not the raw JWT. The role
+    // ends up on session.user (set by the session callback in
+    // lib/auth.config.ts). The previous read of req.auth?.role was
+    // never populated and only "worked" because /admin used to be a
+    // static rewrite that bypassed middleware entirely; once the
+    // rewrite was removed (CMS_ROADMAP) every /admin hit landed on
+    // the redirect path. See lib/cms/auth-guard.ts for the same shape.
+    const session = req.auth as { user?: { role?: string } } | null;
+    if (session?.user?.role !== 'admin') {
       const loginUrl = new URL('/admin/login', req.url);
       loginUrl.searchParams.set('callbackUrl', pathname);
       const redirect = NextResponse.redirect(loginUrl);

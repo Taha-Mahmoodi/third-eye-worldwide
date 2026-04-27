@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Microphone, Pause, Play, X } from '@phosphor-icons/react';
 
 declare global {
@@ -60,6 +61,7 @@ function fmtTime(secs: number): string {
 }
 
 export default function AudioTour() {
+  const pathname = usePathname();
   const [visible, setVisible] = useState(false);
   const [countdown, setCountdown] = useState(AUTO_DELAY_SECONDS);
   const [playerState, setPlayerState] = useState<PlayerState>('idle');
@@ -201,6 +203,10 @@ export default function AudioTour() {
 
   const showMiniPlayer = playerState !== 'idle';
   const progressPct = duration > 0 ? Math.min(100, (position / duration) * 100) : 0;
+
+  // Suppressed inside the admin dashboard — see Nav.tsx for the
+  // matching public-vs-admin chrome split.
+  if (pathname?.startsWith('/admin')) return null;
 
   return (
     <>

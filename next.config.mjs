@@ -18,12 +18,11 @@ const nextConfig = {
       // { protocol: 'https', hostname: 'res.cloudinary.com' },
     ],
   },
-  async rewrites() {
-    return [
-      // /admin → static CMS dashboard (served from public/admin/index.html)
-      { source: '/admin', destination: '/admin/index.html' },
-    ];
-  },
+  // The legacy static SPA at public/admin/ has been superseded by the
+  // Next.js dashboard at app/admin/(dashboard)/. The previous rewrite
+  // sending /admin → /admin/index.html is removed so the new dashboard
+  // route handles requests. The static directory itself stays in place
+  // until CMS_ROADMAP CMS-9 (after PR #4 ports the export endpoint).
 };
 
 export default nextConfig;

@@ -5,9 +5,15 @@
 // `@/components/icons` re-export so we stay client-safe in one place.
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import LogoAnimated from '@/components/LogoAnimated';
 
 export default function Footer() {
+  const pathname = usePathname();
+  // Admin routes have their own chrome — see Nav.tsx for the matching
+  // suppression. The dashboard's sticky sidebar would clash with the
+  // wide public-site footer.
+  if (pathname?.startsWith('/admin')) return null;
   return (
     <footer>
       <div className="footer-inner">
