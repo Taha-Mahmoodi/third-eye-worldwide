@@ -5,14 +5,24 @@ import { isValidEmail } from '@/lib/validators';
 import { PaperPlaneTilt } from '@/components/icons';
 
 const HOURS_OPTIONS = ['1–2 hours', '3–5 hours', '6–10 hours', '10+ hours'];
+const MESSAGE_MAX = 2000;
 
 /*
  * Volunteer application form. Submits to /api/cms/submissions/volunteer.
  * `roles` is the CMS role list — checkbox labels come from role.title.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface RoleOpt { title?: string; [key: string]: any }
-interface VolunteerFormProps { roles: RoleOpt[] }
+import type { CmsItemMeta } from '@/lib/types';
+
+export interface RoleOpt extends CmsItemMeta {
+  title?: string;
+  desc?: string;
+  icon?: string;
+  tag1?: string;
+  tag2?: string;
+}
+export interface VolunteerFormProps {
+  roles: RoleOpt[];
+}
 
 export default function VolunteerForm({ roles }: VolunteerFormProps) {
   const [first, setFirst] = useState('');
@@ -64,7 +74,15 @@ export default function VolunteerForm({ roles }: VolunteerFormProps) {
         }),
       });
       if (!r.ok) throw new Error('HTTP ' + r.status);
-      setStatus({ text: 'Thank you — we read every application within 48 hours.', error: false });
+      setStatus({
+        text: `Application received! We've sent a confirmation link to ${email}. Click it to confirm, and we'll be in touch within 48 hours.`,
+        error: false,
+      });
+      // Reset every field on success.
+      setFirst(''); setLast(''); setEmail('');
+      setCountry(''); setMessage('');
+      setChosen(new Set<string>());
+      setHours(HOURS_OPTIONS[0]);
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       setStatus({ text: `Could not submit: ${msg}`, error: true });
@@ -140,10 +158,19 @@ export default function VolunteerForm({ roles }: VolunteerFormProps) {
           id="vol-message"
           rows={3}
           className="vol-textarea"
+          maxLength={MESSAGE_MAX}
           placeholder="A few sentences about your interests and why TEWW…"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          aria-describedby="vol-message-counter"
         />
+        <p
+          id="vol-message-counter"
+          className={`char-counter${message.length >= MESSAGE_MAX * 0.9 ? ' char-counter--warn' : ''}`}
+          aria-live="polite"
+        >
+          {message.length} / {MESSAGE_MAX}
+        </p>
       </div>
       <button
         type="button"
@@ -151,13 +178,15 @@ export default function VolunteerForm({ roles }: VolunteerFormProps) {
         style={{ width: '100%', justifyContent: 'center' }}
         onClick={submit}
         disabled={submitting}
+        aria-busy={submitting}
       >
-        <PaperPlaneTilt size="1em" aria-hidden="true" /> Submit Application
+        {submitting
+          ? <><span className="btn-spinner" aria-hidden="true" /> Submitting…</>
+          : <><PaperPlaneTilt size="1em" aria-hidden="true" /> Submit Application</>}
       </button>
       <p
         aria-live="polite"
-        className="vol-status"
-        style={{ color: status.error ? 'var(--accent)' : 'var(--fg-muted)' }}
+        className={`vol-status${status.error ? ' donate-status--error' : ''}`}
       >
         {status.text}
       </p>
