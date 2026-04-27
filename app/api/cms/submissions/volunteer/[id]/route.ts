@@ -23,7 +23,10 @@ export async function DELETE(
 ) {
   const admin = await isAdmin(req);
   if (!admin) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 401, headers: { 'WWW-Authenticate': 'Bearer realm="CMS Admin"' } },
+    );
   }
 
   const id = Number.parseInt(params.id, 10);

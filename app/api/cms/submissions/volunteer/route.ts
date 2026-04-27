@@ -96,7 +96,10 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   if (!(await isAdmin(req))) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 401, headers: { 'WWW-Authenticate': 'Bearer realm="CMS Admin"' } },
+    );
   }
   // MED-8: by default only return rows where the user clicked the
   // confirmation link. Admin can pass `?all=true` to see unconfirmed
