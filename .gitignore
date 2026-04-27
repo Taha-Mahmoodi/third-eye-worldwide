@@ -21,3 +21,6 @@ next-env.d.ts
 # Prisma dev DB
 prisma/dev.db
 prisma/dev.db-journal
+# SQLite WAL mode (DB-4) creates these transient files alongside the DB.
+prisma/dev.db-shm
+prisma/dev.db-wal

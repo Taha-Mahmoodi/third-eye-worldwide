@@ -54,3 +54,10 @@ export const CONFIRMATION_TOKEN_TTL_MS = 2 * 60 * 60 * 1000;
 // Stops a script from carpet-bombing requests.
 export const RESEND_CONFIRMATION_MAX_REQUESTS = 1;
 export const RESEND_CONFIRMATION_WINDOW_MS = 60 * 60 * 1000;
+
+// ── Donation currency allow-list ─────────────────────────────────
+// ISO 4217 codes the donation form will accept. Anything else gets
+// coerced to USD on insert so Intl.NumberFormat() in the email
+// template doesn't blow up on a bogus code.
+export const ACCEPTED_CURRENCIES = ['USD', 'EUR', 'GBP', 'CAD', 'AUD'] as const;
+export type AcceptedCurrency = (typeof ACCEPTED_CURRENCIES)[number];

@@ -3,6 +3,8 @@ import { prisma } from '@/lib/cms/db';
 import { isAdmin } from '@/lib/cms/auth-guard';
 import { checkAsync, requestIp } from '@/lib/rate-limit';
 import {
+  ACCEPTED_CURRENCIES,
+  type AcceptedCurrency,
   MIN_DONATION_AMOUNT,
   MAX_DONATION_AMOUNT,
   RATE_LIMIT_MAX_REQUESTS,
@@ -79,6 +81,14 @@ export async function POST(req: NextRequest) {
   // edges (email template, admin UI).
   const amountCents = Math.round(amountDollars * 100);
 
+  // Currency: ISO 4217 allow-list. Anything off-list (or missing /
+  // mistyped) becomes USD so Intl.NumberFormat in the email template
+  // never sees a bogus code.
+  const rawCurrency = typeof body.currency === 'string' ? body.currency.toUpperCase().trim() : 'USD';
+  const currency: AcceptedCurrency = (ACCEPTED_CURRENCIES as readonly string[]).includes(rawCurrency)
+    ? (rawCurrency as AcceptedCurrency)
+    : 'USD';
+
   try {
     const row = await prisma.donationSubmission.create({
       data: {
@@ -86,7 +96,7 @@ export async function POST(req: NextRequest) {
         email: email.toLowerCase().slice(0, 200),
         amount: amountCents,
         mode,
-        currency: body.currency ? String(body.currency).slice(0, 8) : 'USD',
+        currency,
         note: body.note ? String(body.note).slice(0, 1000) : null,
       },
     });
