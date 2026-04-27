@@ -13,9 +13,10 @@ const nextConfig = {
       // CMS content where the URL was authored as absolute.
       { protocol: 'https', hostname: 'www.thirdeyeworldwide.org' },
       { protocol: 'https', hostname: 'thirdeyeworldwide.org' },
-      // Add the image hosting CDN hostname here once one is wired in
-      // (Cloudinary / Uploadcare / S3 + CloudFront, etc).
-      // { protocol: 'https', hostname: 'res.cloudinary.com' },
+      // Self-hosted MinIO on the VPS — replace the host below with
+      // the real subdomain you point at the MinIO API. The bucket
+      // path lives below this hostname (path-style URLs).
+      { protocol: 'https', hostname: 'media.your-domain.com' },
     ],
   },
   // No rewrites. The earlier `/admin → /admin/index.html` rewrite
