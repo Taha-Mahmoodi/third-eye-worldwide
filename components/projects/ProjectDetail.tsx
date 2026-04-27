@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import RichText from '@/components/RichText';
 import CmsIcon from '@/components/CmsIcon';
+import { ArrowLeft, Heart } from '@/components/icons';
 
 /*
  * Renders a single project's detail view. Shape expected:
@@ -41,7 +42,7 @@ export default function ProjectDetail({ project }: { project: ProjectDetailData 
       <header className="pd-hero">
         <div className="pd-hero-inner">
           <Link href="/projects" className="pd-back">
-            <i className="ph ph-arrow-left" aria-hidden="true"></i>
+            <ArrowLeft size="1em" aria-hidden="true" />
             Back to projects
           </Link>
           <div className="pd-hero-top">
@@ -77,7 +78,7 @@ export default function ProjectDetail({ project }: { project: ProjectDetailData 
         <p>Every dollar funds open-source tools that are free at point of use — and stay that way.</p>
         <div className="pd-cta-actions">
           <Link href="/donate" className="btn-accent">
-            <i className="ph-fill ph-heart" aria-hidden="true"></i> Donate
+            <Heart weight="fill" size="1em" aria-hidden="true" /> Donate
           </Link>
           <Link href="/volunteers" className="btn-secondary">
             Volunteer

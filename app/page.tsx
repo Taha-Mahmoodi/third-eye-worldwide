@@ -14,6 +14,7 @@ import StoryCard from '@/components/cards/StoryCard';
 import TimelineRow from '@/components/cards/TimelineRow';
 import ProjectCard from '@/components/projects/ProjectCard';
 import { pageMetadata, readSeoOverrides, webPageJsonLd } from '@/lib/seo';
+import { ArrowRight, ArrowUpRight, Clock, Star } from '@/components/icons';
 
 // Home is CMS-driven and revalidatePath('/') fires from /api/cms/data
 // on every publish — the hourly fallback only runs if a publish was
@@ -162,7 +163,7 @@ export default async function HomePage() {
                   <circle cx="200" cy="200" r="160" />
                 </svg>
                 <div className="sf-badge">
-                  <i className="ph-fill ph-star" aria-hidden="true"></i>
+                  <Star weight="fill" size="1em" aria-hidden="true" />
                   <span>Newest story</span>
                 </div>
               </div>
@@ -170,7 +171,7 @@ export default async function HomePage() {
                 <div className="sf-meta-top">
                   <span className="cat-tag story">Story</span>
                   <span className="sf-read">
-                    <i className="ph ph-clock" aria-hidden="true"></i>{' '}
+                    <Clock size="1em" aria-hidden="true" />{' '}
                     {featured.meta || featured.readTime || '8 min read'}
                   </span>
                 </div>
@@ -184,7 +185,7 @@ export default async function HomePage() {
                     </div>
                   </div>
                   <span className="sf-read-btn" role="presentation">
-                    Read the full story <i className="ph ph-arrow-up-right" aria-hidden="true"></i>
+                    Read the full story <ArrowUpRight size="1em" aria-hidden="true" />
                   </span>
                 </div>
               </div>
@@ -197,7 +198,7 @@ export default async function HomePage() {
             <div className="story-foot">
               <Button asChild variant="pillGhost" size="pill">
                 <Link href="/documents#stories">
-                  Browse the full archive <i className="ph ph-arrow-right" aria-hidden="true"></i>
+                  Browse the full archive <ArrowRight size="1em" aria-hidden="true" />
                 </Link>
               </Button>
               <div className="story-foot-meta">

@@ -7,6 +7,7 @@ import TeamCard from '@/components/about/TeamCard';
 import BoardRow from '@/components/about/BoardRow';
 import StatTile from '@/components/site/StatTile';
 import { pageMetadata, readSeoOverrides } from '@/lib/seo';
+import { HandHeart } from '@/components/icons';
 
 // CMS-driven content. revalidatePath() in /api/cms/data covers
 // publish events; the hourly fallback re-pulls if a publish was
@@ -51,7 +52,7 @@ function FaqTab({ faqs }: { faqs: any[] }) {
           </div>
           <div className="faq-cta-btns">
             <Link href="/volunteers" className="btn-primary">
-              <i className="ph ph-hand-heart" aria-hidden="true"></i> Join the team
+              <HandHeart size="1em" aria-hidden="true" /> Join the team
             </Link>
             <Link href="/documents" className="btn-secondary">Read more</Link>
           </div>
@@ -83,7 +84,7 @@ function MissionTab({ missionStats }: { missionStats: any[] }) {
               </p>
               <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', marginTop: 24 }}>
                 <Link href="/volunteers" className="btn-primary">
-                  <i className="ph ph-hand-heart" aria-hidden="true"></i> Join Us
+                  <HandHeart size="1em" aria-hidden="true" /> Join Us
                 </Link>
                 <Link href="/projects" className="btn-secondary">See Projects</Link>
               </div>

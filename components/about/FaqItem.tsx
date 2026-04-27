@@ -1,4 +1,5 @@
 import RichText from '@/components/RichText';
+import { Plus } from '@/components/icons';
 
 /*
  * Single FAQ entry. Uses native <details>/<summary> for zero-JS open/close.
@@ -14,7 +15,7 @@ export default function FaqItem({ item }: { item?: FaqEntry }) {
       <summary>
         <div className="faq-num">{num || ''}</div>
         <RichText as="div" className="faq-q" html={question} />
-        <div className="faq-chev"><i className="ph-bold ph-plus" aria-hidden="true"></i></div>
+        <div className="faq-chev"><Plus weight="bold" size="1em" aria-hidden="true" /></div>
       </summary>
       <RichText as="div" className="faq-panel" html={body} />
     </details>

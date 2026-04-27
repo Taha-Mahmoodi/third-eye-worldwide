@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import CmsIcon from '@/components/CmsIcon';
+import { ArrowRight } from '@/components/icons';
 
 /*
  * Card that renders a single project in the /projects grid.
@@ -34,7 +35,7 @@ export default function ProjectCard({ project }: { project?: Project }) {
         {tag ? <span className="prog-tag">{tag}</span> : null}
         {slug ? (
           <span className="prog-learn-more" aria-hidden="true">
-            Learn more <i className="ph ph-arrow-right"></i>
+            Learn more <ArrowRight size="1em" aria-hidden="true" />
           </span>
         ) : null}
       </div>
