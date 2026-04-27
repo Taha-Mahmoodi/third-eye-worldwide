@@ -1,3 +1,5 @@
+import { ArrowUpRight } from '@/components/icons';
+
 /*
  * Board-member row shown inside the Governance card on /about#team.
  * `member` shape (CMS): { name, title, visible, order }.
@@ -16,7 +18,7 @@ export default function BoardRow({ member }: { member?: Member }) {
           <div className="board-title">{title}</div>
         </div>
       </div>
-      <i className="ph ph-arrow-up-right" aria-hidden="true"></i>
+      <ArrowUpRight size="1em" aria-hidden="true" />
     </div>
   );
 }

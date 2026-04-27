@@ -3,6 +3,7 @@ import { getContent, visibleSorted } from '@/lib/cms/db';
 import RichText from '@/components/RichText';
 import ProjectCard from '@/components/projects/ProjectCard';
 import { pageMetadata, readSeoOverrides } from '@/lib/seo';
+import { Heart } from '@/components/icons';
 
 export const revalidate = 3600;
 
@@ -61,7 +62,7 @@ export default async function ProjectsPage() {
           <p>{ctaSub}</p>
           <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'center' }}>
             <Link href="/donate" className="btn-accent">
-              <i className="ph-fill ph-heart" aria-hidden="true"></i> Donate Now
+              <Heart weight="fill" size="1em" aria-hidden="true" /> Donate Now
             </Link>
             <Link href="/volunteers" className="btn-secondary">Volunteer</Link>
           </div>

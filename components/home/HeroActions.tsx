@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { ArrowRight, Heart, SpeakerHigh } from '@/components/icons';
 
 /*
  * Hero CTA row. Donate + Projects links use next/link; the "Listen
@@ -10,10 +11,10 @@ export default function HeroActions() {
   return (
     <div className="hero-btns">
       <Link href="/donate" className="btn-accent">
-        <i className="ph-fill ph-heart" aria-hidden="true"></i> Donate Now
+        <Heart weight="fill" size="1em" aria-hidden="true" /> Donate Now
       </Link>
       <Link href="/projects" className="btn-ghost">
-        Our Projects <i className="ph ph-arrow-right" aria-hidden="true"></i>
+        Our Projects <ArrowRight size="1em" aria-hidden="true" />
       </Link>
       <button
         type="button"
@@ -21,7 +22,7 @@ export default function HeroActions() {
         aria-label="Listen to an audio tour of this page"
         onClick={() => typeof window !== 'undefined' && window.startAudioTour?.()}
       >
-        <i className="ph ph-speaker-high" aria-hidden="true"></i> Listen to audio tour
+        <SpeakerHigh size="1em" aria-hidden="true" /> Listen to audio tour
       </button>
     </div>
   );
