@@ -126,6 +126,13 @@
 }
 
 .adm-page-header { margin-bottom: 28px; }
+.adm-page-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
 .adm-page-header h1 {
   font-family: var(--font-display);
   font-size: 1.5rem;
@@ -137,6 +144,41 @@
   font-size: .9rem;
   color: var(--fg-muted);
   margin: 0;
+}
+
+/* Donation aggregate row (PR #4). Sits between the page header and
+   the table toolbar — quick scan numbers without leaving the page. */
+.adm-aggregate-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.adm-aggregate-card {
+  padding: 14px 16px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.adm-aggregate-label {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--fg-muted);
+}
+.adm-aggregate-value {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.adm-aggregate-divider { color: var(--fg-muted); margin: 0 4px; }
+.adm-aggregate-sub {
+  font-size: .78rem;
+  color: var(--fg-muted);
 }
 
 /* Overview stat cards. Also used by loading.tsx skeletons. */
@@ -529,6 +571,151 @@
   padding: 1px 6px;
   border-radius: 4px;
 }
+
+/* PR #4 — clickable name cell that opens the drawer. */
+.adm-row-trigger {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--fg);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-align: left;
+}
+.adm-row-trigger:hover { color: var(--brand); }
+.adm-row-trigger:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 2px; }
+.adm-row-trigger svg { color: var(--fg-muted); transition: transform .15s; }
+.adm-row-trigger:hover svg { transform: translateX(2px); color: var(--brand); }
+
+.adm-note-dot {
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-left: 4px;
+}
+
+/* PR #4 — side drawer chrome (used by VolunteerDrawer + DonationDrawer). */
+.adm-drawer-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, .35);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 200;
+  animation: adm-fade-in .15s ease;
+}
+.adm-drawer {
+  width: min(560px, 95vw);
+  background: var(--bg-elevated);
+  border-left: 1px solid var(--border);
+  box-shadow: var(--shadow-lg, -8px 0 24px rgba(0,0,0,.18));
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  animation: adm-slide-in .2s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .adm-drawer-backdrop, .adm-drawer { animation: none; }
+}
+@keyframes adm-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes adm-slide-in {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+.adm-drawer-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg-elevated);
+  z-index: 1;
+}
+.adm-drawer-header h2 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 2px;
+}
+.adm-drawer-sub { font-size: .85rem; color: var(--fg-muted); margin: 0; }
+
+.adm-drawer-body {
+  padding: 20px 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.adm-drawer-fields {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 8px 16px;
+  margin: 0;
+}
+.adm-drawer-fields dt {
+  color: var(--fg-muted);
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  align-self: start;
+  padding-top: 2px;
+}
+.adm-drawer-fields dd {
+  margin: 0;
+  font-size: .92rem;
+  word-break: break-word;
+}
+.adm-drawer-prose { white-space: pre-wrap; }
+.adm-drawer-amount {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.adm-drawer-divider {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 12px 0 4px;
+}
+.adm-drawer-label {
+  font-weight: 600;
+  font-size: .9rem;
+}
+.adm-hint { color: var(--fg-muted); font-weight: 400; font-size: .82rem; }
+.adm-drawer-textarea {
+  width: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  font: inherit;
+  font-size: .92rem;
+  resize: vertical;
+  min-height: 96px;
+}
+.adm-drawer-textarea:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+.adm-drawer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.adm-drawer-actions .adm-btn-quiet { text-decoration: none; }
 
 /* CMS-3: skeleton shimmer for the (dashboard) loading.tsx. */
 .adm-skeleton {

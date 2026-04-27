@@ -47,6 +47,8 @@ model VolunteerSubmission {
   message   String?
   status    String   @default("new") // new | contacted | onboarded | rejected
   confirmed Boolean  @default(false)
+  // Free-form admin notes shown only in the dashboard (CMS_ROADMAP PR #4).
+  adminNote String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -68,6 +70,8 @@ model DonationSubmission {
   currency  String   @default("USD")
   status    String   @default("pending") // pending | succeeded | failed
   note      String?
+  // Free-form admin notes shown only in the dashboard (CMS_ROADMAP PR #4).
+  adminNote String?
   confirmed Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
