@@ -47,9 +47,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" data-theme="light" data-text-size="a" suppressHydrationWarning>
       <head>
-        <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
-        <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
-        <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
         <JsonLd data={organizationJsonLd()} />
       </head>
       <body>

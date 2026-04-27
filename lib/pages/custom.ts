@@ -1,5 +1,6 @@
 import { visibleSorted } from '@/lib/cms/db';
 import { esc, rich } from '@/lib/pages/_helpers';
+import { iconSvg } from '@/lib/pages/icon-svg';
 import type { CmsCustomPage, CmsPageSection, SiteContent } from '@/lib/types';
 
 // Find a CMS-defined page by slug. Returns null if missing or hidden.
@@ -45,7 +46,7 @@ function renderSection(sec: CmsPageSection | null | undefined): string {
           ${sec.heading ? `<h2>${esc(sec.heading)}</h2>` : ''}
           ${sec.body ? `<p>${esc(sec.body)}</p>` : ''}
           <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
-            ${sec.primaryLabel ? `<a class="btn-accent" href="${esc(sec.primaryHref || '#')}"><i class="ph-fill ph-heart"></i> ${esc(sec.primaryLabel)}</a>` : ''}
+            ${sec.primaryLabel ? `<a class="btn-accent" href="${esc(sec.primaryHref || '#')}">${iconSvg('heart', 'fill')} ${esc(sec.primaryLabel)}</a>` : ''}
             ${sec.secondaryLabel ? `<a class="btn-secondary" href="${esc(sec.secondaryHref || '#')}">${esc(sec.secondaryLabel)}</a>` : ''}
           </div>
         </div>

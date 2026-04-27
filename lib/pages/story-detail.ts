@@ -1,4 +1,5 @@
 import { visibleSorted } from '@/lib/cms/db';
+import { iconSvg } from '@/lib/pages/icon-svg';
 import type { CmsStory, SiteContent } from '@/lib/types';
 
 // Legacy global helper, only defined in the standalone CMS preview iframe.
@@ -660,9 +661,9 @@ export function renderStoryDetail(content: SiteContent | null | undefined, slug?
           </div>
         </div>
         <div class="story-hero-metrics">
-          <span class="mi"><i class="ph ph-calendar-blank"></i> ${dateStr}</span>
-          <span class="mi"><i class="ph ph-globe-hemisphere-west"></i> ${location}</span>
-          <span class="mi"><i class="ph ph-clock"></i> ${readTime}</span>
+          <span class="mi">${iconSvg('calendar-blank')} ${dateStr}</span>
+          <span class="mi">${iconSvg('globe-hemisphere-west')} ${location}</span>
+          <span class="mi">${iconSvg('clock')} ${readTime}</span>
         </div>
       </div>
     </div>
@@ -707,8 +708,8 @@ export function renderStoryDetail(content: SiteContent | null | undefined, slug?
 
       <figure class="story-photo">
         <div class="sp-frame sp-frame-1">
-          <span class="sp-badge"><i class="ph ph-camera"></i> Ikeja · 06:12</span>
-          <i class="ph-fill ph-coffee sp-ico"></i>
+          <span class="sp-badge">${iconSvg('camera')} Ikeja · 06:12</span>
+          ${iconSvg('coffee', 'fill', 'sp-ico')}
         </div>
       </figure>
       <p class="story-photo-caption">Amara reviews overnight orders in her kitchen, before the market opens. The voice she hears is not a notification — it's a structured rundown of everything she needs to decide in the next hour.</p>
@@ -730,28 +731,28 @@ export function renderStoryDetail(content: SiteContent | null | undefined, slug?
         <h4>The toolkit Amara uses, end-to-end. All free, all open, all installed on a phone she bought on the open market.</h4>
         <ul>
           <li>
-            <i class="ph-fill ph-eye"></i>
+            ${iconSvg('eye', 'fill')}
             <div>
               <strong>Screen Reader</strong>
               <span>Offline-first TTS in 12 Nigerian languages, including Igbo and Yoruba.</span>
             </div>
           </li>
           <li>
-            <i class="ph-fill ph-map-trifold"></i>
+            ${iconSvg('map-trifold', 'fill')}
             <div>
               <strong>Navigation Aid</strong>
               <span>Community-tagged landmarks, matatu routes, turn cues on 3G.</span>
             </div>
           </li>
           <li>
-            <i class="ph-fill ph-storefront"></i>
+            ${iconSvg('storefront', 'fill')}
             <div>
               <strong>Community Marketplace</strong>
               <span>Voice-first listings, WhatsApp-native checkout, no data plan required.</span>
             </div>
           </li>
           <li>
-            <i class="ph-fill ph-chats-teardrop"></i>
+            ${iconSvg('chats-teardrop', 'fill')}
             <div>
               <strong>Peer Support</strong>
               <span>A Lagos cohort of 140 users who meet twice a month, online and in person.</span>
@@ -766,8 +767,8 @@ export function renderStoryDetail(content: SiteContent | null | undefined, slug?
 
       <figure class="story-photo">
         <div class="sp-frame sp-frame-2">
-          <span class="sp-badge"><i class="ph ph-camera"></i> Lagos · 15:40</span>
-          <i class="ph-fill ph-package sp-ico"></i>
+          <span class="sp-badge">${iconSvg('camera')} Lagos · 15:40</span>
+          ${iconSvg('package', 'fill', 'sp-ico')}
         </div>
       </figure>
       <p class="story-photo-caption">An afternoon run from Amara's kitchen to a customer's office in Maryland. The tools do not run the business — Amara does. The tools remove every step that used to require someone else to read for her.</p>
@@ -829,8 +830,8 @@ export function renderStoryDetail(content: SiteContent | null | undefined, slug?
         <h3>Amara Mwangi runs a food delivery business in Lagos.</h3>
         <p>She is twenty-nine, blind since 2021, and — as she will tell you cheerfully — bad at small talk and very good at jollof rice. If you are in Lagos, you can find her shop on our community marketplace. She is saving for a phone.</p>
         <div class="story-subject-actions">
-          <button class="btn-accent"><i class="ph-fill ph-heart"></i> Support Amara's cohort</button>
-          <button class="btn-ghost" style="background: rgba(255,255,255,.08); color: #fff; border: 1.5px solid rgba(255,255,255,.3); font-family: var(--font-display); font-weight: 600; padding: 13px 26px; border-radius: var(--radius-full); display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">Share this story <i class="ph ph-share-network"></i></button>
+          <button class="btn-accent">${iconSvg('heart', 'fill')} Support Amara's cohort</button>
+          <button class="btn-ghost" style="background: rgba(255,255,255,.08); color: #fff; border: 1.5px solid rgba(255,255,255,.3); font-family: var(--font-display); font-weight: 600; padding: 13px 26px; border-radius: var(--radius-full); display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">Share this story ${iconSvg('share-network')}</button>
         </div>
       </div>
       <div class="story-subject-facts">
@@ -873,7 +874,7 @@ export function renderStoryDetail(content: SiteContent | null | undefined, slug?
       ${typeof doc === 'function' ? doc('','type-story','story','Story','','Ten students, one year of code','The inaugural class of Access Scholars graduates from Cairo.','Fatima Al-Harbi','FA','9 min · Mar 30') : ''}
     </div>
     <div style="display:flex;justify-content:center;margin-top:36px;">
-      <button class="btn-secondary" onclick="goto('documents','stories')"><i class="ph ph-arrow-left"></i> Back to all stories</button>
+      <button class="btn-secondary" onclick="goto('documents','stories')">${iconSvg('arrow-left')} Back to all stories</button>
     </div>
   </section>
 </article>

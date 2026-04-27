@@ -1,4 +1,5 @@
 import { visibleSorted } from '@/lib/cms/db';
+import { iconSvg } from '@/lib/pages/icon-svg';
 import type { CmsBlogPost, SiteContent } from '@/lib/types';
 
 // Legacy global helper, only defined in the standalone CMS preview iframe.
@@ -567,14 +568,14 @@ export function renderBlogDetail(content: SiteContent | null | undefined, slug?:
         </div>
       </div>
       <div class="article-byline-meta">
-        <span class="mi"><i class="ph ph-calendar-blank"></i> ${dateStr}</span>
-        <span class="mi"><i class="ph ph-clock"></i> ${readTime}</span>
+        <span class="mi">${iconSvg('calendar-blank')} ${dateStr}</span>
+        <span class="mi">${iconSvg('clock')} ${readTime}</span>
       </div>
       <div class="article-share" role="group" aria-label="Share this article">
-        <button aria-label="Copy link"><i class="ph ph-link-simple"></i></button>
-        <button aria-label="Share to LinkedIn"><i class="ph ph-linkedin-logo"></i></button>
-        <button aria-label="Share to X"><i class="ph ph-x-logo"></i></button>
-        <button aria-label="Save"><i class="ph ph-bookmark-simple"></i></button>
+        <button aria-label="Copy link">${iconSvg('link-simple')}</button>
+        <button aria-label="Share to LinkedIn">${iconSvg('linkedin-logo')}</button>
+        <button aria-label="Share to X">${iconSvg('x-logo')}</button>
+        <button aria-label="Save">${iconSvg('bookmark-simple')}</button>
       </div>
     </div>
   </header>
@@ -586,7 +587,7 @@ export function renderBlogDetail(content: SiteContent | null | undefined, slug?:
           <path d="M212.24,8.45c-5.74-5.63-13.38-8.45-22.94-8.45H0v57.17c13.39-5.17,28.43-8.08,44.32-8.08,32.4,0,61.24,12.06,79.89,30.85,3.56,3.59,3.56,9.32,0,12.9-18.65,18.79-47.49,30.86-79.89,30.86-5.32,0-10.54-.33-15.64-.96-10.14-1.24-19.77-3.69-28.68-7.13v108.45c0,9.77,2.86,17.47,8.6,23.11,5.74,5.63,13.38,8.45,22.94,8.45h189.29v-57.17c-13.4,5.17-28.43,8.08-44.32,8.08-32.4,0-61.25-12.06-79.89-30.85-3.56-3.59-3.56-9.32,0-12.9,18.64-18.79,47.49-30.86,79.89-30.86,5.32,0,10.54.33,15.64.96,10.13,1.24,19.76,3.69,28.68,7.13V31.55c0-9.77-2.86-17.48-8.6-23.11Z"/>
         </svg>
       </div>
-      <span class="ahi-badge"><i class="ph ph-flask"></i> Third Eye Research · Vol. 04</span>
+      <span class="ahi-badge">${iconSvg('flask')} Third Eye Research · Vol. 04</span>
     </div>
     <p class="article-hero-caption">Illustration: The TEWW research team visited field sites in Nairobi, Mumbai, São Paulo, and Cairo over 18 months.</p>
   </div>
@@ -658,7 +659,7 @@ export function renderBlogDetail(content: SiteContent | null | undefined, slug?:
       <div class="figure">
         <div class="figure-frame">
           <span class="fig-label">Fig. 01</span>
-          <i class="ph ph-chart-line fig-ico"></i>
+          ${iconSvg('chart-line', 'regular', 'fig-ico')}
         </div>
         <div class="figure-cap">
           <span class="fc-num">Fig. 01</span>
@@ -673,7 +674,7 @@ export function renderBlogDetail(content: SiteContent | null | undefined, slug?:
       <p>Products are tested on warm caches and configured assistive tech. Real sessions often begin cold: new device, fresh install, first-run assistive-tech pairing. The first ninety seconds are the most accessibility-hostile window in the entire product — and they are almost never tested.</p>
 
       <div class="callout">
-        <i class="ph-fill ph-warning-circle"></i>
+        ${iconSvg('warning-circle', 'fill')}
         <div>
           <strong>If you take one thing from this piece</strong>
           <p>Audit once. Then watch a user you have never met open your product on a phone you would not use. The delta between those two experiences is your real accessibility debt.</p>
@@ -734,10 +735,10 @@ export function renderBlogDetail(content: SiteContent | null | undefined, slug?:
     <div class="bio-role">Head of Research · Third Eye Worldwide · based in Bengaluru</div>
     <p>Rhea leads the Research team at TEWW. Before joining in 2025, she spent eight years at the Centre for Internet and Society studying assistive-tech adoption in low-infrastructure contexts. She writes here roughly monthly.</p>
     <div class="bio-links">
-      <a href="#"><i class="ph ph-envelope-simple"></i> Email</a>
-      <a href="#"><i class="ph ph-linkedin-logo"></i> LinkedIn</a>
-      <a href="#"><i class="ph ph-file-text"></i> Publications</a>
-      <a href="#" onclick="goto('documents','blogs');return false;"><i class="ph ph-books"></i> All posts</a>
+      <a href="#">${iconSvg('envelope-simple')} Email</a>
+      <a href="#">${iconSvg('linkedin-logo')} LinkedIn</a>
+      <a href="#">${iconSvg('file-text')} Publications</a>
+      <a href="#" onclick="goto('documents','blogs');return false;">${iconSvg('books')} All posts</a>
     </div>
   </div>
 </div>
@@ -750,7 +751,7 @@ export function renderBlogDetail(content: SiteContent | null | undefined, slug?:
     ${typeof doc === 'function' ? doc('','type-policy','policy','Policy','policy','Inside the EU Accessibility Act','What the 2025 deadline means for every digital service in Europe.','Fatima Al-Harbi','FA','9 min · Apr 3') : ''}
   </div>
   <div style="display:flex;justify-content:center;margin-top:36px;">
-    <button class="btn-secondary" onclick="goto('documents','blogs')"><i class="ph ph-arrow-left"></i> Back to all posts</button>
+    <button class="btn-secondary" onclick="goto('documents','blogs')">${iconSvg('arrow-left')} Back to all posts</button>
   </div>
 </section>
 `;
