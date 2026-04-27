@@ -51,7 +51,10 @@ export default async function VolunteersPage() {
           <div className="section-heading left" style={{ maxWidth: 720 }}>
             <div className="section-eyebrow">Open Roles</div>
             <h2 className="section-title">Find a role that fits</h2>
-            <p className="section-subtitle">Every role is remote-friendly, self-paced, and paired with a mentor.</p>
+            <p className="section-subtitle">
+              {(v.rolesSubhead as string | undefined) ||
+                'Every role is remote-friendly, self-paced, and paired with a mentor.'}
+            </p>
           </div>
 
           <div className="role-grid">
@@ -68,7 +71,8 @@ export default async function VolunteersPage() {
             <div>
               <div className="section-eyebrow">How It Works</div>
               <h2 className="vol-how-title">
-                From application to first contribution in under two weeks.
+                {(v.stepsHeading as string | undefined) ||
+                  'From application to first contribution in under two weeks.'}
               </h2>
               <div className="vol-steps">
                 {steps.map((s, i) => <StepItem key={s.id || i} step={s} />)}
@@ -81,14 +85,36 @@ export default async function VolunteersPage() {
 
       <section className="cta-band">
         <div className="cta-inner">
-          <h2>Not sure where you fit?</h2>
-          <p>Join one of our monthly drop-in calls. Meet existing volunteers, ask questions, no commitment.</p>
-          <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'center' }}>
-            <button type="button" className="btn-accent">
-              <CalendarPlus size="1em" aria-hidden="true" /> Book a Drop-in
-            </button>
-            <Link href="/donate" className="btn-secondary">Donate Instead</Link>
-          </div>
+          {(() => {
+            const cta = (v.dropInCta || {}) as {
+              heading?: string;
+              body?: string;
+              primaryLabel?: string;
+              primaryHref?: string;
+              secondaryLabel?: string;
+              secondaryHref?: string;
+            };
+            const heading = cta.heading || 'Not sure where you fit?';
+            const body = cta.body ||
+              "Send an email — we'll set up a 20-minute call. No commitment, no script.";
+            const primaryLabel = cta.primaryLabel || 'Email us';
+            const primaryHref = cta.primaryHref ||
+              'mailto:hello@thirdeyeworldwide.org?subject=Volunteer';
+            const secondaryLabel = cta.secondaryLabel || 'Donate Instead';
+            const secondaryHref = cta.secondaryHref || '/donate';
+            return (
+              <>
+                <h2>{heading}</h2>
+                <p>{body}</p>
+                <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'center' }}>
+                  <a href={primaryHref} className="btn-accent">
+                    <CalendarPlus size="1em" aria-hidden="true" /> {primaryLabel}
+                  </a>
+                  <Link href={secondaryHref} className="btn-secondary">{secondaryLabel}</Link>
+                </div>
+              </>
+            );
+          })()}
         </div>
       </section>
     </>

@@ -25,7 +25,7 @@ export default function VolunteerForm({ roles }: VolunteerFormProps) {
   // MED-1 honeypot — see DonateWidget for the explanation.
   const [website, setWebsite] = useState('');
   const [status, setStatus] = useState<{ text: string; error: boolean }>({
-    text: 'We accept applications from anywhere. Reviewed in the order received.',
+    text: "We accept applications from anywhere. We read every one personally — it may take us a few days to respond, especially if many come in at once.",
     error: false,
   });
   const [submitting, setSubmitting] = useState(false);

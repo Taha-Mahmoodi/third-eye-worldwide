@@ -56,9 +56,7 @@ export default function Footer() {
             <h4>Contact</h4>
             <ul>
               <li><a href="mailto:hello@thirdeyeworldwide.org">hello@thirdeyeworldwide.org</a></li>
-              <li><a href="tel:+18008399001">+1 (800) TEWW-001</a></li>
-              <li><a href="#">12 Access Road, New York NY</a></li>
-              <li><a href="#">Press &amp; Media</a></li>
+              <li><a href="mailto:press@thirdeyeworldwide.org">Press &amp; Media</a></li>
             </ul>
           </div>
         </div>
